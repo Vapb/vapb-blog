@@ -1,0 +1,3 @@
+[submodule "themes/vapb-theme"]
+	path = themes/vapb-theme
+	url = https://github.com/Vapb/vapb-theme.git
