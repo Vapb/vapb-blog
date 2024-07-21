@@ -1,0 +1,154 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.curriculum {
+  max-width: 850px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f3f0f09e;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile h1 {
+  margin: 0;
+  font-size: 35px;
+  text-align: center;
+  color: #333;
+}
+
+.profile p {
+  margin: 5px 0;
+  color: #666;
+  text-align: center;
+}
+
+.section {
+  margin-top: 15px;
+}
+
+.section h3 {
+  margin-bottom: 15px;
+  border-bottom: 1px solid black;
+}
+
+.education {
+  margin-bottom: 15px;
+}
+
+.title-space{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  align-items: center
+}
+
+.dash{
+  display: block;
+  height: 1px;
+  width: 90%;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: auto;
+  padding: 0.5rem;
+}
+
+.title{
+  display: flex;
+  flex-direction: column
+}
+
+.job-name{
+  color: #666;
+}
+
+.job-description{
+  display: block;
+  margin-bottom: 12px;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.education .area{
+  color: #666;
+}
+
+.date{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.work-experience {
+  display: flex;
+  margin-bottom: 25px;
+  justify-content: space-between;
+}
+
+.job-experience {
+  width: 100%;
+}
+
+.job-experience ul{
+  margin-top: 0px;
+}
+
+.company-logo {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.job-title:last-of-type{
+  margin-top: 25px;
+}
+
+.work-experience {
+  display: flex;
+  margin-bottom: 25px;
+  justify-content: space-between;
+}
+
+img {
+  max-width: 50px;
+  max-height: 50px;
+  border: solid #d9d9d9 1px;
+}
+
+.dropbtn {
+  background-color: #eb8c00;
+  color: black;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #eb8c00;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 12px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #f07900;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #eb8c00;}
