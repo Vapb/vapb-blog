@@ -4,7 +4,7 @@ date: 2020-09-03T17:27:59+07:00
 description: "Lorem ipsum project description"
 toc: true
 tags: ["HTML", "CSS", "Basic Elements"]
-thumbnail: "images/profile.jpg"
+thumbnail: "../../images/profile.jpg"
 ---
 
 ## Lorem

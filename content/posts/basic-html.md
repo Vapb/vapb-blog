@@ -61,7 +61,7 @@ Check it[^2] at the end[^3] of this text[^4].
 
 
 {{<figure
-  src="/images/profile.jpg"
+  src="../../images/profile.jpg"
   alt="example-img"
   title="Image Example"
   caption="This is the default position of a figcaption, but it can be centered or at the end." >}}
