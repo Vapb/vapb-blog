@@ -1,4 +1,4 @@
 baseURL = 'https://vapb.github.io/vapb-blog/'
 languageCode = 'en-us'
-title = 'Vapb blog'
+title = 'VAPB BLOG'
 theme = 'vapb-theme'
