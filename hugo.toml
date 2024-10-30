@@ -2,3 +2,6 @@ baseURL = 'https://vapb.github.io/vapb-blog/'
 languageCode = 'en-us'
 title = 'VAPB BLOG'
 theme = 'vapb-theme'
+
+[params]
+  subtitle = "Exploring Data, Code, and Curiosities"
