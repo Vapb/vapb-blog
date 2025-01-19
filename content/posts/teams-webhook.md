@@ -135,24 +135,23 @@ Nesta opção, selecionamos a criação do fluxo do zero, permitindo que constru
 
 {{<figure class="post_image" src="../images/criacao_zero_0.png">}}
 
-No nosso projeto queremos o gatilho de quando um webhook é recebido devemos tomar uma ação. Para isso preciamos selecionar a opção Quando uma solicitação de webhook do Teams é recebeda. Abaixo temos um print da opção a ser selecionada.
+No nosso projeto, queremos configurar um gatilho que execute uma ação sempre que um webhook for recebido. Para isso, precisamos selecionar a opção "Quando uma solicitação de webhook do Teams é recebida". Abaixo, incluímos uma captura de tela mostrando a opção que deve ser selecionada.
 
 {{<figure class="post_image" src="../images/criacao_zero_1.png">}}
 
-Após isso, nosso fluxo nos disponibiliza a URL do webhook (URL DE HTTP POST) a qual vamos utilizar para acionar esse fluxo. Após a criação desse trigger, vamos criar uma ação a ser executada após o recebimento desse webhook, neste caso selecionamos "Send each adaptive card"  combinado com Post card in a chat or channel. Simplificadamente estamos criando um "for" para percorrer os body.attachemnts do conteudo do Post e enviar uma mensagem com o conteudo content para o chat Teams para cada um.
+Após essa etapa, o fluxo fornecerá a URL do webhook (URL de HTTP POST), que será usada para acionar o fluxo. Com o gatilho configurado, o próximo passo é criar a ação a ser executada quando o webhook for recebido. Nesse caso, selecionamos as opções **"Send each adaptive card"** combinada com **"Post card in a chat or channel"**. De forma simplificada, estamos criando um laço for para iterar sobre os `body.attachments` do conteúdo recebido no webhook. Para cada item, o fluxo enviará uma mensagem com o valor de `content` ao chat do Teams.
 
 {{<figure class="post_image" src="../images/criacao_zero_2.png">}}
 
-É imporante resaltar que ambas opções de construção desse webhook resultam em fluxos identicos.
+É importante ressaltar que ambas as opções de construção do webhook resultam em fluxos idênticos.
 
-Com os webhooks criados devemos observar algo assim na página de fluxos de trabalho.
+Com os webhooks criados, você deverá visualizar algo semelhante na página de fluxos de trabalho.
 
 {{<figure class="post_image" src="../images/webhook_completo.png">}}
 
 ### Testando o Webhook
 
-Para testar nosso novo webhook no Microsoft teams, criei o seguinte script python, que envia um request POST através da lib requests do python. Nesse script apenas enviamos uma mensagem no formato AdaptiveCard para testar que nosso webhook está
-
+Para testar nosso novo webhook no Microsoft Teams, criei o seguinte script em Python, que envia uma requisição POST utilizando a biblioteca `requests` do Python. Neste script, enviamos uma mensagem no formato AdaptiveCard para verificar se o webhook está funcionando corretamente.
 
 ```python
 from requests import post
