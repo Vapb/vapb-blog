@@ -9,36 +9,36 @@ toc: true
 
 ## Introdução
 
-Imagine que seu sistema está funcionando normalmente, quando de repente ocorre um evento crítico. Nesse momento, é essencial notificar imediatamente sua equipe e as partes envolvidas. Em vez de depender de e-mails ou atualizações manuais, você pode automatizar o envio de alertas em tempo real diretamente para um canal do Microsoft Teams. Essa abordagem garante que sua equipe receba informações rápidas e possa agir imediatamente, minimizando o impacto do incidente.
+Imagine que o seu sistema está funcionando normalmente, quando, de repente, ocorre um evento crítico. Nesse momento, torna-se essencial notificar imediatamente sua equipe e as partes envolvidas. Em vez de depender de e-mails ou atualizações manuais, você pode automatizar o envio de alertas em tempo real diretamente para um canal do Microsoft Teams. Essa abordagem garante que sua equipe receba as informações rapidamente e possa agir de forma imediata, minimizando o impacto do incidente.
 
-Em sistemas dinâmicos, a comunicação eficiente é vital para a operação. Enviar notificações diretamente para os stakeholders e a equipe é uma maneira prática de manter todos informados. Neste post, vamos mostrar como configurar um webhook no Microsoft Teams para tornar esse processo ainda mais ágil.
+Em sistemas dinâmicos, a comunicação eficiente é vital para a operação. Enviar notificações diretamente aos stakeholders e à equipe é uma maneira prática de manter todos informados. Neste post, vamos mostrar como configurar um webhook no Microsoft Teams para tornar esse processo ainda mais ágil.
 
 
 ## O Que São Webhooks?
 
-Um webhook, por definição, é uma comunicação leve e orientada a eventos, que envia dados automaticamente entre aplicações via HTTP, sem a necessidade de consultas contínuas (polling). Em outras palavras, é uma forma de fazer um sistema fornecer informações em tempo real para outros sistemas, permitindo que um aplicativo envie uma notificação para outro quando um determinado evento ocorre.
+Um webhook, por definição, é uma forma de comunicação leve e orientada a eventos, que envia dados automaticamente entre aplicações via HTTP, sem a necessidade de consultas contínuas (polling). Em outras palavras, é um método que permite a um sistema fornecer informações em tempo real a outros sistemas, possibilitando que um aplicativo envie uma notificação para outro quando um evento específico ocorre.
 
-Sem me aprofundar muito no conceito de webhook e seus detalhes, resumidamente temos dois sistemas: o **Sender** (Aplicação de Origem), que envia a notificação quando um evento ocorre, e o **Receiver** (Aplicação de Destino), que é o sistema que recebe os dados enviados pelo webhook.
+Sem me aprofundar muito no conceito de webhook e seus detalhes, podemos resumir o processo da seguinte forma: existem dois sistemas principais envolvidos — o **Sender** (Aplicação de Origem), que envia a notificação quando um evento acontece, e o **Receiver** (Aplicação de Destino), que é o sistema responsável por receber os dados enviados pelo webhook.
 
-O fluxo do webhook geralmente ocorre da seguinte maneira:
-* O **Receiver** registra uma URL pública para onde quer receber os dados, essencialmente um endpoint.
-* O **Sender** é configurado para enviar uma mensagem HTTP (geralmente um POST) para essa URL sempre que um evento específico ocorre.
-* O **Receiver** processa os dados e executa as ações necessárias.
+O fluxo de funcionamento de um webhook geralmente segue estes passos::
+* O **Receiver**  registra uma URL pública para onde deseja receber os dados, conhecida como endpoint.
+* O **Sender**  é configurado para enviar uma mensagem HTTP (geralmente um POST) para essa URL sempre que um evento específico ocorre.
+* O **Receiver** processa os dados recebidos e executa as ações necessárias.
 
 
 ## Webhooks no Microsoft Teams
 
-Um webhook no Microsoft Teams é um mecanismo que permite a integração de sistemas externos com canais do Teams. Ele funciona como um ponto de entrada que recebe mensagens de outros serviços ou aplicativos e as exibe diretamente em um canal do Teams nos permitindo atualizações em tempo real.
+Um webhook no Microsoft Teams é um mecanismo que permite a integração de sistemas externos com canais do Teams. Ele atua como um ponto de entrada, recebendo mensagens de outros serviços ou aplicativos e exibindo-as diretamente em um canal do Teams, proporcionando atualizações em tempo real.
 
-Existem dois tipos de weebhooks Microsoft Teams: 
-* **Inbound Webhooks (Webhooks de Entrada)**: São usados para receber mensagens de sistemas externos. Ou seja, um serviço envia uma requisição HTTP POST para a URL do webhook do Teams, e a mensagem é processada e exibida no canal.
-* **Outgoing Webhooks (Webhooks de Saída)**: São usados para enviar mensagens do Teams para um serviço externo. 
+Existem dois tipos de webhooks no Microsoft Teams:
+* **Inbound Webhooks (Webhooks de Entrada)**: Usados para receber mensagens de sistemas externos. Nesse caso, um serviço envia uma requisição HTTP POST para a URL do webhook configurado no Teams, e a mensagem é processada e exibida no canal correspondente.
+* **Outgoing Webhooks (Webhooks de Saída)**: Usados para enviar mensagens do Teams para um serviço externo.
 
-Nesse tutorial iremos focar nos **Inbound Webhooks (Webhooks de Entrada)**, já que no nosso scenario queremos um sistema que envie mensagens para um chat/canal do teams alertando as partente interradas dos eventos criticos que estão ocorrendo no nosso sistema.
+Neste tutorial, vamos focar nos **Inbound Webhooks (Webhooks de Entrada)**, pois o objetivo é configurar um sistema capaz de enviar mensagens para um chat ou canal do Teams, notificando as partes interessadas sobre eventos críticos que ocorrem no sistema.
 
-**TeamsIncomingWebhookTrigger** Este trigger permite iniciar um fluxo fazendo uma requisição POST para o endpoint exposto pelo trigger. Você pode enviar um array de adaptive cards no corpo da requisição para o trigger, que serão usados em ações posteriores do fluxo. Este trigger suporta apenas requisições POST e não suporta requisições GET.
+**TeamsIncomingWebhookTrigger** Esse trigger permite iniciar um fluxo ao receber uma requisição POST enviada para o endpoint exposto pelo webhook. Você pode incluir um array de adaptive cards no corpo da requisição, que serão utilizados para definir ações subsequentes no fluxo. Vale destacar que esse trigger suporta apenas requisições POST, não sendo compatível com requisições GET.
 
-Abaixo podemos observar o Request Body Schema.
+Abaixo está o esquema do corpo da requisição (Request Body Schema).
 
 **Request Body**
 | Name        | Key         | Required | Type            | Description                                                                              |
@@ -97,39 +97,41 @@ The properties for Adaptive Card JSON file are as follows:
 | Microsoft Teams Chat | Canal ou chat onde o webhook será configurado para enviar notificações.                                |
 
 ## Passos para Criar o Webhook
-### Passo 1: Criando o Webhook
+### Criando o Webhook
 
 Atualmente, existem duas formas de gerar um webhook no Microsoft Teams:
-* Através dos Conectores do Microsoft 365 (Incoming Webhook), que serão desativados em breve, motivo pelo qual não abordaremos essa opção neste tutorial.
-* Através do Microsoft Workflows, método que será abordado utilizaremos nesse tutorial.
+* Através dos Conectores do Microsoft 365 (Incoming Webhook): Essa opção será desativada em breve, motivo pelo qual não será abordada neste tutorial.
+* Através do Microsoft Workflows: Este é o método que utilizaremos neste tutorial.
 
 Para mais informações sobre a descontinuação dos Conectores do Microsoft 365, acesse o link oficial: [Retirement of Office 365 connectors within Microsoft Teams](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/).
 
-Para a criação Inbound Webhooks através workflows utilizando o teams Existem duas maneiras de fazer um Inbound Webhooks. 
-Para publicar automaticamente num chat ou canal quando um pedido de webhook é recebido
+Existem duas formas de criar um Inbound Webhook para publicar automaticamente em um chat ou canal do Teams quando um pedido de webhook é recebido:
+* Via templates (modelos prontos)
+* Do zero (personalizado)
 
-Via templates ou do zero 
-
-dentro da página inicial do teams workflows (representada abaxio) observamos as duas opções de criação de um webhook.  
+Na página inicial do Microsoft Workflows (imagem abaixo), você encontrará as duas opções disponíveis para configurar um webhook.
 
 {{<figure class="post_image" src="../images/pagina_inicial_0.png">}}
 
-Inciciando com um a construção de webhook através de templates teams opção 1.
-Nessa pagina podemos observar dirsos templates disponibilizados pelo teams que depois podemos cutomizar. como Agendar uma resposta, Acompanhar uma mensagem, Salvar mensgem no OneNote entre outros modelos, Postar em um chat quando uma solicitação de webhook for recebida, Postar em um canal quando uma solicitação de webhook for recebida, analisar sentimento de emails com AI Builder, Notificar um equipe quando o Planner alterar o status de tarefas, entre outros modelos. utilize os modelos de fluxo de trabalho predefinidos.
-Para nosso problema vamos selecionar essa opção "Postar em um chat quando uma solicitação de webhook for recebida" Abaixo observamos o modelo escolhido.
+#### Templates (Opção 1)
+Iniciando a construção de um webhook utilizando templates do Teams (opção 1):
+Para iniciar a construção de um webhook utilizando templates no Teams, você será apresentado a uma página com diversos modelos prontos para uso. Esses templates foram criados para facilitar a integração com diferentes funcionalidades e podem ser personalizados de acordo com as necessidades específicas. Entre os exemplos disponíveis, encontramos opções como agendar respostas automáticas, acompanhar mensagens, salvar conteúdos no OneNote, postar notificações em chats ou canais quando uma solicitação de webhook é recebida, e até mesmo analisar o sentimento de e-mails utilizando o AI Builder. Além disso, há templates para notificar equipes quando o status de tarefas no Planner é alterado, entre outras possibilidades.
+
+Para resolver o problema em questão, vamos selecionar o template **"Postar em um chat quando uma solicitação de webhook for recebida"**, que atende perfeitamente ao nosso objetivo. Abaixo, você poderá observar o modelo escolhido, que será a base para o nosso fluxo.
 
 {{<figure class="post_image" src="../images/template_0.png">}}
 
-Após selecionar a opção desejada de modelo de template, vai abrir a tela de criação de um novo fluxo. Nela selecionamos o nome do nosso fluxo. nosso caso vamos selecionar "Webhook test". Após isso clicamos em avançar. Abaixo observamos a tela descrita.
+Após selecionar o modelo de template desejado, será exibida a tela de criação de um novo fluxo. Nessa etapa, você deverá definir o nome do fluxo. No nosso caso, vamos nomeá-lo como "Webhook Test". Em seguida, basta clicar em "Avançar". Abaixo, você pode visualizar a tela descrita.
 
 {{<figure class="post_image" src="../images/template_1.png">}}
 
-Após a criação do fluxo, o teams vai nos retornar que o fluxo de trabalho foi adicionado com sucesso e junto vai nos dar nossa URL para nosso novo webhook. Abaixo temos um exemplo do passo. Nosso novo webhook já está criado e pronto para utilização.
+Após a criação do fluxo, o Teams confirmará que o fluxo de trabalho foi adicionado com sucesso e, juntamente com a confirmação, fornecerá a URL do nosso novo webhook. Abaixo, mostramos um exemplo dessa etapa. Com isso, o webhook está criado e pronto para ser utilizado.
 
 {{<figure class="post_image" src="../images/template_2.png">}}
 
+#### Do zero (Opção 2)
 Opção 2, criando um fluxo de trabalho do zero.
-Nesse opção selecionamos a opção de criar do zero em que montamos passo a passo o fluxo de trabalho que será executado dentro da infraestrura da microsoft do incio com o trigger até as subsequtens passos de pre-processamento e ações como posts, criarção de cards entre outros.  Após clicar na opção criar do zero somos apresentados com a forma inicial do fluxo, com o a criação do gatilho. nessa tela somos apresentados com diversos gatilhos.
+Nesta opção, selecionamos a criação do fluxo do zero, permitindo que construamos, passo a passo, o fluxo de trabalho que será executado dentro da infraestrutura da Microsoft. O processo começa com a configuração do trigger (gatilho) inicial e segue com os passos subsequentes, incluindo etapas de pré-processamento e ações como publicação de mensagens, criação de cards, entre outras. Ao clicar na opção "Criar do Zero", somos apresentados à estrutura inicial do fluxo, começando pela criação do gatilho. Nessa etapa, são exibidas diversas opções de gatilhos para seleção.
 
 {{<figure class="post_image" src="../images/criacao_zero_0.png">}}
 
@@ -147,7 +149,7 @@ Com os webhooks criados devemos observar algo assim na página de fluxos de trab
 
 {{<figure class="post_image" src="../images/webhook_completo.png">}}
 
-### Passo 2: Testando o Webhook
+### Testando o Webhook
 
 Para testar nosso novo webhook no Microsoft teams, criei o seguinte script python, que envia um request POST através da lib requests do python. Nesse script apenas enviamos uma mensagem no formato AdaptiveCard para testar que nosso webhook está
 
