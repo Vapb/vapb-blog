@@ -28,6 +28,8 @@ The text() method either sets the text of the selected node, or gets the current
 </body>
 ```
 
+![alt text](image.png)
+
 ### 02 Select a Group of Elements with D3
 
 D3 has several methods that let you add and change elements in your document.
@@ -48,6 +50,8 @@ Like the select() method, selectAll() supports method chaining, and you can use 
 </body>
 ```
 
+![alt text](image.png)
+
 ### 03 Work with Data in D3
 
 The D3 library focuses on a data-driven approach. When you have a set of data, you can apply D3 methods to display it on the page.
@@ -57,17 +61,18 @@ When enter() is combined with the data() method, it looks at the selected elemen
 
 ``` html
 <body>
-  <ul></ul>
   <script>
-    const dataset = ["a", "b", "c"];
-    d3.select("ul").selectAll("li")
+    const dataset = [12, 31, 22, 17, 25, 18, 29, 14, 9];
+    d3.select("body").selectAll("h2")
       .data(dataset)
       .enter()
-      .append("li")
-      .text("New item");
+      .append("h2")
+      .text("New Title");
   </script>
 </body>
 ```
+
+![alt text](image.png)
 
 It may seem confusing to select elements that don't exist yet.
 This code is telling D3 to first select the ul on the page.
@@ -97,6 +102,8 @@ In the example above, the parameter d refers to a single entry in the dataset th
 </body>
 ```
 
+![alt text](image.png)
+
 ### 05 Add Inline Styling to Elements
 
 D3 lets you add inline CSS styles on dynamic elements with the style() method.
@@ -111,10 +118,11 @@ The style() method takes a comma-separated key-value pair as an argument. Here's
       .enter()
       .append("h2")
       .text((d) => (d + " USD"))
-      .style("color", "blue")
+      .style("font-family", "verdana")
   </script>
 </body>
 ```
+![alt text](image.png)
 
 ### 06 Change Styles Based on Data
 
@@ -140,6 +148,8 @@ It's likely you'll want to change the styling of elements based on the data. For
   </script>
 </body>
 ```
+
+![alt text](image.png)
 
 ### 07 Add Classes with D3
 
@@ -167,6 +177,8 @@ The attr() method works the same way that style() does. It takes comma-separated
   </script>
 </body>
 ```
+
+![alt text](image.png)
 
 ### 08 Update the Height of an Element Dynamically
 
@@ -258,7 +270,6 @@ CSS can be scalable when styles use relative units (such as vh, vw, or percentag
 ```
 
 ![alt text](image.png)
-
 
 ### 11 Display Shapes with SVG
 
