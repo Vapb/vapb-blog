@@ -549,7 +549,7 @@ D3 methods can add styles to the bar labels. The fill attribute sets the color o
 </body>
 ```
 
-![alt text](image-1.png)
+![alt text](image.png)
 
 ### 19 Add a Hover Effect to a D3 Element
 
