@@ -111,7 +111,7 @@ Existem duas formas de criar um Inbound Webhook para publicar automaticamente em
 
 Na página inicial do Microsoft Workflows (imagem abaixo), você encontrará as duas opções disponíveis para configurar um webhook.
 
-{{<figure class="post_image" src="../images/pagina_inicial_0.png">}}
+{{<figure class="post_image" src="../images/webhook_teams/pagina_inicial_0.png">}}
 
 #### Templates (Opção 1)
 Iniciando a construção de um webhook utilizando templates do Teams (opção 1):
@@ -119,35 +119,35 @@ Para iniciar a construção de um webhook utilizando templates no Teams, você s
 
 Para resolver o problema em questão, vamos selecionar o template **"Postar em um chat quando uma solicitação de webhook for recebida"**, que atende perfeitamente ao nosso objetivo. Abaixo, você poderá observar o modelo escolhido, que será a base para o nosso fluxo.
 
-{{<figure class="post_image" src="../images/template_0.png">}}
+{{<figure class="post_image" src="../images/webhook_teams/template_0.png">}}
 
 Após selecionar o modelo de template desejado, será exibida a tela de criação de um novo fluxo. Nessa etapa, você deverá definir o nome do fluxo. No nosso caso, vamos nomeá-lo como "Webhook Test". Em seguida, basta clicar em "Avançar". Abaixo, você pode visualizar a tela descrita.
 
-{{<figure class="post_image" src="../images/template_1.png">}}
+{{<figure class="post_image" src="../images/webhook_teams/template_1.png">}}
 
 Após a criação do fluxo, o Teams confirmará que o fluxo de trabalho foi adicionado com sucesso e, juntamente com a confirmação, fornecerá a URL do nosso novo webhook. Abaixo, mostramos um exemplo dessa etapa. Com isso, o webhook está criado e pronto para ser utilizado.
 
-{{<figure class="post_image" src="../images/template_2.png">}}
+{{<figure class="post_image" src="../images/webhook_teams/template_2.png">}}
 
 #### Do zero (Opção 2)
 Opção 2, criando um fluxo de trabalho do zero.
 Nesta opção, selecionamos a criação do fluxo do zero, permitindo que construamos, passo a passo, o fluxo de trabalho que será executado dentro da infraestrutura da Microsoft. O processo começa com a configuração do trigger (gatilho) inicial e segue com os passos subsequentes, incluindo etapas de pré-processamento e ações como publicação de mensagens, criação de cards, entre outras. Ao clicar na opção "Criar do Zero", somos apresentados à estrutura inicial do fluxo, começando pela criação do gatilho. Nessa etapa, são exibidas diversas opções de gatilhos para seleção.
 
-{{<figure class="post_image" src="../images/criacao_zero_0.png">}}
+{{<figure class="post_image" src="../images/webhook_teams/criacao_zero_0.png">}}
 
 No nosso projeto, queremos configurar um gatilho que execute uma ação sempre que um webhook for recebido. Para isso, precisamos selecionar a opção "Quando uma solicitação de webhook do Teams é recebida". Abaixo, incluímos uma captura de tela mostrando a opção que deve ser selecionada.
 
-{{<figure class="post_image" src="../images/criacao_zero_1.png">}}
+{{<figure class="post_image" src="../images/webhook_teams/criacao_zero_1.png">}}
 
 Após essa etapa, o fluxo fornecerá a URL do webhook (URL de HTTP POST), que será usada para acionar o fluxo. Com o gatilho configurado, o próximo passo é criar a ação a ser executada quando o webhook for recebido. Nesse caso, selecionamos as opções **"Send each adaptive card"** combinada com **"Post card in a chat or channel"**. De forma simplificada, estamos criando um laço for para iterar sobre os `body.attachments` do conteúdo recebido no webhook. Para cada item, o fluxo enviará uma mensagem com o valor de `content` ao chat do Teams.
 
-{{<figure class="post_image" src="../images/criacao_zero_2.png">}}
+{{<figure class="post_image" src="../images/webhook_teams/criacao_zero_2.png">}}
 
 É importante ressaltar que ambas as opções de construção do webhook resultam em fluxos idênticos.
 
 Com os webhooks criados, você deverá visualizar algo semelhante na página de fluxos de trabalho.
 
-{{<figure class="post_image" src="../images/webhook_completo.png">}}
+{{<figure class="post_image" src="../images/webhook_teams/webhook_completo.png">}}
 
 ### Testando o Webhook
 
@@ -197,7 +197,7 @@ response = post(
 
 Abaixo, podemos ver que o script foi executado com sucesso, a mensagem foi recebida no chat e a imagem foi exibida corretamente.
 
-{{<figure class="post_image" src="../images/testing_webhook_teams.png">}}
+{{<figure class="post_image" src="../images/webhook_teams/testing_webhook_teams.png">}}
 
 ## Conclusão
 
