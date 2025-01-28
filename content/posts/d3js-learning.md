@@ -28,7 +28,7 @@ The text() method either sets the text of the selected node, or gets the current
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/01_Add_Document_Elements_with_D3.png">}}
 
 ### 02 Select a Group of Elements with D3
 
@@ -50,7 +50,7 @@ Like the select() method, selectAll() supports method chaining, and you can use 
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/02_Select_a_Group_of_Elements_with_D3">}}
 
 ### 03 Work with Data in D3
 
@@ -72,7 +72,7 @@ When enter() is combined with the data() method, it looks at the selected elemen
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/03_Work_with_Data_in_D3.png">}}
 
 It may seem confusing to select elements that don't exist yet.
 This code is telling D3 to first select the ul on the page.
@@ -102,7 +102,7 @@ In the example above, the parameter d refers to a single entry in the dataset th
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/04_Work_with_Dynamic_Data_in_D3.png">}}
 
 ### 05 Add Inline Styling to Elements
 
@@ -122,7 +122,8 @@ The style() method takes a comma-separated key-value pair as an argument. Here's
   </script>
 </body>
 ```
-![alt text](image.png)
+
+{{<figure class="post_image" src="../images/d3js-learning/05_Add_Inline_Styling_to_Elements.png">}}
 
 ### 06 Change Styles Based on Data
 
@@ -149,7 +150,7 @@ It's likely you'll want to change the styling of elements based on the data. For
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/06_Change_Styles_Based_on_Data.png">}}
 
 ### 07 Add Classes with D3
 
@@ -178,7 +179,7 @@ The attr() method works the same way that style() does. It takes comma-separated
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/07_Add_Classes_with_D3.png">}}
 
 ### 08 Update the Height of an Element Dynamically
 
@@ -207,7 +208,7 @@ Give each `div` a dynamic `height`, using a callback function in the `style()` m
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/08_Update_the_Height_of_an_Element_Dynamically.png">}}
 
 ### 09 Change the Presentation of a Bar Chart
 
@@ -238,7 +239,7 @@ The last challenge created a bar chart, but there are a couple of formatting cha
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/09_Change_the_Presentation_of_a_Bar_Chart.png">}}
 
 ### 10 Learn About SVG in D3
 
@@ -269,7 +270,7 @@ CSS can be scalable when styles use relative units (such as vh, vw, or percentag
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/10_Learn_About_SVG_in_D3.png">}}
 
 ### 11 Display Shapes with SVG
 
@@ -300,7 +301,7 @@ An SVG rect has four attributes. There are the x and y coordinates for where it 
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/11_Display_Shapes_with_SVG.png">}}
 
 ### 12 Create a Bar for Each Data Point in the Set
 
@@ -333,7 +334,7 @@ There are a few differences working with rect elements instead of div elements. 
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/12_Create_a_Bar_for_Each_Data_Point_in_the_Set.png">}}
 
 ### 13 Dynamically Set the Coordinates for Each Bar
 
@@ -368,7 +369,7 @@ It's important to note that you do NOT need to write a for loop or use forEach()
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/13_Dynamically_Set_the_Coordinates_for_Each_Bar.png">}}
 
 ### 14 Dynamically Change the Height of Each Bar
 
@@ -399,7 +400,7 @@ The height of each bar can be set to the value of the data point in the array, s
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/14_Dynamically_Change_the_Height_of_Each_Bar.png">}}
 
 ### 15 Invert SVG Elements
 
@@ -434,7 +435,7 @@ Note: In general, the relationship is y = h - m * d, where m is the constant tha
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/15_Invert_SVG_Elements.png">}}
 
 ### 16 Change the Color of an SVG Element
 
@@ -466,7 +467,7 @@ In SVG, a rect shape is colored with the fill attribute. It supports hex codes, 
 </body>
 ```
 
-![alt text](image-1.png)
+{{<figure class="post_image" src="../images/d3js-learning/16_Change_the_Color_of_an_SVG_Element.png">}}
 
 ### 17 Add Labels to D3 Elements
 
@@ -507,7 +508,8 @@ Like the rect element, a text element needs to have x and y attributes, to place
   </script>
 <body>
 ```
-![alt text](image-1.png)
+
+{{<figure class="post_image" src="../images/d3js-learning/17_Add_Labels_to_D3_Elements.png">}}
 
 ### 18 Style D3 Labels
 
@@ -549,7 +551,7 @@ D3 methods can add styles to the bar labels. The fill attribute sets the color o
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/18_Style_D3_Labels.png">}}
 
 ### 19 Add a Hover Effect to a D3 Element
 
@@ -597,7 +599,7 @@ You set the CSS class on the SVG elements with the attr() method. Then the :hove
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/19_Add_a_Hover_Effect_to_a_D3_Element.png">}}
 
 ### 20 Add a Tooltip to a D3 Element
 
@@ -647,7 +649,7 @@ title pairs with the text() method to dynamically add data to the bars.
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/20_Add_a_Tooltip_to_a_D3_Element.png">}}
 
 ### 21 Create a Scatterplot with SVG Circles
 
@@ -732,7 +734,7 @@ All three attributes can use a callback function to set their values dynamically
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/22_Add_Attributes_to_the_Circle_Elements.png">}}
 
 ### 23 Add Labels to Scatter Plot Circles
 
@@ -784,7 +786,7 @@ The text nodes need x and y attributes to position it on the SVG. In this challe
 </body>
 ```
 
-![alt text](image.png)
+{{<figure class="post_image" src="../images/d3js-learning/23_Add_Labels_to_Scatter_Plot_Circles.png">}}
 
 ### 24 Create a Linear Scale with D3
 
