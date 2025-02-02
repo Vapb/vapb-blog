@@ -1,7 +1,7 @@
 ---
-title: Apredendo D3js
+title: Data Visualization freeCodeCamp
 author: "vapb"
-description: Um breve recaptulação na D3js freecodecamp.
+description: Uma recapitulação do curso de D3.js da freeCodeCamp.
 date: 2025-01-17
 tags: ["d3js", "javascript", "data_visualization"]
 toc: true
@@ -59,7 +59,8 @@ Like the select() method, selectAll() supports method chaining, and you can use 
 </body>
 ```
 
-{{<figure class="post_image" src="../images/d3js-learning/02_Select_a_Group_of_Elements_with_D3">}}
+{{<figure class="post_image" src="../images/d3js-learning/02_Select_a_Group_of_Elements_with_D3.png">}}
+
 
 ### 03 Work with Data in D3
 
@@ -1170,7 +1171,7 @@ The JavaScript XMLHttpRequest object has a number of properties and methods that
 </p>
 ```
 
-![alt text](image.png) 03_Get_JSON_JavaScript_XMLHttpRequest_Method.png
+{{<figure class="post_image" src="../images/d3js-learning/03_Get_JSON_JavaScript_XMLHttpRequest_Method.png">}}
 
 ### 04 Get JSON with the JavaScript fetch method
 
@@ -1295,7 +1296,8 @@ Note: For this challenge, you need to add new HTML elements to the page, so you 
   </button>
 </p>
 ```
-![alt text](image.png) 06_Convert_JSON_Data_HTML.png
+
+{{<figure class="post_image" src="../images/d3js-learning/06_Convert_JSON_Data_HTML.png">}}
 
 ### 07 Render Images from Data Sources
 
@@ -1325,7 +1327,7 @@ When you're looping through these objects, you can use this imageLink property t
 </script>
 ```
 
-![alt text](image-1.png)07_Render_Images_from_Data_Sources.png
+{{<figure class="post_image" src="../images/d3js-learning/07_Render_Images_from_Data_Sources.png">}}
 
 ### 08 Pre-filter JSON to Get the Data You Need
 
