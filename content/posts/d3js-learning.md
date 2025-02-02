@@ -7,8 +7,17 @@ tags: ["d3js", "javascript", "data_visualization"]
 toc: true
 ---
 
-### Introdução
-TODO.
+## Introdução
+Esse post resume meus estudos na trilha D3.js da freeCodeCamp.
+
+Aqui, reúno minhas anotações e resoluções dos exercícios, facilitando o acesso ao que aprendi e servindo como um guia de consulta rápida sobre o funcionamento do D3.js.
+
+## Data Visualization with D3
+D3, or D3.js, stands for Data Driven Documents. It's a JavaScript library for creating dynamic and interactive data visualizations in the browser.
+
+D3 is built to work with common web standards – namely HTML, CSS, and Scalable Vector Graphics (SVG).
+
+D3 supports many different kinds of input data formats. Then, using its powerful built-in methods, you can transform those data into different charts, graphs, and maps.
 
 
 ### 01 Add Document Elements with D3
@@ -1088,3 +1097,15 @@ For example, when a user clicks the Get Message button, it changes the text of t
 ``` javascript
 document.getElementsByClassName('message')[0].textContent="Here is the message";
 ```
+
+{{<figure class="post_image" src="../images/d3js-learning/02_Change_Text_Click_Events.png">}}
+
+### 03
+### 04
+### 05
+### 06
+### 07
+### 08
+### 09
+### 10
+
