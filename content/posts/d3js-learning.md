@@ -817,3 +817,274 @@ const scale = d3.scaleLinear()
 ```
 
 ### 25 Set a Domain and a Range on a Scale
+
+By default, scales use the identity relationship. This means the input value maps to the output value. However, scales can be much more flexible and interesting.
+
+Say a dataset has values ranging from 50 to 480. This is the input information for a scale, also known as the domain.
+
+You want to map those points along the x axis on the SVG, between 10 units and 500 units. This is the output information, also known as the range.
+
+The domain() and range() methods set these values for the scale. Both methods take an array of at least two elements as an argument. 
+
+``` html
+<body>
+  <script>
+    const scale = d3.scaleLinear();
+    scale.domain([250, 500]);
+    scale.range([10, 150]);
+
+    const output = scale(50);
+    d3.select("body")
+      .append("h2")
+      .text(output);
+  </script>
+</body>
+```
+
+### 26 Use the d3.max and d3.min Functions to Find Minimum and Maximum Values in a Datasets
+
+The D3 methods domain() and range() set that information for your scale based on the data. There are a couple methods to make that easier.
+
+Often when you set the domain, you'll want to use the minimum and maximum values within the data set. Trying to find these values manually, especially in a large data set, may cause errors.
+
+D3 has two methods - min() and max() to return this information.
+
+``` html
+<body>
+  <script>
+    const positionData = [[1, 7, -4],[6, 3, 8],[2, 9, 3]]
+    const minX = d3.min(positionData, (d) => d[0])
+    const minY = d3.min(positionData, (d) => d[1])
+    const minZ = d3.min(positionData, (d) => d[2])
+    const maxX = d3.max(positionData, (d) => d[0])
+    const maxY = d3.max(positionData, (d) => d[1])
+    const maxZ = d3.max(positionData, (d) => d[2])
+    const output = maxZ;
+
+    d3.select("body")
+      .append("h2")
+      .text(output)
+  </script>
+</body>
+```
+
+### 27 Use Dynamic Scales
+
+Given a complex data set, one priority is to set the scale so the visualization fits the SVG container's width and height. You want all the data plotted inside the SVG so it's visible on the web page
+
+The domain() method passes information to the scale about the raw data values for the plot. The range() method gives it information about the actual space on the web page for the visualization.
+
+In the example, the domain goes from 0 to the maximum in the set. It uses the max() method with a callback function based on the x values in the arrays. The range uses the SVG's width (w), but it includes some padding, too. This puts space between the scatter plot dots and the edge of the SVG.
+
+``` html
+<body>
+  <script>
+    const dataset = [
+                  [ 34,    78 ],
+                  [ 109,   280 ],
+                  [ 310,   120 ],
+                  [ 79,    411 ],
+                  [ 420,   220 ],
+                  [ 233,   145 ],
+                  [ 333,   96 ],
+                  [ 222,   333 ],
+                  [ 78,    320 ],
+                  [ 21,    123 ]
+                ];
+
+    const w = 500;
+    const h = 500;
+    const padding = 30;
+
+    const xScale = d3.scaleLinear()
+                    .domain([0, d3.max(dataset, (d) => d[0])])
+                    .range([padding, w - padding]);
+    const yScale = d3.scaleLinear()
+                    .domain([0, d3.max(dataset, (d) => d[1])])
+                    .range([h - padding, padding])
+
+    const output = yScale(411); // Returns 30
+    d3.select("body")
+      .append("h2")
+      .text(output)
+  </script>
+</body>
+```
+
+### 28 Use a Pre-Defined Scale to Place Elements
+
+With the scales set up, it's time to map the scatter plot again. The scales are like processing functions that turn the x and y raw data into values that fit and render correctly on the SVG. They keep the data within the screen's plotting area.
+
+You set the coordinate attribute values for an SVG shape with the scaling function. This includes x and y attributes for rect or text elements, or cx and cy for circles.
+
+Scales set shape coordinate attributes to place the data points onto the SVG. You don't need to apply scales when you display the actual data value, for example, in the text() method for a tooltip or label.
+
+``` html
+<body>
+  <script>
+    const dataset = [
+      [  34,  78 ],
+      [ 109, 280 ],
+      [ 310, 120 ],
+      [  79, 411 ],
+      [ 420, 220 ],
+      [ 233, 145 ],
+      [ 333,  96 ],
+      [ 222, 333 ],
+      [  78, 320 ],
+      [  21, 123 ]
+    ];
+    
+    const w = 500;
+    const h = 500;
+    const padding = 60;
+    
+    const xScale = d3.scaleLinear()
+      .domain([0, d3.max(dataset, (d) => d[0])])
+      .range([padding, w - padding]);
+    
+    const yScale = d3.scaleLinear()
+      .domain([0, d3.max(dataset, (d) => d[1])])
+      .range([h - padding, padding]);
+    
+    const svg = d3.select("body")
+      .append("svg")
+      .attr("width", w)
+      .attr("height", h);
+    
+    svg.selectAll("circle")
+      .data(dataset)
+      .enter()
+      .append("circle")
+      .attr("cx", (d) => xScale(d[0]))
+      .attr("cy", (d) => yScale(d[1]))
+      .attr("r", 5);
+      
+    svg.selectAll("text")
+      .data(dataset)
+      .enter()
+      .append("text")
+      .text((d) =>  (d[0] + ", " + d[1]))
+      .attr("x", (d) => xScale(d[0]+ 10))
+      .attr("y", (d) => yScale(d[1]))
+
+  </script>
+</body>
+```
+
+{{<figure class="post_image" src="../images/d3js-learning/28_Use_PreDefined_Scale_To_Place_Elements.png">}}
+
+### 29 Add Axes to a Visualization
+
+Another way to improve the scatter plot is to add an x-axis and a y-axis.
+
+D3 has two methods, axisLeft() and axisBottom(), to render the y-axis and x-axis, respectively. Here's an example to create the x-axis based on the xScale in the previous challenges:
+
+The next step is to render the axis on the SVG. To do so, you can use a general SVG component, the g element. The g stands for group. Unlike rect, circle, and text, an axis is just a straight line when it's rendered. Because it is a simple shape, using g works. The last step is to apply a transform attribute to position the axis on the SVG in the right place. Otherwise, the line would render along the border of the SVG and wouldn't be visible. SVG supports different types of transforms, but positioning an axis needs translate. When it's applied to the g element, it moves the whole group over and down by the given amounts. Here's an example:
+
+``` javascript
+const xAxis = d3.axisBottom(xScale);
+
+svg.append("g")
+   .attr("transform", "translate(0, " + (h - padding) + ")")
+   .call(xAxis);
+```
+
+Translate − It takes two options, tx refers translation along the x-axis and ty refers to the translation along the y-axis. For Example− translate(30 30).
+
+The above code places the x-axis at the bottom of the SVG. Then it's passed as an argument to the call() method. The y-axis works in the same way, except the translate argument is in the form (x, 0). Because translate is a string in the attr() method above, you can use concatenation to include variable values for its arguments.
+
+``` html
+<body>
+  <script>
+    const dataset = [
+                  [ 34,     78 ],
+                  [ 109,   280 ],
+                  [ 310,   120 ],
+                  [ 79,   411 ],
+                  [ 420,   220 ],
+                  [ 233,   145 ],
+                  [ 333,   96 ],
+                  [ 222,    333 ],
+                  [ 78,    320 ],
+                  [ 21,   123 ]
+                ];
+
+    const w = 500;
+    const h = 500;
+    const padding = 60;
+
+    const xScale = d3.scaleLinear()
+                     .domain([0, d3.max(dataset, (d) => d[0])])
+                     .range([padding, w - padding]);
+
+    const yScale = d3.scaleLinear()
+                     .domain([0, d3.max(dataset, (d) => d[1])])
+                     .range([h - padding, padding]);
+
+    const svg = d3.select("body")
+                  .append("svg")
+                  .attr("width", w)
+                  .attr("height", h);
+
+    svg.selectAll("circle")
+       .data(dataset)
+       .enter()
+       .append("circle")
+       .attr("cx", (d) => xScale(d[0]))
+       .attr("cy",(d) => yScale(d[1]))
+       .attr("r", (d) => 5);
+
+    svg.selectAll("text")
+       .data(dataset)
+       .enter()
+       .append("text")
+       .text((d) =>  (d[0] + "," + d[1]))
+       .attr("x", (d) => xScale(d[0] + 10))
+       .attr("y", (d) => yScale(d[1]))
+
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisLeft(yScale);
+
+    svg.append("g")
+       .attr("transform", "translate(0," + (h - padding) + ")")
+       .call(xAxis);
+
+   svg.append("g")
+      .attr("transform", "translate("+ padding + ",0)")
+      .call(yAxis)
+  </script>
+</body>
+```
+
+{{<figure class="post_image" src="../images/d3js-learning/29_Add_Axes_Visualization.png">}}
+
+## JSON APIs and AJAX
+
+Similar to how UIs help people use programs, APIs (Application Programming Interfaces) help programs interact with other programs. APIs are tools that computers use to communicate with one another, in part to send and receive data.
+
+Programmers often use AJAX (Asynchronous JavaScript and XML) when working with APIs. AJAX refers to a group of technologies that make asynchronous requests to a server to transfer data, then load any returned data into the page. And the data transferred between the browser and server is often in a format called JSON (JavaScript Object Notation).
+
+### 01 Handle Click Events with JavaScript using the onclick property
+
+You want your code to execute only once your page has finished loading. For that purpose, you can attach a JavaScript event to the document called DOMContentLoaded. Here's the code that does this:
+
+``` javascript
+document.addEventListener('DOMContentLoaded', function() {});
+```
+
+You can implement event handlers that go inside of the DOMContentLoaded function. You can implement an onclick event handler which triggers when the user clicks on the #getMessage element, by adding the following code:
+
+``` javascript
+document.getElementById('getMessage').onclick = function(){};
+```
+
+### 02 Change Text with click Events
+
+When the click event happens, you can use JavaScript to update an HTML element.
+
+For example, when a user clicks the Get Message button, it changes the text of the element with the class message to say Here is the message.
+
+``` javascript
+document.getElementsByClassName('message')[0].textContent="Here is the message";
+```
