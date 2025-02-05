@@ -2,7 +2,7 @@
 title: Data Visualization freeCodeCamp
 author: "vapb"
 description: Uma recapitulação do curso de D3.js da freeCodeCamp.
-date: 2025-01-17
+date: 2025-02-02
 tags: ["d3js", "javascript", "data_visualization"]
 toc: true
 ---
