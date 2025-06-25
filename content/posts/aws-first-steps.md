@@ -95,7 +95,7 @@ Todos nós já estivemos na posição de subir alguma instância na AWS para um 
 Uma forma simples de **evitar sustos com cobranças** é criar um **billing alarm** — um alarme que envia um alerta quando os custos da conta atingem um valor pré-definido (threshold).
 
 ### Habilitando os Alertas de Cobrança
-1. Acesse o link: [costmanagement](https://console.aws.amazon.com/costmanagement/)
+1. Acesse o link: [Billing and Cost Management](https://console.aws.amazon.com/costmanagement/)
 2. Vá em **Billing preferences** > **Alert preferences**
 3. Marque as opções:
     - ✅ _CloudWatch billing alerts_
@@ -109,10 +109,30 @@ Isso ativa os alertas de cobrança pela AWS CloudWatch.
 Agora, vamos criar o alarme de fato:
 1. Acesse o **CloudWatch**
 2. Vá em **Alarms** e clique em **Create Alarm**
+{{<figure class="post_image" src="../images/aws-first-steps/10_create_aws_ac.png">}}
 3. Escolha a métrica:
     - `Billing` > `TotalEstimatedCharge`
-
 {{<figure class="post_image" src="../images/aws-first-steps/08_create_aws_ac.png">}}
+4. Configurando Ações do Alarme: Agora vamos configurar o que acontece quando o alarme é ativado:
+    - 4.1 Defina um **valor limite** (por exemplo, **5 dólares**).
+    - 4.2 Para receber notificações, vamos usar o **SNS (Simple Notification Service)**:
+        - 4.2.1. Crie um **tópico** (topic)
+        - 4.2.2. Adicione seu **e-mail** como assinante (subscriber)
+            {{<figure class="post_image" src="../images/aws-first-steps/11_create_aws_ac.png">}}
+    4.2.3. Adicione **nome** e **descrição** para o alarme criados
+{{<figure class="post_image" src="../images/aws-first-steps/12_create_aws_ac.png">}}
+5. Confirmando o E-mail: Após a criação do alarme, acesse o e-mail que você cadastrou e **confirme a inscrição (subscription)** para começar a receber os alertas.
+{{<figure class="post_image" src="../images/aws-first-steps/13_create_aws_ac.png">}}
+
+## Observação
+Quando acessamos o link [Billing and Cost Management](https://console.aws.amazon.com/costmanagement/) através do nosso usuário **admin**, nos deparamos com o seguinte cenário: várias mensagens de Access denied – You don’t have permission to Cost Explorer.
+
+{{<figure class="post_image" src="../images/aws-first-steps/14_create_aws_ac.png">}}
+
+Para resolver esse problema, acesse a conta **Root**, vá até Billing and Cost Management > Account e localize a seção "IAM user and role access to billing information". Ative a opção "IAM user/role access to billing information". Isso concederá ao nosso usuário admin permissão para acessar o Cost Explorer, além de visualizar as informações de cobrança (billing information).
+{{<figure class="post_image" src="../images/aws-first-steps/15_create_aws_ac.png">}}
+{{<figure class="post_image" src="../images/aws-first-steps/16_create_aws_ac.png">}}
+
 
 ## MFA para o Usuário Admin
 Agora que acessamos a conta com o usuário Admin, o primeiro passo para torná-la mais segura é **adicionar MFA também para esse usuário**. O processo é o mesmo que fizemos anteriormente para o usuário Root.
