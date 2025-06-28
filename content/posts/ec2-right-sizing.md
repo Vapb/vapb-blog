@@ -109,7 +109,7 @@ Usar instâncias de gerações mais recentes, com os novos processadores da AWS,
 ### Alterando a instância conforme a necessidade
 Depois de escolher uma instância, **você não é obrigado a usá-la para sempre**. Se sua carga de trabalho mudar, é possível redimensionar a instância, mudando o tipo dela. Caso ela esteja sobrecarregada ou subutilizada.
 
-⚠️ Algumas instâncias permitem troca de tipo com a instância em execução. Outras exigem que a instância seja parada antes da troca. Também é possível criar uma nova instância e migrar sua aplicação para ela
+> ⚠️ Algumas instâncias permitem troca de tipo com a instância em execução. Outras exigem que a instância seja parada antes da troca. Também é possível criar uma nova instância e migrar sua aplicação para ela
 
 ---
 
@@ -119,6 +119,6 @@ O **AWS Compute Optimizer** é uma ferramenta de_right-sizing_ que ajuda a melho
 
 Ele analisa a configuração atual dos seus recursos e suas métricas de utilização como uso de CPU, memória e armazenamento com base nos dados coletados pelo **Amazon CloudWatch** nos últimos 14 dias.
 
-Durante essa análise, o serviço identifica padrões e características específicas da carga de trabalho, como uso intensivo de CPU, acessos frequentes a armazenamento local ou variações de uso ao longo do dia. Com essas informações, o Compute Optimizer consegue determinar quais são os recursos de hardware mais adequados para cada workload, sugerindo ajustes que podem reduzir custos e melhorar o desempenho.
+Durante essa análise, o serviço identifica padrões e características específicas da carga de trabalho, como uso intensivo de CPU, acessos frequentes a armazenamento local ou variações de uso ao longo do dia. Com essas informações, o **Compute Optimizer** consegue determinar quais são os recursos de hardware mais adequados para cada workload, sugerindo ajustes que podem reduzir custos e melhorar o desempenho.
 
 > 💡 O Compute Optimizer **não tem custo adicional** por padrão.
