@@ -1,8 +1,77 @@
 baseURL = 'https://vapb.github.io/vapb-blog/'
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = false
 languageCode = 'en-us'
 title = 'VAPB BLOG'
 theme = 'vapb-theme'
 
-[params]
-  subtitle = "Exploring Data, Code, and Curiosities"
-  introduction = "Part technical blog, part brain dump, this space is a mix of technical posts, project showcases, and random notes straight from my brain"
+[languages]
+  [languages.en]
+    contentDir = 'content/en'
+    languageName = 'English'
+    languageCode = 'en-us'
+    title = 'VAPB BLOG'
+    weight = 1
+    [languages.en.params]
+      subtitle = "Exploring Data, Code, and Curiosities"
+      introduction = "Part technical blog, part brain dump, this space is a mix of technical posts, project showcases, and random notes straight from my brain"
+
+  [languages.pt]
+    contentDir = 'content/pt'
+    languageName = 'Português'
+    languageCode = 'pt-br'
+    title = 'VAPB BLOG'
+    weight = 2
+    [languages.pt.params]
+      subtitle = "Explorando Dados, Código e Curiosidades"
+      introduction = "Parte blog técnico, parte despejo de ideias, este espaço é uma mistura de posts técnicos, showcases de projetos e notas aleatórias direto do meu cérebro"
+
+[languages.en.menu]
+  [[languages.en.menu.main]]
+    identifier = "posts"
+    name = "Posts"
+    url = "posts"
+    weight = 10
+
+  [[languages.en.menu.main]]
+    identifier = "about"
+    name = "About Me"
+    url = "about"
+    weight = 100
+
+  [[languages.en.menu.main]]
+    identifier = "projects"
+    name = "Projects"
+    url = "projects"
+    weight = 30
+  
+  [[languages.en.menu.main]]
+    identifier = "tags"
+    name = "Tags"
+    url = "tags"
+    weight = 40
+
+[languages.pt.menu]
+  [[languages.pt.menu.main]]
+    identifier = "posts"
+    name = "Posts"
+    url = "posts"
+    weight = 10
+
+  [[languages.pt.menu.main]]
+    identifier = "about"
+    name = "Sobre Mim"
+    url = "about"
+    weight = 100
+
+  [[languages.pt.menu.main]]
+    identifier = "projects"
+    name = "Projetos"
+    url = "projects"
+    weight = 30
+  
+  [[languages.pt.menu.main]]
+    identifier = "tags"
+    name = "Tags"
+    url = "tags"
+    weight = 40
