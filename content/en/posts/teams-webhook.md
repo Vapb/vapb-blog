@@ -118,7 +118,7 @@ On the Microsoft Workflows homepage, you'll find both options available to confi
 
 {{<figure class="post_image" src="../images/webhook_teams/pagina_inicial_0.png">}}
 
-#### 4.3.1. Option 1: Using Templates
+#### 4.3.1. Using Templates
 
 Teams templates offer ready-made models for different integration scenarios. You'll find options like:
 
@@ -129,13 +129,13 @@ Teams templates offer ready-made models for different integration scenarios. You
 - Analyze email sentiment with AI Builder
 - Notify Planner task status changes
 
-##### 4.3.1.1. Step 1: Selecting the Template
+##### 4.3.1.1. Selecting the Template
 
 For our objective, we'll use the template **"Post in a chat when a webhook request is received"**, which perfectly meets our needs.
 
 {{<figure class="post_image" src="../images/webhook_teams/template_0.png">}}
 
-##### 4.3.1.2. Step 2: Configuring the Flow
+##### 4.3.1.2. Configuring the Flow
 
 After selecting the template:
 1. Define a name for the flow (e.g., "System Alert Webhook")
@@ -144,7 +144,7 @@ After selecting the template:
 
 {{<figure class="post_image" src="../images/webhook_teams/template_1.png">}}
 
-##### 4.3.1.3. Step 3: Getting the URL
+##### 4.3.1.3. Getting the URL
 
 After creating the flow, Teams will:
 - ✅ Confirm that the workflow was created successfully
@@ -155,11 +155,11 @@ After creating the flow, Teams will:
 
 {{<figure class="post_image" src="../images/webhook_teams/template_2.png">}}
 
-#### 4.3.2. Option 2: Creating from Scratch
+#### 4.3.2. Creating from Scratch
 
 For greater control over the flow, you can create a custom webhook from scratch. This option allows you to manually configure each step.
 
-##### 4.3.2.1. Step 1: Configuring the Trigger
+##### 4.3.2.1. Configuring the Trigger
 
 1. Click "Create from Scratch"
 2. Select the trigger **"When a Teams webhook request is received"**
@@ -167,7 +167,7 @@ For greater control over the flow, you can create a custom webhook from scratch.
 
 {{<figure class="post_image" src="../images/webhook_teams/criacao_zero_1.png">}}
 
-##### 4.3.2.2. Step 2: Adding Actions
+##### 4.3.2.2. Adding Actions
 
 Configure the actions that will be executed when the webhook is triggered:
 1. **"Send each adaptive card"** - To iterate over received cards
@@ -177,7 +177,7 @@ Configure the actions that will be executed when the webhook is triggered:
 
 {{<figure class="post_image" src="../images/webhook_teams/criacao_zero_2.png">}}
 
-##### 4.3.2.3. Step 3: Finalization
+##### 4.3.2.3. Finalization
 
 After configuring trigger and actions:
 - ✅ Save the flow
