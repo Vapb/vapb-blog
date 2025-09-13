@@ -7,11 +7,11 @@ tags: ["microsoft-teams", "python"]
 toc: true
 ---
 
-## Introduction
+## 1. Introduction
 
 In this post, we'll show how to configure a webhook in **Microsoft Teams** to automatically notify your team when something important happens in the system, ensuring quick response and minimizing impacts.
 
-## What Are Webhooks?
+## 2. What Are Webhooks?
 
 A webhook, by definition, is a lightweight, event-driven form of communication that automatically sends data between applications via HTTP, without the need for continuous polling. In other words, it's a method that allows one system to provide real-time information to other systems, enabling an application to send a notification to another when a specific event occurs.
 
@@ -26,7 +26,7 @@ There are two main systems involved:
 {{< /details >}}
 
 
-## Webhooks in Microsoft Teams
+## 3. Webhooks in Microsoft Teams
 
 A webhook in **Microsoft Teams** allows external systems integration with Teams channels. It receives messages from other services and displays them directly in the channel, providing real-time updates.
 
@@ -38,45 +38,45 @@ There are two types of webhooks in Microsoft Teams:
 
 **TeamsIncomingWebhookTrigger**: This trigger allows initiating a flow when receiving a POST request sent to the endpoint exposed by the webhook. You can include an array of adaptive cards in the request body, which will be used to define subsequent actions in the flow. It's worth noting that this trigger only supports POST requests, not being compatible with GET requests.
 
-### Request Structure
+### 3.1. Request Structure
 
 To send messages to Teams via webhook, you need to structure your request following the specific **Microsoft Teams** format.
 
-#### Request Body Schema
-| Name        | Field       | Required | Type   | Description                                        |
-|:------------|:------------|:--------:|:------:|:--------------------------------------------------:|
-| type        | type        | Yes      | string | Must always be `"message"`                         |
-| attachments | attachments | Yes      | array  | Array of Adaptive Card objects (see schema below) |
+#### 3.1.1. Request Body Schema
+| Name        | Field       | Required |  Type  |                    Description                    |
+| :---------- | :---------- | :------: | :----: | :-----------------------------------------------: |
+| type        | type        |   Yes    | string |            Must always be `"message"`             |
+| attachments | attachments |   Yes    | array  | Array of Adaptive Card objects (see schema below) |
 
-#### Adaptive Card Schema
-| Name        | Field       | Required | Type   | Description                                                           |
-|:------------|:------------|:--------:|:------:|:---------------------------------------------------------------------:|
-| contentType | contentType | Yes      | string | Must be `"application/vnd.microsoft.card.adaptive"`                  |
-| contentUrl  | contentUrl  | Yes      | string | Must always be `null`                                                |
-| content     | content     | Yes      | object | Adaptive Card object in JSON format.https://adaptivecards.io/samples |
+#### 3.1.2. Adaptive Card Schema
+| Name        | Field       | Required |  Type  |                             Description                              |
+| :---------- | :---------- | :------: | :----: | :------------------------------------------------------------------: |
+| contentType | contentType |   Yes    | string |         Must be `"application/vnd.microsoft.card.adaptive"`          |
+| contentUrl  | contentUrl  |   Yes    | string |                        Must always be `null`                         |
+| content     | content     |   Yes    | object | Adaptive Card object in JSON format.https://adaptivecards.io/samples |
 
-#### Request Example
+#### 3.1.3. Request Example
 ```json
 {
-       "type":"message",
-       "attachments":[
-          {
-             "contentType":"application/vnd.microsoft.card.adaptive",
-             "contentUrl":null,
-             "content":{
+    "type":"message",
+    "attachments":[
+        {
+            "contentType":"application/vnd.microsoft.card.adaptive",
+            "contentUrl":null,
+            "content":{
                 "$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
                 "type":"AdaptiveCard",
                 "version":"1.2",
                 "body":[
                     {
-                    "type": "TextBlock",
-                    "text": "For Samples and Templates, see [https://adaptivecards.io/samples](https://adaptivecards.io/samples)"
+                        "type": "TextBlock",
+                        "text": "For Samples and Templates, see [https://adaptivecards.io/samples](https://adaptivecards.io/samples)"
                     }
                 ]
-             }
-          }
-       ]
-    }
+            }
+        }
+    ]
+}
 ```
 
 **Important points:**
@@ -85,17 +85,17 @@ To send messages to Teams via webhook, you need to structure your request follow
 - The `"contentType"` field must be set as the Adaptive Card type.
 - The `"content"` object is the card formatted in JSON.
 
-## How to Configure a Webhook in Microsoft Teams
+## 4. How to Configure a Webhook in Microsoft Teams
 
-### Prerequisites
-| Requirement             | Description                                                     |
-|:-----------------------:|:---------------------------------------------------------------:|
-| **Python**              | Language to develop the webhook script                          |
-| **Python Libraries**    | `requests` for HTTP requests (`pip install requests`)          |
-| **Microsoft 365 Account** | With permissions to configure webhooks in Teams              |
-| **Microsoft Teams**     | Access to the channel where the webhook will be configured     |
+### 4.1. Prerequisites
+|        Requirement        |                        Description                         |
+| :-----------------------: | :--------------------------------------------------------: |
+|        **Python**         |           Language to develop the webhook script           |
+|   **Python Libraries**    |   `requests` for HTTP requests (`pip install requests`)    |
+| **Microsoft 365 Account** |      With permissions to configure webhooks in Teams       |
+|    **Microsoft Teams**    | Access to the channel where the webhook will be configured |
 
-### Configuration Methods
+### 4.2. Configuration Methods
 
 Currently, there are two ways to create a webhook in Microsoft Teams:
 
@@ -107,7 +107,7 @@ Currently, there are two ways to create a webhook in Microsoft Teams:
 For more information about Connectors deprecation, see: [Retirement of Office 365 connectors within Microsoft Teams](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/)
 {{< /hint >}}
 
-### Creating the Webhook via Microsoft Workflows
+### 4.3. Creating the Webhook via Microsoft Workflows
 
 In Microsoft Workflows, you can create an Inbound Webhook in two ways:
 
@@ -118,7 +118,7 @@ On the Microsoft Workflows homepage, you'll find both options available to confi
 
 {{<figure class="post_image" src="../images/webhook_teams/pagina_inicial_0.png">}}
 
-#### Option 1: Using Templates
+#### 4.3.1. Option 1: Using Templates
 
 Teams templates offer ready-made models for different integration scenarios. You'll find options like:
 
@@ -129,13 +129,13 @@ Teams templates offer ready-made models for different integration scenarios. You
 - Analyze email sentiment with AI Builder
 - Notify Planner task status changes
 
-##### Step 1: Selecting the Template
+##### 4.3.1.1. Step 1: Selecting the Template
 
 For our objective, we'll use the template **"Post in a chat when a webhook request is received"**, which perfectly meets our needs.
 
 {{<figure class="post_image" src="../images/webhook_teams/template_0.png">}}
 
-##### Step 2: Configuring the Flow
+##### 4.3.1.2. Step 2: Configuring the Flow
 
 After selecting the template:
 1. Define a name for the flow (e.g., "System Alert Webhook")
@@ -144,7 +144,7 @@ After selecting the template:
 
 {{<figure class="post_image" src="../images/webhook_teams/template_1.png">}}
 
-##### Step 3: Getting the URL
+##### 4.3.1.3. Step 3: Getting the URL
 
 After creating the flow, Teams will:
 - ✅ Confirm that the workflow was created successfully
@@ -155,11 +155,11 @@ After creating the flow, Teams will:
 
 {{<figure class="post_image" src="../images/webhook_teams/template_2.png">}}
 
-#### Option 2: Creating from Scratch
+#### 4.3.2. Option 2: Creating from Scratch
 
 For greater control over the flow, you can create a custom webhook from scratch. This option allows you to manually configure each step.
 
-##### Step 1: Configuring the Trigger
+##### 4.3.2.1. Step 1: Configuring the Trigger
 
 1. Click "Create from Scratch"
 2. Select the trigger **"When a Teams webhook request is received"**
@@ -167,7 +167,7 @@ For greater control over the flow, you can create a custom webhook from scratch.
 
 {{<figure class="post_image" src="../images/webhook_teams/criacao_zero_1.png">}}
 
-##### Step 2: Adding Actions
+##### 4.3.2.2. Step 2: Adding Actions
 
 Configure the actions that will be executed when the webhook is triggered:
 1. **"Send each adaptive card"** - To iterate over received cards
@@ -177,7 +177,7 @@ Configure the actions that will be executed when the webhook is triggered:
 
 {{<figure class="post_image" src="../images/webhook_teams/criacao_zero_2.png">}}
 
-##### Step 3: Finalization
+##### 4.3.2.3. Step 3: Finalization
 
 After configuring trigger and actions:
 - ✅ Save the flow
@@ -190,11 +190,11 @@ After creating your webhooks, you'll see all flows listed on the Microsoft Teams
 
 > **Important**: Both options (Template and From Scratch) result in functionally identical flows. The difference lies in the level of customization during creation.
 
-### Testing the Webhook
+### 4.4. Testing the Webhook
 
 To validate if the webhook is working, let's create a simple Python script that sends a test message.
 
-### Test Script
+### 4.5. Test Script
 
 ```python
 from requests import post
@@ -203,38 +203,36 @@ from requests import post
 WEBHOOK_URL="https://brazilsouth.logic.azure.com:443/workflows/XXX"
 
 alerts_body = {
-     "type": "AdaptiveCard",
-     "msteams": {
-       "width": "Full"
-     },
-     "body": [
-       {
-         "type": "Container",
-         "items": [
-           {
-             "type": "TextBlock",
-             "text": "Testing Teams Workflow"
-           }
-         ]
-       }
-     ]
-   }
+    "type": "AdaptiveCard",
+    "msteams": {"width": "Full"},
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "Testing Teams Workflow"
+                }
+            ]
+        }
+    ]
+}
 
 teams_message = {
-           "type": "message",
-           "attachments": [
-               {
-                   "contentType": "application/vnd.microsoft.card.adaptive",
-                   "content": alerts_body
-               }
-           ],
-       }
+    "type": "message",
+    "attachments": [
+        {
+            "contentType": "application/vnd.microsoft.card.adaptive",
+            "content": alerts_body
+        }
+    ],
+}
 
 response = post(
-   WEBHOOK_URL,
-   json=teams_message,
-   headers={"Content-Type": "application/json"},
-   timeout=30,
+    WEBHOOK_URL,
+    json=teams_message,
+    headers={"Content-Type": "application/json"},
+    timeout=30,
 )
 ```
 
@@ -242,7 +240,7 @@ Below, we can see that the script was executed successfully, the message was rec
 
 {{<figure class="post_image" src="../images/webhook_teams/testing_webhook_teams.png">}}
 
-## Conclusion
+## 5. Conclusion
 
 Configuring a webhook in Microsoft Teams is a simple and powerful solution to automate real-time notifications. With just a few steps, you can integrate any external system with Teams, ensuring your team receives critical alerts instantly.
 
@@ -255,7 +253,7 @@ Configuring a webhook in Microsoft Teams is a simple and powerful solution to au
 
 > This solution not only solves communication problems but also keeps your team more connected and prepared to respond quickly to any situation.
 
-## References
+## 6. References
 
 - [Mailchimp - Webhook Guide](https://mailchimp.com/marketing-glossary/webhook/)
 - [Microsoft Learn - Incoming Webhooks](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook)
