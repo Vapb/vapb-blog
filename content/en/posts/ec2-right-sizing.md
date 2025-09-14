@@ -17,31 +17,36 @@ Amazon EC2 offers **500+ instance types** organized into **families** and **subf
 
 ### 2.1. The 5 Instance Families
 
-#### 2.1.1. General Purpose
-- **Balanced CPU, memory, and network**
+{{< details title="💻 General Purpose" >}}
+**Balanced CPU, memory, and network**
 - Use cases: web servers, code repositories
 - **Burstable instances (T family)**: Good for intermittent workloads with baseline performance and temporary bursts
+{{< /details >}}
 
-#### 2.1.2. Compute Optimized
-- High-performance processors for CPU-intensive tasks:
-  - Batch processing
-  - Media transcoding
-  - Gaming servers
-  - Scientific modeling
-  - Machine Learning inference
+{{< details title="🚀 Compute Optimized" >}}
+High-performance processors for CPU-intensive tasks:
+- Batch processing
+- Media transcoding
+- Gaming servers
+- Scientific modeling
+- Machine Learning inference
+{{< /details >}}
 
-#### 2.1.3. Memory Optimized
-- High performance for large in-memory datasets
+{{< details title="🧠 Memory Optimized" >}}
+High performance for large in-memory datasets
+{{< /details >}}
 
-#### 2.1.4. Storage Optimized
+{{< details title="💾 Storage Optimized" >}}
 - Intensive sequential data access
 - Optimized for high IOPS
+{{< /details >}}
 
-#### 2.1.5. Accelerated Computing
-- Use **GPUs, FPGAs, or AWS Inferentia** for:
-  - Floating point calculations
-  - Graphics processing
-  - Pattern recognition
+{{< details title="⚡ Accelerated Computing" >}}
+Use **GPUs, FPGAs, or AWS Inferentia** for:
+- Floating point calculations
+- Graphics processing
+- Pattern recognition
+{{< /details >}}
 
 ### 2.2. Understanding Instance Names
 
@@ -81,7 +86,10 @@ Right-sizing **balances performance and cost** based on your application's actua
 ### 3.2. Changing Instance Types
 You can resize instances when workload requirements change. Some instances allow type changes while running, others require stopping the instance first.
 
-> **Note**: You can also create a new instance and migrate your application to it.
+{{< hint info >}}
+**💡 Pro Tip**
+You can also create a new instance and migrate your application to it.
+{{< /hint >}}
 
 ## 4. AWS Compute Optimizer
 
@@ -89,12 +97,17 @@ You can resize instances when workload requirements change. Some instances allow
 
 It analyzes current resource configuration and utilization metrics (CPU, memory, storage) using **Amazon CloudWatch** data from the last 14 days. The service identifies workload patterns and suggests optimal hardware resources to reduce costs and improve performance.
 
-> **Note**: AWS Compute Optimizer is **free** by default.
+{{< hint success >}}
+**💰 Cost Savings**
+AWS Compute Optimizer is **free** by default.
+{{< /hint >}}
 
-## 5. TLDR
+## 5. Key Takeaways
 
+{{< details title="📝 Summary" >}}
 - **EC2 offers 500+ instance types** across 5 families: General Purpose, Compute Optimized, Memory Optimized, Storage Optimized, and Accelerated Computing
 - **Instance names** follow pattern: `family + generation + attributes + size` (e.g., `m5zn.xlarge`)
 - **Right-sizing** balances performance and cost by matching instance types to actual workload needs
 - **AWS Compute Optimizer** provides free recommendations based on 14 days of CloudWatch metrics
 - **Instance types can be changed** after deployment to optimize for changing requirements
+{{< /details >}}
