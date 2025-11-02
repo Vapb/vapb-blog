@@ -7,15 +7,15 @@ tags: ["AWS", "EC2"]
 toc: true
 ---
 
-## Introdução
+## 1. Introdução
 
 Neste post, vamos entender os tipos de instâncias EC2, abordar a seleção do tipo correto de instância, a prática do _right-sizing_ e, de forma breve, a ferramenta **AWS Compute Optimizer**.
 
-## Famílias de instâncias EC2 da Amazon
+## 2. Famílias de instâncias EC2 da Amazon
 
 A Amazon EC2 oferece mais de **500 tipos de instâncias**, organizadas em **famílias** e **subfamílias**. O nome de cada instância indica sua função e os recursos de hardware disponíveis.
 
-### Tipos de instância
+### 2.1. Tipos de instância
 
 Uma instância EC2 é uma máquina virtual (VM) que roda na nuvem da AWS. O tipo de instância determina o hardware do host que será usado. Cada tipo oferece diferentes capacidades de processamento, memória e armazenamento, sendo agrupado em famílias de instância com base nessas características.
 
@@ -27,13 +27,13 @@ Uma instância EC2 é uma máquina virtual (VM) que roda na nuvem da AWS. O tipo
 - **Subfamílias** = Variações com base no processador ou armazenamento
 {{< /hint >}}
 
-### As 5 famílias de instância da AWS
+## 3. As 5 famílias de instância da AWS
 
-#### Uso geral (General Purpose)
+### 3.1. Uso geral (General Purpose)
 
 Projetadas para oferecer um equilíbrio entre CPU, memória e rede, são a opção mais versátil para aplicações gerais.
 
-##### Família T (burstable)
+#### 3.1.1. Família T (burstable)
 
 Instâncias com CPU variável que acumulam créditos quando ociosas.
 
@@ -48,7 +48,7 @@ Você ganha **créditos de CPU** quando a instância está abaixo do baseline de
 - **Modo unlimited**: continua performando acima do baseline, mas você paga pelo extra usado
 {{< /details >}}
 
-##### Família M (performance constante)
+#### 3.1.2. Família M (performance constante)
 
 Instâncias com CPU consistente sem sistema de créditos.
 
@@ -58,11 +58,11 @@ Instâncias com CPU consistente sem sistema de créditos.
 - Aplicações que usam CPU total continuamente
 {{< /details >}}
 
-#### Otimizadas para processamento (Compute Optimized)
+### 3.2. Otimizadas para processamento (Compute Optimized)
 
 Projetadas com processadores de alto desempenho, essas instâncias oferecem a maior relação CPU/memória entre todas as famílias, sendo ideais para cargas de trabalho que demandam poder computacional intensivo.
 
-##### Família C (compute)
+#### 3.2.1. Família C (compute)
 
 Processadores de última geração com alto clock, otimizada para cargas CPU-intensive. Melhor custo por vCPU.
 
@@ -72,15 +72,15 @@ Processadores de última geração com alto clock, otimizada para cargas CPU-int
 - Quando CPU é o recurso crítico, não memória
 {{< /details >}}
 
-#### Otimizadas para memória (Memory Optimized)
+### 3.3. Otimizadas para memória (Memory Optimized)
 
 Projetadas para fornecer grandes quantidades de memória RAM em relação aos núcleos de CPU, essas instâncias são ideais para cargas de trabalho que processam extensos conjuntos de dados na memória.
 
-##### Família R (RAM-optimized)
+#### 3.3.1. Família R (RAM-optimized)
 
 A mais popular para workloads com alta demanda de memória. Oferece **8 GB de RAM por vCPU** (dobro das general purpose).
 
-##### Família X (extreme memory)
+#### 3.3.2. Família X (extreme memory)
 
 Memória extrema com até **16 GB de RAM por vCPU** e configurações de **4+ TB** por instância.
 
@@ -90,7 +90,7 @@ Memória extrema com até **16 GB de RAM por vCPU** e configurações de **4+ TB
 - Consolidação de grandes cargas em poucos servidores
 {{< /details >}}
 
-##### Família z1d (high compute + high memory)
+#### 3.3.3. Família z1d (high compute + high memory)
 
 Combina alta frequência de CPU (até 4.0 GHz) com muita memória e NVMe local.
 
@@ -100,11 +100,11 @@ Combina alta frequência de CPU (até 4.0 GHz) com muita memória e NVMe local.
 - Workloads que precisam de processamento rápido e muita RAM
 {{< /details >}}
 
-#### Otimizadas para armazenamento (Storage Optimized)
+### 3.4. Otimizadas para armazenamento (Storage Optimized)
 
 Projetadas para fornecer armazenamento local de altíssima performance com acesso sequencial rápido e IOPS (operações de entrada/saída por segundo) extremamente elevados, essas instâncias são ideais para cargas de trabalho que exigem leitura e gravação intensiva de dados.
 
-##### Família I (I/O intensive)
+#### 3.4.1. Família I (I/O intensive)
 
 NVMe SSD local com baixíssima latência e milhões de IOPS. Instâncias I4i entregam até **60 GB/s** e **400k+ IOPS**.
 
@@ -114,7 +114,7 @@ NVMe SSD local com baixíssima latência e milhões de IOPS. Instâncias I4i ent
 - Cargas OLTP críticas
 {{< /details >}}
 
-##### Família D (dense storage)
+#### 3.4.2. Família D (dense storage)
 
 HDD otimizado para throughput sequencial com maior densidade de armazenamento por custo (dezenas de TB por instância).
 
@@ -126,7 +126,7 @@ HDD otimizado para throughput sequencial com maior densidade de armazenamento po
 - Armazenamento massivo local
 {{< /details >}}
 
-##### Família H1 (HDD optimized)
+#### 3.4.3. Família H1 (HDD optimized)
 
 Otimizada para frameworks de big data (Hadoop, Spark) com foco em throughput sequencial.
 
@@ -140,7 +140,7 @@ Otimizada para frameworks de big data (Hadoop, Spark) com foco em throughput seq
 **⚠️ Armazenamento efêmero**: O storage dessas instâncias é local e temporário (instance store). Se a instância for parada ou encerrada, todos os dados são perdidos. Use EBS ou S3 para persistência de longo prazo.
 {{< /hint >}}
 
-#### Computação acelerada (Accelerated Computing)
+### 3.5. Computação acelerada (Accelerated Computing)
 
 Equipadas com hardware especializado como GPUs, FPGAs ou chips customizados da AWS, essas instâncias são projetadas para realizar cálculos paralelos massivos que seriam ineficientes ou extremamente lentos em CPUs tradicionais.
 
@@ -154,7 +154,7 @@ Equipadas com hardware especializado como GPUs, FPGAs ou chips customizados da A
 - Reconhecimento de padrões e processamento de linguagem natural (NLP)
 {{< /details >}}
 
-##### Família P (performance GPU - NVIDIA)
+#### 3.5.1. Família P (performance GPU - NVIDIA)
 
 GPUs NVIDIA de alta performance (A100, V100, H100) para treinamento de modelos e computação científica.
 
@@ -165,7 +165,7 @@ GPUs NVIDIA de alta performance (A100, V100, H100) para treinamento de modelos e
 - Análise de dados científicos complexos
 {{< /details >}}
 
-##### Família G (graphics - GPU de propósito geral)
+#### 3.5.2. Família G (graphics - GPU de propósito geral)
 
 GPUs NVIDIA (T4, A10G) balanceadas para machine learning e computação gráfica.
 
@@ -177,7 +177,7 @@ GPUs NVIDIA (T4, A10G) balanceadas para machine learning e computação gráfica
 - Aplicações que combinam gráficos e IA
 {{< /details >}}
 
-##### Família Inf (AWS Inferentia)
+#### 3.5.3. Família Inf (AWS Inferentia)
 
 Chips customizados da AWS otimizados exclusivamente para inferência de modelos ML (não treinamento).
 
@@ -189,7 +189,7 @@ Chips customizados da AWS otimizados exclusivamente para inferência de modelos 
 - Deploy de modelos já treinados em produção
 {{< /details >}}
 
-##### Família Trn (AWS Trainium)
+#### 3.5.4. Família Trn (AWS Trainium)
 
 Chips customizados da AWS para treinamento de deep learning com melhor custo-benefício que GPUs.
 
@@ -199,7 +199,7 @@ Chips customizados da AWS para treinamento de deep learning com melhor custo-ben
 - Workloads de treinamento distribuído
 {{< /details >}}
 
-##### Família F (FPGA - Field Programmable Gate Arrays)
+#### 3.5.5. Família F (FPGA - Field Programmable Gate Arrays)
 
 FPGAs programáveis que permitem criar hardware customizado para algoritmos específicos.
 
@@ -214,7 +214,7 @@ FPGAs programáveis que permitem criar hardware customizado para algoritmos espe
 **💰 Custo elevado**: Essas são as instâncias mais caras da AWS. Uma única instância P5 pode custar mais de $30/hora. Certifique-se de que realmente precisa desse poder computacional.
 {{< /hint >}}
 
-### Como entender os nomes das instâncias
+### 3.6. Como entender os nomes das instâncias
 
 Exemplo: `m5zn.xlarge`
 
@@ -226,12 +226,12 @@ Exemplo: `m5zn.xlarge`
 | `n`      | Otimização de rede |
 | `xlarge` | Tamanho da instância |
 
-#### Tamanhos disponíveis
+#### 3.6.1. Tamanhos disponíveis
 
 - Variam de `nano` até `32xlarge` (128 vCPUs e 1024 GiB de memória)
 - Tamanho define recursos de CPU, memória, rede e armazenamento
 
-### Sufixos comuns
+### 3.7. Sufixos comuns
 
 | Sufixo | Significado                           |
 |--------|---------------------------------------|
@@ -244,19 +244,19 @@ Exemplo: `m5zn.xlarge`
 | `e`    | Mais memória ou armazenamento        |
 | `z`    | Alta frequência de CPU               |
 
-## Selecionando o tipo correto de instância (right-sizing)
+## 4. Selecionando o tipo correto de instância (right-sizing)
 
 A Amazon EC2 oferece uma grande variedade de tipos de instâncias, e muitas vezes você perceberá que sua carga de trabalho pode rodar bem em diferentes tipos e tamanhos de instância.
 
 O objetivo do _right-sizing_ é **equilibrar desempenho e custo** com base nas necessidades reais da sua aplicação, evitando que a instância fique sobrecarregada ou subutilizada.
 
-### Benefícios de novas gerações
+### 4.1. Benefícios de novas gerações
 
 {{< hint info >}}
 **🚀 Melhor custo-benefício**: Usar instâncias de gerações mais recentes, com os novos processadores da AWS, pode trazer melhor desempenho e menor custo.
 {{< /hint >}}
 
-### Alterando a instância conforme a necessidade
+### 4.2. Alterando a instância conforme a necessidade
 
 Depois de escolher uma instância, **você não é obrigado a usá-la para sempre**. Se sua carga de trabalho mudar, é possível redimensionar a instância, mudando o tipo dela caso esteja sobrecarregada ou subutilizada.
 
@@ -264,7 +264,7 @@ Depois de escolher uma instância, **você não é obrigado a usá-la para sempr
 **⚠️ Atenção ao redimensionar**: Algumas instâncias permitem troca de tipo com a instância em execução. Outras exigem que a instância seja parada antes da troca. Também é possível criar uma nova instância e migrar sua aplicação para ela.
 {{< /hint >}}
 
-## AWS Compute Optimizer
+## 5. AWS Compute Optimizer
 
 O **AWS Compute Optimizer** é uma ferramenta de _right-sizing_ que ajuda a melhorar a eficiência da sua infraestrutura na AWS, fornecendo recomendações de dimensionamento com foco em desempenho e custo.
 
