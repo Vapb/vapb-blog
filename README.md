@@ -1,12 +1,27 @@
 # vapb-blog
 
-Welcome to the VAPB Blog, where I explore data, code, and curiosities XD.
+Personal blog where I write about AWS, cloud technologies, and software development.
 
-Start the Hugo server without using HTTP cache:
+🔗 **[vapb.github.io/vapb-blog](https://vapb.github.io/vapb-blog/)**
+
+## Tech Stack
+
+- [Hugo](https://gohugo.io/) — Static site generator
+- [Vapb-Theme](https://github.com/Vapb/vapb-theme) — Theme
+- GitHub Pages — Hosting
+
+## Development
+
+**Prerequisites:** Hugo installed ([installation guide](https://gohugo.io/installation/))
+
+Start the local server:
+
+```bash
+hugo server --noHTTPCache
 ```
-hugo server  --noHTTPCache
-```
-Update all Git submodules recursively and pull the latest changes:
-```
+
+Update theme (submodule):
+
+```bash
 git submodule update --recursive --remote
 ```
