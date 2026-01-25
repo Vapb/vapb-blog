@@ -1,8 +1,8 @@
 ---
-title: "Replicação PostgreSQL: Guia Completo de Replicação Física e Lógica"
+title: "Replicação PostgreSQL no RDS: Física vs Lógica"
 author: "vapb"
-description: "Entenda WAL, replicação física vs lógica, recovery conflicts, slots de replicação e melhores práticas para RDS PostgreSQL. Aprenda a configurar, monitorar e otimizar réplicas para alta disponibilidade e disaster recovery."
-date: 2026-01-24
+description: "Entenda WAL, replication slots e recovery conflicts. Aprenda quando usar replicação física vs lógica no RDS PostgreSQL e evite problemas comuns de lag."
+date: 2026-01-25
 tags: ["PostgreSQL", "Database Administration", "AWS RDS", "Replication"]
 toc: true
 ---
