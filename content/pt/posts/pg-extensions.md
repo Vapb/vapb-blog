@@ -1,7 +1,7 @@
 ---
 title: "PostgreSQL Extensions: Guia Completo de Funcionalidades e Melhores Práticas"
 author: "vapb"
-description: "Descubra como estender as capacidades do PostgreSQL com extensions: desde monitoramento e performance até geoespacial e machine learning. Inclui guia completo de gerenciamento, melhores práticas e considerações críticas para produção."
+description: "Guia completo sobre PostgreSQL extensions: gerenciamento, principais extensions, TLE e melhores práticas para produção."
 date: 2026-02-17
 tags: ["PostgreSQL", "AWS RDS", "Aurora"]
 toc: true
