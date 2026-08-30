@@ -3,7 +3,7 @@ title: "PostgreSQL Extensions: Guia Completo de Funcionalidades e Melhores Prát
 author: "vapb"
 description: "Guia completo sobre PostgreSQL extensions: gerenciamento, principais extensions, TLE e melhores práticas para produção."
 date: 2026-02-17
-tags: ["PostgreSQL", "AWS RDS", "Aurora"]
+tags: ["postgresql", "rds", "aurora"]
 toc: true
 ---
 

@@ -3,7 +3,7 @@ title: "Aurora PostgreSQL: Por Dentro das Features Avançadas"
 author: "vapb"
 description: "Features avançadas do Aurora PostgreSQL: do storage distribuído ao Zero ETL."
 date: 2026-03-07
-tags: ["PostgreSQL", "AWS", "Aurora", "Database Administration"]
+tags: ["postgresql", "aws", "aurora", "dba"]
 toc: true
 ---
 

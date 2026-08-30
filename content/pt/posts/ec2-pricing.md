@@ -3,7 +3,7 @@ title: "Modelos de Preços EC2 e Ferramentas de Otimização de Custos"
 author: "vapb"
 description: "Guia sobre opções de preços EC2, ferramentas de otimização de custos e considerações de performance."
 date: 2025-09-28
-tags: ["AWS", "EC2", "preços", "otimização-custos"]
+tags: ["aws", "ec2"]
 toc: true
 ---
 

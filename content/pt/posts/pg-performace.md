@@ -3,7 +3,7 @@ title: "Performance no PostgreSQL: do diagnóstico à otimização"
 author: "vapb"
 description: "JOINs, EXPLAIN, índices e connection pooling: identifique e resolva gargalos no PostgreSQL."
 date: 2026-02-21
-tags: ["PostgreSQL", "Performance"]
+tags: ["postgresql", "performance"]
 toc: true
 ---
 

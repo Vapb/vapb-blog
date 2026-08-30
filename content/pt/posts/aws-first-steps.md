@@ -3,7 +3,7 @@ title: Setup Inicial AWS
 author: "vapb"
 description: Primeiros passos AWS.
 date: 2025-04-19
-tags: ["AWS"]
+tags: ["aws"]
 toc: true
 ---
 

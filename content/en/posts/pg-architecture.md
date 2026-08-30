@@ -3,7 +3,7 @@ title: "PostgreSQL Architecture: Understanding the Engine Behind Your Database"
 author: "vapb"
 description: "Deep dive into PostgreSQL's client-server model, background processes, memory architecture, and connection pooling."
 date: 2025-11-23
-tags: ["PostgreSQL"]
+tags: ["postgresql"]
 toc: true
 ---
 

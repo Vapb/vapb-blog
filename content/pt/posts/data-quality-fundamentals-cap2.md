@@ -3,7 +3,7 @@ title: "Data Quality Fundamentals - Capítulo 2"
 author: "vapb"
 description: "Resumo do capítulo 2 de Data Quality Fundamentals: dados operacionais vs. analíticos, data warehouses, data lakes, lakehouses, métricas de qualidade de dados e catálogo de dados."
 date: 2026-08-22
-tags: ["Fundamentos_da_Qualidade_de_Dados"]
+tags: ["data-quality-fundamentals"]
 toc: false
 ---
 

@@ -3,7 +3,7 @@ title: "Data Quality Fundamentals - Capítulo 1"
 author: "vapb"
 description: "Resumo do primeiro capítulo do livro Data Quality Fundamentals (Barr Moses, Lior Gavish e Molly Vorwerck), sobre por que qualidade de dados se tornou prioridade nos times de dados."
 date: 2026-08-22
-tags: ["Fundamentos_da_Qualidade_de_Dados"]
+tags: ["data-quality-fundamentals"]
 toc: false
 ---
 

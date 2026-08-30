@@ -3,7 +3,7 @@ title: Initial AWS Setup
 author: "vapb"
 description: First steps to create and configure an AWS account.
 date: 2025-04-19
-tags: ["AWS"]
+tags: ["aws"]
 toc: true
 ---
 

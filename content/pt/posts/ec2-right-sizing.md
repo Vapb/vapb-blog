@@ -3,7 +3,7 @@ title: "Tipos de instância EC2 e right-sizing"
 author: "vapb"
 description: "Introdução aos tipos de instância EC2 e ao conceito de right-sizing."
 date: 2025-06-26
-tags: ["AWS", "EC2"]
+tags: ["aws", "ec2"]
 toc: true
 ---
 

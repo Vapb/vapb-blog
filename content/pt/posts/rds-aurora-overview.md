@@ -3,7 +3,7 @@ title: RDS Aurora overview
 author: "vapb"
 description: Overview das soluções PostgreSQL gerenciadas na AWS.
 date: 2025-10-29
-tags: ["AWS", "postgre"]
+tags: ["aws", "postgresql"]
 toc: true
 ---
 
