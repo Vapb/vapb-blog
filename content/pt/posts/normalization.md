@@ -3,7 +3,7 @@ title: "Normalização em Bancos de Dados Relacionais"
 author: "vapb"
 description: "Uma introdução ao conceito de normalização em bancos de dados relacionais e suas formas normais."
 date: 2025-12-20
-tags: ["db"]
+tags: ["database"]
 toc: true
 ---
 

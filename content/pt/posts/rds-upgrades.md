@@ -3,7 +3,7 @@ title: "Upgrades no Amazon RDS e Aurora PostgreSQL: Guia Completo"
 author: "vapb"
 description: "Tudo sobre manutenção e upgrades no Amazon RDS e Aurora PostgreSQL. Entenda minor vs major versions, AMVU, Zero Downtime Patching e as quatro estratégias de upgrade: In-Place, Logical Replication, Blue/Green e DMS."
 date: 2026-02-22
-tags: ["postgresql", "rds", "aurora"]
+tags: ["aurora", "postgresql", "rds"]
 toc: true
 ---
 

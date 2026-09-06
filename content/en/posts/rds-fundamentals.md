@@ -3,7 +3,7 @@ title: "RDS PostgreSQL Fundamentals: Performance and Optimization"
 author: "vapb"
 description: "Amazon RDS for PostgreSQL: instance selection, EBS storage types, auto-scaling, and cost optimization strategies."
 date: 2025-11-01
-tags: ["aws", "rds", "postgresql"]
+tags: ["aws", "postgresql", "rds"]
 toc: true
 ---
 

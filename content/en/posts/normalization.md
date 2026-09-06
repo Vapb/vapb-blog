@@ -3,7 +3,7 @@ title: "Database Normalization in Relational Databases"
 author: "vapb"
 description: "An introduction to the concept of database normalization in relational databases and its normal forms."
 date: 2025-12-20
-tags: ["db"]
+tags: ["database"]
 toc: true
 ---
 

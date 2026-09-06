@@ -3,7 +3,7 @@ title: "Replicação PostgreSQL no RDS: Física vs Lógica"
 author: "vapb"
 description: "Entenda WAL, replication slots e recovery conflicts. Aprenda quando usar replicação física vs lógica no RDS PostgreSQL e evite problemas comuns de lag."
 date: 2026-01-25
-tags: ["postgresql", "dba", "rds"]
+tags: ["postgresql", "rds"]
 toc: true
 ---
 

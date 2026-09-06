@@ -3,7 +3,7 @@ title: Configurando um Webhook no Microsoft Teams
 author: "vapb"
 description: Exemplo prático para configurar um webhook no Teams.
 date: 2025-01-17
-tags: ["automation"]
+tags: ["random"]
 toc: true
 ---
 

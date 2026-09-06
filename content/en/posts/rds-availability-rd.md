@@ -3,7 +3,7 @@ title: "RDS PostgreSQL: High Availability and Disaster Recovery"
 author: "vapb"
 description: "Guide to RDS availability: Multi-AZ configurations, failover mechanisms, snapshots, read replicas, and disaster recovery strategies for mission-critical databases."
 date: 2025-11-02
-tags: ["aws", "rds", "postgresql"]
+tags: ["aws", "postgresql", "rds"]
 toc: true
 ---
 

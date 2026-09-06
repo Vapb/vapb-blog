@@ -3,7 +3,7 @@ title: "Quando o autovacuum não é suficiente: um incidente real com AWS DMS e 
 author: "vapb"
 description: "Como um ambiente com AWS DMS pode silenciosamente vencer o autovacuum, corromper as estatísticas do planner e transformar uma query de 9ms em 4 segundos, e o que fazer a respeito."
 date: 2026-03-26
-tags: ["postgresql", "performance", "aws"]
+tags: ["postgresql", "aws"]
 toc: true
 ---
 
