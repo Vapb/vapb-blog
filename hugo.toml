@@ -1,7 +1,7 @@
 baseURL = 'https://vapb.github.io/vapb-blog/'
-defaultContentLanguage = 'en'
+defaultContentLanguage = 'pt'
 defaultContentLanguageInSubdir = false
-languageCode = 'en-us'
+languageCode = 'pt-br'
 title = 'VAPB BLOG'
 theme = 'vapb-theme'
 
