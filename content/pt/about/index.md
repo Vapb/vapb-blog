@@ -1,6 +1,5 @@
 ---
-title: "About Me"
-description: "THIS IS A DECRIPTION ABOUT THIS PAGE"
+title: "Sobre Mim"
+description: "Um pouco sobre mim, meus interesses e meu currículo"
+layout: "aboutbr"
 ---
-
-Here's a bit about me.
