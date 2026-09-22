@@ -2,9 +2,12 @@
 
 <div class="section estante" id="Estante">
 
-  <p class="estante-eyebrow">Protótipo · v0</p>
-  <h2>Minha Estante</h2>
-  <p class="estante-sub">Uma estante virtual: lombadas lado a lado, do jeito que aparecem na prateleira de verdade. Escolha uma categoria abaixo e passe o mouse (ou toque) numa lombada pra ver os detalhes.</p>
+  <div class="estante-intro">
+    <p class="estante-eyebrow">Protótipo · v0</p>
+    <h2>Minha Estante</h2>
+    <p class="estante-sub">Quer saber o que tem na minha estante? Uma mistura de <strong>mangás de terror</strong>, quadrinhos e livros dos mais variados assuntos. Sim, até <strong>livros de computação</strong> moram por aqui 😄. Esse é o meu pequeno catálogo.</p>
+    <p class="estante-sub">As lombadas ficam lado a lado como numa prateleira de verdade. Escolha uma categoria abaixo e passe o mouse (ou toque) numa lombada pra ver os detalhes.</p>
+  </div>
 
   <div class="estante-tabs" id="estante-tabs"></div>
 
@@ -33,13 +36,23 @@
     --wood-edge:#1c110a;
   }
 
+  .estante-intro{
+    text-align: center;
+    max-width: 62ch;
+    margin: 0 auto;
+  }
+
   .estante-eyebrow{
-    font-size: 0.8rem;
+    display: inline-block;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-accent-primary);
-    margin-bottom: var(--spacing-xs);
+    color: var(--color-text-dark);
+    background: var(--color-accent-primary);
+    padding: 4px 12px;
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--spacing-sm);
   }
 
   .estante h2{
@@ -47,17 +60,21 @@
   }
 
   .estante-sub{
-    max-width: 62ch;
     line-height: 1.6;
     color: var(--color-text-secondary);
   }
   .estante-sub strong{
     color: var(--color-text-primary);
   }
+  .estante-sub mark{
+    padding: 0 4px;
+    border-radius: 3px;
+  }
 
   .estante-tabs{
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 8px;
     margin: var(--spacing-lg) 0 0;
   }
