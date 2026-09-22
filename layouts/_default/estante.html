@@ -1,0 +1,529 @@
+{{ partial "header.html" . }}
+
+<div class="section estante" id="Estante">
+
+  <p class="estante-eyebrow">Protótipo · v0</p>
+  <h2>Minha Estante</h2>
+  <p class="estante-sub">Uma estante virtual: lombadas lado a lado, do jeito que aparecem na prateleira de verdade. Escolha uma categoria abaixo e passe o mouse (ou toque) numa lombada pra ver os detalhes.</p>
+
+  <div class="estante-tabs" id="estante-tabs"></div>
+
+  <div class="estante-shelf-wrap">
+    <div class="estante-shelf-scroll">
+      <div class="estante-rail" id="estante-rail"></div>
+    </div>
+  </div>
+
+  <div class="estante-info" id="estante-info">
+    <span class="estante-info-placeholder">Passe o mouse (ou toque) numa lombada pra ver os detalhes.</span>
+  </div>
+
+  <p class="estante-note">
+    <span class="estante-dot"></span>
+    As lombadas sem foto são placeholders coloridos — a ideia é trocar pelas fotos reais aos poucos.
+  </p>
+
+</div>
+
+<style>
+  .estante{
+    --wood-dark:#2a1810;
+    --wood:#5c3a24;
+    --wood-light:#8a5a36;
+    --wood-edge:#1c110a;
+  }
+
+  .estante-eyebrow{
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .estante h2{
+    margin-top: 0;
+  }
+
+  .estante-sub{
+    max-width: 62ch;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+  .estante-sub strong{
+    color: var(--color-text-primary);
+  }
+
+  .estante-tabs{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: var(--spacing-lg) 0 0;
+  }
+
+  .estante-tab{
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease, border-color .2s ease, transform .15s cubic-bezier(.2,.8,.3,1.2);
+  }
+  .estante-tab:hover{
+    transform: translateY(-1px);
+    border-color: var(--color-accent-primary);
+    color: var(--color-text-primary);
+  }
+  .estante-tab:active{
+    transform: translateY(0) scale(.97);
+  }
+  .estante-tab.active{
+    background: var(--color-accent-primary);
+    color: var(--color-text-dark);
+    border-color: var(--color-accent-primary);
+  }
+  .estante-tab-icon{
+    font-size: 1rem;
+    line-height: 1;
+  }
+  .estante-tab-count{
+    font-size: 0.7rem;
+    font-weight: 700;
+    opacity: .7;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .estante-shelf-wrap{
+    position: relative;
+    margin: var(--spacing-lg) 0 0;
+  }
+
+  .estante-shelf-scroll{
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 30px var(--spacing-md) 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .estante-rail{
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    min-width: max-content;
+    min-height: 190px;
+    padding-bottom: 22px;
+  }
+
+  .estante-rail::after{
+    content:"";
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 0;
+    height: 22px;
+    min-width: 100%;
+    background: linear-gradient(180deg, var(--wood-light), var(--wood) 55%, var(--wood-dark));
+    border-bottom: 6px solid var(--wood-edge);
+    box-shadow: 0 14px 26px -10px rgba(0,0,0,0.6);
+    z-index: 0;
+  }
+
+  @keyframes estanteBookIn{
+    from{ opacity: 0; transform: translateY(22px) scaleY(.82); }
+    to{ opacity: 1; transform: translateY(0) scaleY(1); }
+  }
+
+  .estante-book{
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    border-radius: 3px 3px 1px 1px;
+    box-shadow:
+      inset 0 0 0 1px rgba(0,0,0,0.25),
+      inset -6px 0 10px -6px rgba(0,0,0,0.4),
+      inset 4px 0 6px -4px rgba(255,255,255,0.2),
+      2px 4px 8px -2px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transform-origin: bottom center;
+    transition: transform .22s cubic-bezier(.2,.8,.3,1.2), box-shadow .22s ease, opacity .16s ease;
+    flex: none;
+    overflow: hidden;
+    animation: estanteBookIn .4s cubic-bezier(.2,.8,.3,1.1) both;
+    animation-delay: var(--book-delay, 0ms);
+  }
+  .estante-book:hover,
+  .estante-book.open{
+    transform: translateY(-16px);
+    box-shadow:
+      inset 0 0 0 1px rgba(0,0,0,0.25),
+      inset -6px 0 10px -6px rgba(0,0,0,0.4),
+      inset 4px 0 6px -4px rgba(255,255,255,0.2),
+      4px 22px 18px -10px rgba(0,0,0,0.6);
+  }
+  .estante-book.leaving{
+    opacity: 0;
+    transform: translateY(10px) scaleY(.9);
+    animation: none;
+  }
+
+  .estante-book img{
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    display: block;
+  }
+
+  .estante-spine-text{
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--font-reading);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    max-height: 100%;
+    padding: 8px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    box-sizing: border-box;
+  }
+  .estante-info{
+    margin-top: var(--spacing-md);
+    min-height: 74px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+  }
+  .estante-info-placeholder{
+    align-self: center;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+  .estante-info-cover{
+    flex: none;
+    width: 64px;
+    height: 92px;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .estante-info-cover img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .estante-info .estante-info-text{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+  .estante-info .s{
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--color-accent-primary);
+  }
+  .estante-info .t{
+    font-family: var(--font-reading);
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .estante-info .a{
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+  }
+  .estante-info .p{
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .estante-info .meta{
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .estante-note{
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    max-width: 60ch;
+    margin-top: var(--spacing-lg);
+  }
+  .estante-dot{
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--color-accent-primary);
+    margin-top: 5px;
+    flex: none;
+  }
+
+  @media (max-width: 480px){
+    .estante-shelf-scroll{ padding-left: var(--spacing-sm); padding-right: var(--spacing-sm); }
+  }
+</style>
+
+<script>
+(function(){
+  // Estrutura achatada vinda direto do scraper: dimensions/pages ficam como
+  // string crua da Amazon ("21 x 1.8 x 15 cm") e são parseadas aqui na hora
+  // de desenhar a lombada (ver dims()/PX_PER_MM abaixo).
+  var ALL_BOOKS = {{ .Site.Data.livros | jsonify | safeJS }};
+
+  var SHELF_META = {
+    "mangas-hq": { label: "Mangás & HQs",   icon: "📚" },
+    "exatas":    { label: "Exatas & Dados", icon: "📐" },
+    "terror":    { label: "Terror",         icon: "👻" },
+    "random":    { label: "Random",         icon: "🎲" }
+  };
+  var SHELF_ORDER = ["mangas-hq", "exatas", "terror", "random"];
+
+  var byShelf = {};
+  ALL_BOOKS.forEach(function(b){
+    var s = b.shelf || "outros";
+    (byShelf[s] = byShelf[s] || []).push(b);
+  });
+  Object.keys(byShelf).forEach(function(id){
+    byShelf[id].sort(function(a, b){
+      var sa = a.series || a.title || "";
+      var sb = b.series || b.title || "";
+      var cmp = sa.localeCompare(sb, "pt-BR", { sensitivity: "base" });
+      if(cmp !== 0) return cmp;
+      return (extractVolume(a.title) || 0) - (extractVolume(b.title) || 0);
+    });
+  });
+  var shelfIds = SHELF_ORDER.filter(function(id){ return byShelf[id]; });
+  Object.keys(byShelf).forEach(function(id){
+    if(shelfIds.indexOf(id) === -1) shelfIds.push(id);
+  });
+
+  var SHELVES = shelfIds.map(function(id){
+    var meta = SHELF_META[id] || { label: id, icon: "📖" };
+    return { id: id, label: meta.label, icon: meta.icon, books: byShelf[id] };
+  });
+
+  var BASE_URL = "{{ "" | relURL }}";
+  var PX_PER_MM = 1.5;
+  var DEFAULT_DIMS = { heightMm: 210, spineMm: 16 };
+
+  var tabsEl = document.getElementById('estante-tabs');
+  var rail = document.getElementById('estante-rail');
+  var info = document.getElementById('estante-info');
+  var placeholderHTML = info.innerHTML;
+  var pinned = null;
+  var current = SHELVES[0];
+
+  function extractVolume(title){
+    if(!title) return null;
+    var m = /\bv(?:ol(?:ume)?)?\.?\s*0*?(\d+)\b/i.exec(title);
+    return m ? parseInt(m[1], 10) : null;
+  }
+
+  function spineTitle(b){
+    var t = b.title || "";
+    return t.length > 34 ? t.slice(0, 32).trim() + "…" : t;
+  }
+
+  function pagesLine(b){
+    var vol = extractVolume(b.title);
+    var volPart = vol ? "vol. " + vol + " · " : "";
+    return (volPart + (b.pages || "")) || "—";
+  }
+
+  function parseDimensionsMm(text){
+    if(!text) return null;
+    var nums = (text.match(/[\d,.]+/g) || []).map(function(n){ return parseFloat(n.replace(",", ".")); });
+    if(nums.length < 2) return null;
+    return { heightMm: Math.round(Math.max.apply(null, nums) * 10), spineMm: Math.round(Math.min.apply(null, nums) * 10) };
+  }
+
+  function dims(b){
+    var d = parseDimensionsMm(b.dimensions) || DEFAULT_DIMS;
+    return {
+      heightMm: Math.min(Math.max(d.heightMm, 150), 270),
+      spineMm: Math.min(Math.max(d.spineMm, 15), 65)
+    };
+  }
+
+  var PALETTE = [
+    ["#c22a2a", "#f4e9d8"], ["#2a2f6f", "#d8dcf4"], ["#1f6f6b", "#eef4f2"],
+    ["#5a2340", "#f4e9d8"], ["#2f5c3f", "#eee2c2"], ["#d7b23a", "#241a12"],
+    ["#4a3524", "#e9dcc4"], ["#8a1f1f", "#f0e2c8"]
+  ];
+
+  function pickColors(seed){
+    var s = seed || "";
+    var h = 0;
+    for(var i = 0; i < s.length; i++){ h = (h * 31 + s.charCodeAt(i)) | 0; }
+    return PALETTE[Math.abs(h) % PALETTE.length];
+  }
+
+  function resolveSrc(url){
+    if(!url) return null;
+    return /^https?:\/\//i.test(url) ? url : (BASE_URL + url);
+  }
+
+  // capa (imageUrl, vem da Amazon) só aparece no painel de detalhes; a lombada
+  // (spineImageUrl) só existe pros poucos livros com foto real da lombada que
+  // eu tirei à mão -- os outros usam o placeholder colorido com texto vertical.
+  function coverImageSrc(b){
+    return resolveSrc(b.imageUrl);
+  }
+
+  function spineImageSrc(b){
+    return resolveSrc(b.spineImageUrl);
+  }
+
+  function escapeHtml(s){
+    return (s || "").replace(/[&<>"]/g, function(c){
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  function renderInfo(b){
+    var src = coverImageSrc(b);
+    var colors = pickColors(b.title || b.url);
+    var coverHTML = src
+      ? '<img src="' + src + '" alt="" referrerpolicy="no-referrer">'
+      : '';
+
+    var meta = [];
+    if(b.edition) meta.push("Edição " + b.edition);
+    if(b.language) meta.push(b.language);
+    if(b.isbn13) meta.push("ISBN " + b.isbn13);
+    if(b.dimensions) meta.push(b.dimensions);
+    if(b.readingAge) meta.push(b.readingAge);
+
+    info.innerHTML =
+      '<div class="estante-info-cover" style="background:' + colors[0] + '">' + coverHTML + '</div>' +
+      '<div class="estante-info-text">' +
+        (b.series ? '<div class="s">' + escapeHtml(b.series) + '</div>' : '') +
+        '<div class="t">' + escapeHtml(b.title) + '</div>' +
+        '<div class="a">' + escapeHtml(b.author) + '</div>' +
+        '<div class="p">' + escapeHtml(pagesLine(b)) + ' · ' + escapeHtml(b.publisher || '?') + (b.publishedDate ? ', ' + escapeHtml(b.publishedDate) : '') + '</div>' +
+        (meta.length ? '<div class="meta">' + escapeHtml(meta.join(' · ')) + '</div>' : '') +
+      '</div>';
+  }
+
+  function buildBook(b, index){
+    var d = dims(b);
+    var el = document.createElement('div');
+    el.className = 'estante-book';
+    el.style.setProperty('--book-delay', (Math.min(index, 16) * 28) + 'ms');
+    el.style.height = (d.heightMm * PX_PER_MM) + 'px';
+    el.style.width = (d.spineMm * PX_PER_MM) + 'px';
+
+    var src = spineImageSrc(b);
+    var colors = pickColors(b.title || b.url);
+
+    if(src){
+      el.style.background = colors[0];
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = b.title;
+      img.referrerPolicy = 'no-referrer';
+      el.appendChild(img);
+    } else {
+      var spineColor = colors[0], textColor = colors[1];
+      el.style.background = 'linear-gradient(90deg, color-mix(in srgb, '+spineColor+' 88%, black), '+spineColor+' 12%, '+spineColor+' 88%, color-mix(in srgb, '+spineColor+' 80%, black))';
+      el.style.color = textColor;
+
+      var t = document.createElement('div');
+      t.className = 'estante-spine-text';
+      t.textContent = spineTitle(b);
+      t.title = b.title;
+      t.style.fontSize = Math.max(11, Math.min(15, d.spineMm * PX_PER_MM * 0.3)) + 'px';
+      el.appendChild(t);
+    }
+
+    el.addEventListener('mouseenter', function(){ renderInfo(b); });
+    el.addEventListener('mouseleave', function(){
+      if(pinned){ renderInfo(pinned); } else { info.innerHTML = placeholderHTML; }
+    });
+    el.addEventListener('click', function(){
+      var wasOpen = el.classList.contains('open');
+      Array.prototype.slice.call(rail.querySelectorAll('.estante-book.open')).forEach(function(o){ o.classList.remove('open'); });
+      if(!wasOpen){
+        el.classList.add('open');
+        pinned = b;
+        renderInfo(b);
+      } else {
+        pinned = null;
+        info.innerHTML = placeholderHTML;
+      }
+    });
+
+    return el;
+  }
+
+  function fillRail(shelf){
+    rail.innerHTML = '';
+    pinned = null;
+    info.innerHTML = placeholderHTML;
+    shelf.books.forEach(function(b, i){
+      rail.appendChild(buildBook(b, i));
+    });
+  }
+
+  function switchShelf(shelf){
+    if(shelf === current) return;
+    current = shelf;
+    renderTabs();
+
+    var oldBooks = Array.prototype.slice.call(rail.children);
+    if(!oldBooks.length){
+      fillRail(shelf);
+      return;
+    }
+    oldBooks.forEach(function(el){ el.classList.add('leaving'); });
+    window.setTimeout(function(){ fillRail(shelf); }, 170);
+  }
+
+  function renderTabs(){
+    tabsEl.innerHTML = '';
+    SHELVES.forEach(function(shelf){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'estante-tab' + (shelf === current ? ' active' : '');
+      btn.innerHTML =
+        '<span class="estante-tab-icon">' + shelf.icon + '</span>' +
+        '<span>' + shelf.label + '</span>' +
+        '<span class="estante-tab-count">' + shelf.books.length + '</span>';
+      btn.addEventListener('click', function(){ switchShelf(shelf); });
+      tabsEl.appendChild(btn);
+    });
+  }
+
+  if(SHELVES.length){
+    renderTabs();
+    fillRail(current);
+  } else {
+    tabsEl.style.display = 'none';
+  }
+})();
+</script>
+
+{{ partial "footer.html" . }}

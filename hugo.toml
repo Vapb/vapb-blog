@@ -65,6 +65,12 @@ theme = 'vapb-theme'
     weight = 100
 
   [[languages.pt.menu.main]]
+    identifier = "estante"
+    name = "Estante"
+    url = "estante"
+    weight = 20
+
+  [[languages.pt.menu.main]]
     identifier = "projects"
     name = "Projetos"
     url = "projects"
