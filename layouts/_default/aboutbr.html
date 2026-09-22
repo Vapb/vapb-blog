@@ -1,38 +1,109 @@
 {{ partial "header.html" . }}
 
-<div class="section" id="About">
-    <div class="picture"></div>
-    <h2>Desenvolvedor Backend | Cientista de Dados | Engenheiro de Dados</h2>
-    <div id="shortResume">
-        <p>Sou um Cientista de Dados apaixonado por algoritmos, visualização de dados e machine learning. Formado em Sistemas de Informação pela UFPE, trago uma mistura única de rigor acadêmico e experiência prática, sempre buscando expandir os limites do que os dados podem alcançar.</p>
-        <p>Além do foco profissional, tenho um profundo fascínio por terror—seja lendo sobre jogos de terror, assistindo filmes de terror ou explorando histórias imersivas e sinistras. Também gosto de criar e jogar, de video games a board games complexos, encontrando suas camadas estratégicas e narrativas extremamente envolventes.
+<div class="section about" id="About">
+
+  <div class="about-intro">
+    <p class="about-eyebrow">Sobre mim</p>
+    <h2>Desenvolvedor Backend · Cientista de Dados · Engenheiro de Dados</h2>
+    <div class="about-resume">
+      <p>Sou um <strong>Cientista de Dados</strong> apaixonado por algoritmos, visualização de dados e <em>machine learning</em>. Formado em Sistemas de Informação pela <a href="https://www.ufpe.br/" target="_blank" rel="noopener">UFPE</a>, trago uma mistura única de rigor acadêmico e experiência prática, sempre buscando expandir os limites do que os dados podem alcançar.</p>
+      <p>Além do foco profissional, tenho um profundo fascínio por <strong>terror</strong>, seja lendo sobre jogos de terror, assistindo filmes de terror ou explorando histórias imersivas e sinistras. Também gosto de criar e jogar, de video games a <em>board games</em> complexos, encontrando suas camadas estratégicas e narrativas extremamente envolventes.</p>
+    </div>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-card" id="interests">
+      <h3>Meus interesses</h3>
+      <ul>
+        <li>Visualização de Dados</li>
+        <li>Algoritmos de Machine Learning</li>
+        <li>Desenvolvimento Backend</li>
+        <li>Análise Estatística</li>
+        <li>Otimização de Pipeline de Dados</li>
+      </ul>
     </div>
 
-        <div id="interests">
-            <h3>Meus interesses</h3>
-            <ul>
-                <li>Visualização de Dados</li>
-                <li>Algoritmos de Machine Learning</li>
-                <li>Desenvolvimento Backend</li>
-                <li>Análise Estatística</li>
-                <li>Otimização de Pipeline de Dados</li>
-            </ul>
-        </div>
-
-        <div id="aditionalInfo">
-            <h3>Informações Adicionais</h3>
-            <p>Sinta-se à vontade para se conectar comigo no LinkedIn ou conferir meus projetos no GitHub. Quando não estou programando, jogando ou explorando mídia de terror, geralmente estou trabalhando neste blog, espero que você goste.</p>
-        </div>
-
-        <div class="social-media">
-            <a href="https://www.linkedin.com/in/victor-burgardt-38bb00194/" target="_blank">Confira meu Linkedin</a>
-            <a href="https://github.com/Vapb" target="_blank">Confira meu GitHub</a>
-            <a href="{{ "cv/cv_br" | relURL }}">CV-BR</a>
-            <a href="{{ "cv/cv_en" | relURL }}">CV-EN</a>
-        </div>
+    <div class="about-card" id="aditionalInfo">
+      <h3>Informações Adicionais</h3>
+      <p>Sinta-se à vontade para se conectar comigo no <a href="https://www.linkedin.com/in/victor-burgardt-38bb00194/" target="_blank" rel="noopener">LinkedIn</a> ou conferir meus projetos no <a href="https://github.com/Vapb" target="_blank" rel="noopener">GitHub</a>. Quando não estou programando, jogando ou explorando mídia de terror, geralmente estou trabalhando <em>neste blog</em>, espero que você goste.</p>
     </div>
+  </div>
+
+  <div class="social-media">
+    <a href="https://www.linkedin.com/in/victor-burgardt-38bb00194/" target="_blank">Confira meu Linkedin</a>
+    <a href="https://github.com/Vapb" target="_blank">Confira meu GitHub</a>
+    <a href="{{ "cv/cv_br" | relURL }}">CV-BR</a>
+    <a href="{{ "cv/cv_en" | relURL }}">CV-EN</a>
+  </div>
 
 </div>
 
+<style>
+  .about-intro{
+    text-align: center;
+    max-width: 42rem;
+    margin: 0 auto var(--spacing-xl);
+  }
+
+  .about-eyebrow{
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-dark);
+    background: var(--color-accent-primary);
+    padding: 4px 12px;
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .about h2{
+    margin-top: 0;
+  }
+
+  .about-resume{
+    text-align: left;
+    max-width: 62ch;
+    margin: 0 auto;
+    color: var(--color-text-secondary);
+  }
+  .about-resume p:last-child{
+    margin-bottom: 0;
+  }
+
+  .about-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-md);
+    max-width: 50rem;
+    margin: 0 auto var(--spacing-xl);
+  }
+
+  .about-card{
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  .about-card h3{
+    margin-top: 0;
+    font-size: 1.15rem;
+  }
+  .about-card ul{
+    margin: 0;
+    padding-left: 1.2em;
+  }
+  .about-card li{
+    margin-bottom: 4px;
+  }
+  .about-card li:last-child{
+    margin-bottom: 0;
+  }
+  .about-card p{
+    margin-bottom: 0;
+    color: var(--color-text-secondary);
+  }
+</style>
 
 {{ partial "footer.html" . }}

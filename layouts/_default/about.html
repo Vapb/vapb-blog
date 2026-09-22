@@ -1,38 +1,109 @@
 {{ partial "header.html" . }}
-  
-<div class="section" id="About">
-    <div class="picture"></div>
-    <h2>Backend Developer | Data Scientist | Data Engineer </h2>
-    <div id="shortResume">
-        <p>I'm a passionate Data Scientist with a genuine love for algorithms, data visualization, and machine learning. A graduate in Information Systems from UFPE, I bring a unique mix of academic rigor and hands-on experience, constantly pushing the boundaries of what data can achieve.</p>
-        <p>Beyond my professional focus, I have a deep fascination for horror—whether it's reading about horror games, watching horror movies, or exploring eerie, immersive stories. I also enjoy designing and playing games, from video games to complex board games, finding both their strategic and narrative layers incredibly engaging.
+
+<div class="section about" id="About">
+
+  <div class="about-intro">
+    <p class="about-eyebrow">About me</p>
+    <h2>Backend Developer · Data Scientist · Data Engineer</h2>
+    <div class="about-resume">
+      <p>I'm a passionate <strong>Data Scientist</strong> with a genuine love for algorithms, data visualization, and <em>machine learning</em>. A graduate in Information Systems from <a href="https://www.ufpe.br/" target="_blank" rel="noopener">UFPE</a>, I bring a unique mix of academic rigor and hands-on experience, constantly pushing the boundaries of what data can achieve.</p>
+      <p>Beyond my professional focus, I have a deep fascination for <strong>horror</strong>, whether it's reading about horror games, watching horror movies, or exploring eerie, immersive stories. I also enjoy designing and playing games, from video games to complex <em>board games</em>, finding both their strategic and narrative layers incredibly engaging.</p>
+    </div>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-card" id="interests">
+      <h3>My interests</h3>
+      <ul>
+        <li>Data Visualization</li>
+        <li>Machine Learning Algorithms</li>
+        <li>Backend Development</li>
+        <li>Statistical Analysis</li>
+        <li>Data Pipeline Optimization</li>
+      </ul>
     </div>
 
-        <div id="interests">
-            <h3>My interests</h3>
-            <ul>
-                <li>Data Visualization</li>
-                <li>Machine Learning Algorithms</li>
-                <li>Backend Development</li>
-                <li>Statistical Analysis</li>
-                <li>Data Pipeline Optimization</li>
-            </ul>
-        </div>
-
-        <div id="aditionalInfo">
-            <h3>Additional Info</h3>
-            <p>Feel free to connect with me on LinkedIn or check out my projects on GitHub. When I'm not coding, gaming, or exploring horror media, I’m usually working on this blog, i hope you like it.</p>
-        </div>
-
-        <div class="social-media">
-            <a href="https://www.linkedin.com/in/victor-burgardt-38bb00194/" target="_blank">Check out my Linkedin</a>
-            <a href="https://github.com/Vapb" target="_blank">Check out my GitHub</a>
-            <a href="{{ "cv/cv_en" | relURL }}">CV-EN</a>
-            <a href="{{ "cv/cv_br" | relURL }}">CV-BR</a>
-        </div>
+    <div class="about-card" id="aditionalInfo">
+      <h3>Additional Info</h3>
+      <p>Feel free to connect with me on <a href="https://www.linkedin.com/in/victor-burgardt-38bb00194/" target="_blank" rel="noopener">LinkedIn</a> or check out my projects on <a href="https://github.com/Vapb" target="_blank" rel="noopener">GitHub</a>. When I'm not coding, gaming, or exploring horror media, I'm usually working on <em>this blog</em>, i hope you like it.</p>
     </div>
+  </div>
+
+  <div class="social-media">
+    <a href="https://www.linkedin.com/in/victor-burgardt-38bb00194/" target="_blank">Check out my Linkedin</a>
+    <a href="https://github.com/Vapb" target="_blank">Check out my GitHub</a>
+    <a href="{{ "cv/cv_en" | relURL }}">CV-EN</a>
+    <a href="{{ "cv/cv_br" | relURL }}">CV-BR</a>
+  </div>
 
 </div>
 
+<style>
+  .about-intro{
+    text-align: center;
+    max-width: 42rem;
+    margin: 0 auto var(--spacing-xl);
+  }
+
+  .about-eyebrow{
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-dark);
+    background: var(--color-accent-primary);
+    padding: 4px 12px;
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .about h2{
+    margin-top: 0;
+  }
+
+  .about-resume{
+    text-align: left;
+    max-width: 62ch;
+    margin: 0 auto;
+    color: var(--color-text-secondary);
+  }
+  .about-resume p:last-child{
+    margin-bottom: 0;
+  }
+
+  .about-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-md);
+    max-width: 50rem;
+    margin: 0 auto var(--spacing-xl);
+  }
+
+  .about-card{
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  .about-card h3{
+    margin-top: 0;
+    font-size: 1.15rem;
+  }
+  .about-card ul{
+    margin: 0;
+    padding-left: 1.2em;
+  }
+  .about-card li{
+    margin-bottom: 4px;
+  }
+  .about-card li:last-child{
+    margin-bottom: 0;
+  }
+  .about-card p{
+    margin-bottom: 0;
+    color: var(--color-text-secondary);
+  }
+</style>
 
 {{ partial "footer.html" . }}
