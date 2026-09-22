@@ -116,7 +116,8 @@
     "weight": "880 g",
     "readingAge": "18 anos e acima",
     "dimensions": "15.5 x 22 x 4.5 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/old-boy-2.jpeg"
   },
   {
     "id": "old-boy-3",
@@ -135,7 +136,8 @@
     "weight": "860 g",
     "readingAge": "18 anos e acima",
     "dimensions": "15.5 x 22 x 4.5 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/old-boy-3.jpeg"
   },
   {
     "id": "gannibal-vila-de-canibais-1",
@@ -876,7 +878,8 @@
     "weight": "1,04 Kilograms",
     "readingAge": "18 anos e acima",
     "dimensions": "15.5 x 22 x 5 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/old-boy-1.jpeg"
   },
   {
     "id": "ptsd-radio-frequencias-do-terror-3",
