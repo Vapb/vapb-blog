@@ -384,7 +384,8 @@
     "weight": "680 g",
     "readingAge": null,
     "dimensions": "17 x 2 x 26 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/ed-gein.jpeg"
   },
   {
     "id": "wytches",
@@ -422,7 +423,8 @@
     "weight": "240 g",
     "readingAge": "18 anos e acima",
     "dimensions": "16 x 1 x 23 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/a-floresta.jpeg"
   },
   {
     "id": "cinema-panopticum",
@@ -441,7 +443,8 @@
     "weight": "500 g",
     "readingAge": null,
     "dimensions": "16 x 1.5 x 23 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/cinema-panopticum.jpeg"
   },
   {
     "id": "o-numero-73304-23-4153-6-96-8",
@@ -460,7 +463,8 @@
     "weight": "320 g",
     "readingAge": "18 anos e acima",
     "dimensions": "16 x 1.5 x 23 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/o-numero.jpeg"
   },
   {
     "id": "the-boys-6",
@@ -498,7 +502,8 @@
     "weight": "560 g",
     "readingAge": "14 anos e acima",
     "dimensions": "15.5 x 3 x 22 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/ptsd-radio-1.jpeg"
   },
   {
     "id": "fundamentos-da-qualidade-de-dados-guia-pratico-para-criar-pipelines-de-dados-confiaveis",
@@ -898,7 +903,8 @@
     "weight": "620 g",
     "readingAge": null,
     "dimensions": "15.5 x 3 x 22 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/ptsd-radio-3.jpeg"
   },
   {
     "id": "ptsd-radio-frequencias-do-terror-2",
@@ -917,7 +923,8 @@
     "weight": "560 g",
     "readingAge": null,
     "dimensions": "15.5 x 3 x 22 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/ptsd-radio-2.jpeg"
   },
   {
     "id": "rev-hideout-1",
