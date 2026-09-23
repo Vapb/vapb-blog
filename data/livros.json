@@ -156,7 +156,8 @@
     "weight": "300 g",
     "readingAge": "18 anos e acima",
     "dimensions": "20 x 13.7 x 2 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/gannibal-1.jpeg"
   },
   {
     "id": "manga-of-the-dead",
@@ -175,7 +176,8 @@
     "weight": "320 g",
     "readingAge": "18 anos e acima",
     "dimensions": "20.8 x 14.4 x 1 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/manga-of-the-dead.jpeg"
   },
   {
     "id": "black-paradox",
@@ -194,7 +196,8 @@
     "weight": "380 g",
     "readingAge": "14 anos e acima",
     "dimensions": "15 x 1.6 x 21 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/black-paradox.jpeg"
   },
   {
     "id": "death-note-black-edition-2",
@@ -213,7 +216,8 @@
     "weight": "600 g",
     "readingAge": "16 anos e acima",
     "dimensions": "20.4 x 13.6 x 2.6 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/death-note-2.jpeg"
   },
   {
     "id": "happyland",
@@ -943,7 +947,8 @@
     "weight": "370 g",
     "readingAge": null,
     "dimensions": "19.8 x 13.4 x 1.4 cm",
-    "shelf": "mangas-hq"
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/rev-hideout-1.jpeg"
   },
   {
     "id": "data-science-do-zero-primeiras-regras-com-o-python",
@@ -982,5 +987,25 @@
     "readingAge": null,
     "dimensions": "17 x 2 x 26 cm",
     "shelf": "mangas-hq"
+  },
+  {
+    "id": "gannibal-vila-de-canibais-5",
+    "title": "Gannibal: Vila de Canibais - Volume 05",
+    "url": "https://www.amazon.com.br/Gannibal-Vila-Canibais-Masaaki-Ninomiya/dp/6583627175",
+    "imageUrl": "https://m.media-amazon.com/images/I/81GL7o459lL._SL1500_.jpg",
+    "author": "Masaaki Ninomiya",
+    "series": "Gannibal: Vila de Canibais",
+    "publisher": "Editora MPEG",
+    "publishedDate": "10 setembro 2025",
+    "edition": "Primeira edição",
+    "language": "Português",
+    "pages": "192 páginas",
+    "isbn10": "6583627175",
+    "isbn13": "978-6583627179",
+    "weight": "280 g",
+    "readingAge": "18 anos e acima",
+    "dimensions": "13 x 20 x 1 cm",
+    "shelf": "mangas-hq",
+    "spineImageUrl": "images/estante/gannibal-5.jpeg"
   }
 ]
