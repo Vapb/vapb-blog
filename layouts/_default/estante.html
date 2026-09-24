@@ -311,12 +311,13 @@
   var ALL_BOOKS = {{ .Site.Data.livros | jsonify | safeJS }};
 
   var SHELF_META = {
-    "mangas-hq": { label: "Mangás & HQs",   icon: "📚" },
+    "mangas":    { label: "Mangás",         icon: "📚" },
+    "hqs":       { label: "HQs",            icon: "🦸" },
     "exatas":    { label: "Exatas & Dados", icon: "📐" },
     "terror":    { label: "Terror",         icon: "👻" },
     "random":    { label: "Random",         icon: "🎲" }
   };
-  var SHELF_ORDER = ["mangas-hq", "exatas", "terror", "random"];
+  var SHELF_ORDER = ["mangas", "hqs", "exatas", "terror", "random"];
 
   var byShelf = {};
   ALL_BOOKS.forEach(function(b){
