@@ -1,7 +1,7 @@
 [
   {
     "id": "parasyte-full-color-1",
-    "title": "Parasyte Full Color Vol. 01",
+    "title": "Parasyte Full Color Volume 1",
     "url": "https://www.amazon.com.br/Parasyte-Full-Color-Vol-01/dp/6555946253/",
     "imageUrl": "https://m.media-amazon.com/images/I/61Oo2a1Il0L._SL1000_.jpg",
     "author": "Hitoshi Iwaaki",
@@ -21,7 +21,7 @@
   },
   {
     "id": "parasyte-full-color-2",
-    "title": "Parasyte Full Color Vol. 02",
+    "title": "Parasyte Full Color Volume 2",
     "url": "https://www.amazon.com.br/Parasyte-Full-Color-Vol-02/dp/6555947071",
     "imageUrl": "https://m.media-amazon.com/images/I/61IeU4SjHML._SL1000_.jpg",
     "author": "Hitoshi Iwaaki",
@@ -41,7 +41,7 @@
   },
   {
     "id": "parasyte-full-color-3",
-    "title": "Parasyte Full Color Vol. 03",
+    "title": "Parasyte Full Color Volume 3",
     "url": "https://www.amazon.com.br/Parasyte-Full-Color-Vol-03/dp/6555947845/",
     "imageUrl": "https://m.media-amazon.com/images/I/71fH9Lk980L._SL1500_.jpg",
     "author": "Hitoshi Iwaaki",
@@ -61,7 +61,7 @@
   },
   {
     "id": "parasyte-full-color-4",
-    "title": "Parasyte Full Color Vol. 04",
+    "title": "Parasyte Full Color Volume 4",
     "url": "https://www.amazon.com.br/Parasyte-Full-Color-Vol-04/dp/655594885X/",
     "imageUrl": "https://m.media-amazon.com/images/I/7147cwcwu6L._SL1500_.jpg",
     "author": "Hitoshi Iwaaki",
@@ -81,7 +81,7 @@
   },
   {
     "id": "parasyte-full-color-5",
-    "title": "Parasyte Full Color Vol. 05",
+    "title": "Parasyte Full Color Volume 5",
     "url": "https://www.amazon.com.br/Parasyte-Full-Color-Vol-05/dp/6555949732/",
     "imageUrl": "https://m.media-amazon.com/images/I/71Ml8RwhOrL._SL1500_.jpg",
     "author": "Hitoshi Iwaaki",
@@ -101,7 +101,7 @@
   },
   {
     "id": "old-boy-2",
-    "title": "Old Boy Vol. 2",
+    "title": "Old Boy Volume 2",
     "url": "https://www.amazon.com.br/Old-Boy-mang%C3%A1-2-3/dp/6501360552",
     "imageUrl": "https://m.media-amazon.com/images/I/81l9WQyigxL._SL1500_.jpg",
     "author": "Garon Tsuchiya",
@@ -121,7 +121,7 @@
   },
   {
     "id": "old-boy-3",
-    "title": "Old Boy Vol. 3",
+    "title": "Old Boy Volume 3",
     "url": "https://www.amazon.com.br/Old-Boy-mang%C3%A1-3/dp/6501379563",
     "imageUrl": "https://m.media-amazon.com/images/I/81tLIsqahcL._SL1500_.jpg",
     "author": "Garon Tsuchiya",
@@ -165,7 +165,7 @@
     "url": "https://www.amazon.com.br/Mang%C3%A1-Dead-V%C3%A1rios-Autores/dp/8577877736",
     "imageUrl": "https://m.media-amazon.com/images/I/712fym7QIrL._SL1000_.jpg",
     "author": "Terada Katsuya",
-    "series": null,
+    "series": "Mangá of the Dead",
     "publisher": "Editora JBC",
     "publishedDate": "1 junho 2014",
     "edition": "1ª",
@@ -240,7 +240,7 @@
   },
   {
     "id": "cidade-das-lapides",
-    "title": "Cidade das Lápides (Com 4 cards exclusivos)",
+    "title": "Cidade das Lápides",
     "url": "https://www.amazon.com.br/Cidade-L%C3%A1pides-acompanha-cards-exclusivos/dp/6589912807",
     "imageUrl": "https://m.media-amazon.com/images/I/A18rNbdudrL._SL1500_.jpg",
     "author": "Junji Ito",
@@ -259,7 +259,7 @@
   },
   {
     "id": "as-esculturas-sem-cabeca-com-4-cards-exclusivos",
-    "title": "As Esculturas sem Cabeça (Com 4 cards exclusivos)",
+    "title": "As Esculturas sem Cabeça",
     "url": "https://www.amazon.com.br/Esculturas-Cabe%C3%A7a-acompanha-cards-exclusivos/dp/655448003X",
     "imageUrl": "https://m.media-amazon.com/images/I/91xHqQ4dRBL._SL1500_.jpg",
     "author": "Junji Ito",
@@ -278,7 +278,7 @@
   },
   {
     "id": "monster-kanzenban-4",
-    "title": "Monster Kanzenban Vol. 4",
+    "title": "Monster Kanzenban Volume 4",
     "url": "https://www.amazon.com.br/Monster-Kanzenban-Vol-Capa-Dura/dp/6555121254",
     "imageUrl": "https://m.media-amazon.com/images/I/81PL5VLbg3L._SL1500_.jpg",
     "author": "Naoki Urasawa",
@@ -297,7 +297,7 @@
   },
   {
     "id": "battle-royale-omnibus-5",
-    "title": "Battle Royale Omnibus (Vol. 5 de 5 – Com 4 cards exclusivos + deckbox)",
+    "title": "Battle Royale Omnibus Volume 5",
     "url": "https://www.amazon.com.br/Battle-Royale-Omnibus-Vol-exclusivos/dp/6554480714",
     "imageUrl": "https://m.media-amazon.com/images/I/81nXnlZpZLL._SL1500_.jpg",
     "author": "Masayuki Taguchi",
@@ -316,7 +316,7 @@
   },
   {
     "id": "joe-hill-dark-collection",
-    "title": "Joe Hill Dark Collection v. 2",
+    "title": "Joe Hill Dark Collection Volume 2",
     "url": "https://www.amazon.com.br/Joe-Hill-Dark-Collection-v/dp/6555984848",
     "imageUrl": "https://m.media-amazon.com/images/I/81dnA7P0JUL._SL1500_.jpg",
     "author": "Joe Hill",
@@ -336,7 +336,7 @@
   },
   {
     "id": "joe-hill-dark-collection-2",
-    "title": "Joe Hill Dark Collection v. 1: A Capa",
+    "title": "Joe Hill Dark Collection Volume 1: A Capa",
     "url": "https://www.amazon.com.br/Joe-Hill-Dark-Collection-v/dp/8594542127",
     "imageUrl": "https://m.media-amazon.com/images/I/81rsljVY10L._SL1500_.jpg",
     "author": "Joe Hill",
@@ -476,7 +476,7 @@
   },
   {
     "id": "the-boys-6",
-    "title": "The Boys volume 6: A sociedade da autopreservação (reimpressão)",
+    "title": "The Boys Volume 6: A sociedade da autopreservação (reimpressão)",
     "url": "https://www.amazon.com.br/Boys-6-Sociedade-Autopreserva%C3%A7%C3%A3o/dp/6555140305",
     "imageUrl": "https://m.media-amazon.com/images/I/A10CmnX--6L._SL1500_.jpg",
     "author": "Garth Ennis",
@@ -495,7 +495,7 @@
   },
   {
     "id": "ptsd-radio-frequencias-do-terror-1",
-    "title": "PTSD Radio: Frequências do Terror (Mangá vol. 1 de 3)",
+    "title": "PTSD Radio: Frequências do Terror (Volume 1)",
     "url": "https://www.amazon.com.br/PTSD-Radio-Frequ%C3%AAncias-Terror-Mang%C3%A1-ebook/dp/B0DZY47S6T",
     "imageUrl": "https://m.media-amazon.com/images/I/81XkdI0RwWL._SL1500_.jpg",
     "author": "Masaaki Nakayama",
@@ -731,7 +731,7 @@
   },
   {
     "id": "casas-estranhas-1",
-    "title": "Casas estranhas: Casas estranhas Vol. 1",
+    "title": "Casas estranhas: Casas estranhas Volume 1",
     "url": "https://www.amazon.com.br/Casas-estranhas-Vol/dp/8551013130",
     "imageUrl": "https://m.media-amazon.com/images/I/81-m2B4F9hL._SL1500_.jpg",
     "author": "Uketsu",
@@ -864,11 +864,11 @@
   },
   {
     "id": "shigurui-frenesi-da-morte-1",
-    "title": "Shigurui: Frenesi da Morte (Mangá - Vol. 1 de 10)",
+    "title": "Shigurui: Frenesi da Morte (Volume 1)",
     "url": "https://www.amazon.com.br/Shigurui-Frenesi-Morte-Mang%C3%A1-Vol/dp/6554482628",
     "imageUrl": "https://m.media-amazon.com/images/I/81eho649oSL._SL1500_.jpg",
     "author": "Takayuki Yamaguchi",
-    "series": null,
+    "series": "Shigurui: Frenesi da Morte",
     "publisher": "Pipoca e Nanquim",
     "publishedDate": "24 julho 2025",
     "edition": "1ª",
@@ -883,7 +883,7 @@
   },
   {
     "id": "old-boy-1",
-    "title": "Old Boy Vol. 1",
+    "title": "Old Boy Volume 1",
     "url": "https://www.amazon.com.br/Old-Boy-mang%C3%A1-1-3/dp/650130315X",
     "imageUrl": "https://m.media-amazon.com/images/I/81nz6oawd-L._SL1500_.jpg",
     "author": "Garon Tsuchiya",
@@ -903,11 +903,11 @@
   },
   {
     "id": "ptsd-radio-frequencias-do-terror-3",
-    "title": "PTSD Radio: Frequências do Terror (Mangá - Vol. 3 de 3)",
+    "title": "PTSD Radio: Frequências do Terror (Volume 3)",
     "url": "https://www.amazon.com.br/PTSD-Radio-Frequ%C3%AAncias-Terror-Mang%C3%A1/dp/6554482415",
     "imageUrl": "https://m.media-amazon.com/images/I/816dlUJE2BL._SL1500_.jpg",
     "author": "Masaaki Nakayama",
-    "series": null,
+    "series": "PTSD Radio: Frequências do Terror",
     "publisher": "Pipoca e Nanquim",
     "publishedDate": "24 agosto 2025",
     "edition": "1ª",
@@ -923,11 +923,11 @@
   },
   {
     "id": "ptsd-radio-frequencias-do-terror-2",
-    "title": "PTSD Radio: Frequências do Terror (Mangá - Vol. 2 de 3)",
+    "title": "PTSD Radio: Frequências do Terror (Volume 2)",
     "url": "https://www.amazon.com.br/PTSD-Radio-Frequ%C3%AAncias-Terror-Mang%C3%A1/dp/6554482644",
     "imageUrl": "https://m.media-amazon.com/images/I/81fbO-q69CL._SL1500_.jpg",
     "author": "Masaaki Nakayama",
-    "series": null,
+    "series": "PTSD Radio: Frequências do Terror",
     "publisher": "Pipoca e Nanquim",
     "publishedDate": "20 junho 2025",
     "edition": "1ª",
@@ -943,11 +943,11 @@
   },
   {
     "id": "rev-hideout-1",
-    "title": "Rev.Hideout - Vol 001",
+    "title": "Hideout",
     "url": "https://www.amazon.com.br/Rev-Hideout-Vol-001/dp/8542601734",
     "imageUrl": "https://m.media-amazon.com/images/I/81pAUFwoZ1L._SL1500_.jpg",
     "author": "MASASUMI KAKIZAKI",
-    "series": null,
+    "series": "Hideout",
     "publisher": "Panini",
     "publishedDate": "1 janeiro 2010",
     "edition": null,
@@ -987,7 +987,7 @@
     "url": "https://www.amazon.com.br/dp/6555980117",
     "imageUrl": "https://m.media-amazon.com/images/I/81EkJZlkD+L._SL1500_.jpg",
     "author": "Scott Snyder",
-    "series": null,
+    "series": "Separados",
     "publisher": "Darkside Books - Graphic Novel",
     "publishedDate": "30 setembro 2020",
     "edition": "1ª",
@@ -1003,7 +1003,7 @@
   },
   {
     "id": "gannibal-vila-de-canibais-5",
-    "title": "Gannibal: Vila de Canibais - Volume 05",
+    "title": "Gannibal: Vila de Canibais - Volume 5",
     "url": "https://www.amazon.com.br/Gannibal-Vila-Canibais-Masaaki-Ninomiya/dp/6583627175",
     "imageUrl": "https://m.media-amazon.com/images/I/81GL7o459lL._SL1500_.jpg",
     "author": "Masaaki Ninomiya",
