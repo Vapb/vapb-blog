@@ -4,6 +4,10 @@ defaultContentLanguageInSubdir = false
 languageCode = 'pt-br'
 title = 'VAPB BLOG'
 theme = 'vapb-theme'
+paginate = 20
+
+[pagination]
+  pagerSize = 20
 
 [languages]
   [languages.en]
