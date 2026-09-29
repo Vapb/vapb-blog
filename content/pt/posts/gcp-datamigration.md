@@ -5,14 +5,13 @@ description: "Os conceitos do Database Migration Service (DMS) do Google Cloud: 
 date: 2026-09-28
 tags: ["gcp", "mysql", "cloud-sql", "database"]
 toc: true
-draft: false
 ---
 
 ## Introdução
 
 Fiz uma sequência de labs do Google Cloud Skills Boost (skill badge **Migrate MySQL Data to Cloud SQL using Database Migration Service**) migrando MySQL de uma VM e de um Amazon RDS para o **Cloud SQL**. Em vez de documentar os labs, este post organiza **o que o Database Migration Service faz e como uma migração é montada**, do início ao fim.
 
-O fluxo usa MySQL como exemplo. No final tem uma comparação com o PostgreSQL, que ganhou [um post próprio]({{< relref "gcp-datamigration-postgresql.md" >}}).
+O fluxo usa MySQL como exemplo. No final tem uma comparação com o PostgreSQL, que vai ganhar um post próprio.
 
 Em uma frase, o fluxo é:
 
@@ -231,7 +230,7 @@ O fluxo no DMS é **o mesmo**: connection profile, migration job, conectividade,
 | **One-time** | Só o dump, sem requisitos de replicação | **Também exige o pglogical** |
 | **Pegadinha principal** | Retenção do binlog | Tabelas **sem primary key** não replicam `UPDATE`/`DELETE` |
 
-Em resumo: no MySQL o DMS aproveita um recurso que o banco já tem; no PostgreSQL, preparar a origem é boa parte do trabalho. Os detalhes estão no post [Database Migration Service com PostgreSQL]({{< relref "gcp-datamigration-postgresql.md" >}}).
+Em resumo: no MySQL o DMS aproveita um recurso que o banco já tem; no PostgreSQL, preparar a origem é boa parte do trabalho. Os detalhes vão ficar para um post próprio sobre PostgreSQL.
 
 ## Resumo
 
@@ -250,5 +249,3 @@ Em resumo: no MySQL o DMS aproveita um recurso que o banco já tem; no PostgreSQ
 - [Configure connectivity (MySQL)](https://cloud.google.com/database-migration/docs/mysql/configure-connectivity)
 - [Types of migration](https://cloud.google.com/database-migration/docs/mysql/migration-types)
 - [Cloud SQL for MySQL documentation](https://cloud.google.com/sql/docs/mysql)
-- [Database Migration Service com PostgreSQL]({{< relref "gcp-datamigration-postgresql.md" >}}), a continuação deste post
-- [Parte 1 da série de Data Engineering no Google Cloud]({{< relref "gcp-data-engineering-parte-1.md" >}}), onde o DMS aparece no contexto de replicação e migração
