@@ -5,7 +5,7 @@ description: "Os conceitos do Database Migration Service (DMS) do Google Cloud: 
 date: 2026-09-28
 tags: ["gcp", "mysql", "cloud-sql", "database"]
 toc: true
-draft: true
+draft: false
 ---
 
 ## Introdução
