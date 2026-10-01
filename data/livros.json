@@ -17,7 +17,7 @@
     "readingAge": "14 anos e acima",
     "dimensions": "15 x 2.2 x 21 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/parasyte-1.jpeg"
+    "pasta": "parasyte-1"
   },
   {
     "id": "parasyte-full-color-2",
@@ -37,7 +37,7 @@
     "readingAge": "14 anos e acima",
     "dimensions": "15 x 1.8 x 21 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/parasyte-2.jpeg"
+    "pasta": "parasyte-2"
   },
   {
     "id": "parasyte-full-color-3",
@@ -57,7 +57,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "15 x 2.3 x 21 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/parasyte-3.jpeg"
+    "pasta": "parasyte-3"
   },
   {
     "id": "parasyte-full-color-4",
@@ -77,7 +77,7 @@
     "readingAge": null,
     "dimensions": "21 x 1.8 x 15 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/parasyte-4.jpeg"
+    "pasta": "parasyte-4"
   },
   {
     "id": "parasyte-full-color-5",
@@ -97,7 +97,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "15 x 1.8 x 21 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/parasyte-5.jpeg"
+    "pasta": "parasyte-5"
   },
   {
     "id": "old-boy-2",
@@ -117,7 +117,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "15.5 x 22 x 4.5 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/old-boy-2.jpeg"
+    "pasta": "old-boy-2"
   },
   {
     "id": "old-boy-3",
@@ -137,7 +137,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "15.5 x 22 x 4.5 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/old-boy-3.jpeg"
+    "pasta": "old-boy-3"
   },
   {
     "id": "gannibal-vila-de-canibais-1",
@@ -157,7 +157,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "20 x 13.7 x 2 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/gannibal-1.jpeg"
+    "pasta": "gannibal-1"
   },
   {
     "id": "manga-of-the-dead",
@@ -177,7 +177,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "20.8 x 14.4 x 1 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/manga-of-the-dead.jpeg"
+    "pasta": "manga-of-the-dead"
   },
   {
     "id": "black-paradox",
@@ -197,7 +197,7 @@
     "readingAge": "14 anos e acima",
     "dimensions": "15 x 1.6 x 21 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/black-paradox.jpeg"
+    "pasta": "black-paradox"
   },
   {
     "id": "death-note-black-edition-2",
@@ -217,7 +217,7 @@
     "readingAge": "16 anos e acima",
     "dimensions": "20.4 x 13.6 x 2.6 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/death-note-2.jpeg"
+    "pasta": "death-note-2"
   },
   {
     "id": "happyland",
@@ -237,7 +237,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "13.5 x 2.7 x 20.5 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/happyland.jpeg"
+    "pasta": "happyland"
   },
   {
     "id": "cidade-das-lapides",
@@ -257,7 +257,7 @@
     "readingAge": null,
     "dimensions": "15.5 x 5 x 22 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/cidade-lapides.jpeg"
+    "pasta": "cidade-lapides"
   },
   {
     "id": "as-esculturas-sem-cabeca-com-4-cards-exclusivos",
@@ -277,7 +277,7 @@
     "readingAge": null,
     "dimensions": "15.5 x 4.8 x 22 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/esculturas-sem-cabeca.jpeg"
+    "pasta": "esculturas-sem-cabeca"
   },
   {
     "id": "monster-kanzenban-4",
@@ -297,7 +297,7 @@
     "readingAge": "14 anos e acima",
     "dimensions": "21.8 x 15.6 x 4 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/monster-4.jpeg"
+    "pasta": "monster-4"
   },
   {
     "id": "battle-royale-omnibus-5",
@@ -317,7 +317,7 @@
     "readingAge": null,
     "dimensions": "15.5 x 6 x 22 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/battle-royale-5.jpeg"
+    "pasta": "battle-royale-5"
   },
   {
     "id": "joe-hill-dark-collection",
@@ -337,7 +337,7 @@
     "readingAge": "14 anos e acima",
     "dimensions": "17 x 3 x 26 cm",
     "shelf": "hqs",
-    "spineImageUrl": "images/estante/joe-hill-2.jpeg"
+    "pasta": "joe-hill-2"
   },
   {
     "id": "joe-hill-dark-collection-2",
@@ -357,7 +357,7 @@
     "readingAge": null,
     "dimensions": "17 x 2.5 x 26 cm",
     "shelf": "hqs",
-    "spineImageUrl": "images/estante/joe-hill-1.jpeg"
+    "pasta": "joe-hill-1"
   },
   {
     "id": "hailstone",
@@ -377,7 +377,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "17 x 2 x 26 cm",
     "shelf": "hqs",
-    "spineImageUrl": "images/estante/hailstone.jpeg"
+    "pasta": "hailstone"
   },
   {
     "id": "ed-gein",
@@ -397,7 +397,7 @@
     "readingAge": null,
     "dimensions": "17 x 2 x 26 cm",
     "shelf": "hqs",
-    "spineImageUrl": "images/estante/ed-gein.jpeg"
+    "pasta": "ed-gein"
   },
   {
     "id": "wytches",
@@ -417,7 +417,7 @@
     "readingAge": null,
     "dimensions": "26.6 x 17.4 x 1.6 cm",
     "shelf": "hqs",
-    "spineImageUrl": "images/estante/wytches.jpeg"
+    "pasta": "wytches"
   },
   {
     "id": "a-floresta",
@@ -437,7 +437,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "16 x 1 x 23 cm",
     "shelf": "hqs",
-    "spineImageUrl": "images/estante/a-floresta.jpeg"
+    "pasta": "a-floresta"
   },
   {
     "id": "cinema-panopticum",
@@ -457,7 +457,7 @@
     "readingAge": null,
     "dimensions": "16 x 1.5 x 23 cm",
     "shelf": "hqs",
-    "spineImageUrl": "images/estante/cinema-panopticum.jpeg"
+    "pasta": "cinema-panopticum"
   },
   {
     "id": "o-numero-73304-23-4153-6-96-8",
@@ -477,7 +477,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "16 x 1.5 x 23 cm",
     "shelf": "hqs",
-    "spineImageUrl": "images/estante/o-numero.jpeg"
+    "pasta": "o-numero"
   },
   {
     "id": "the-boys-6",
@@ -516,7 +516,7 @@
     "readingAge": "14 anos e acima",
     "dimensions": "15.5 x 3 x 22 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/ptsd-radio-1.jpeg"
+    "pasta": "ptsd-radio-1"
   },
   {
     "id": "fundamentos-da-qualidade-de-dados-guia-pratico-para-criar-pipelines-de-dados-confiaveis",
@@ -535,7 +535,13 @@
     "weight": "380 g",
     "readingAge": "12 anos e acima",
     "dimensions": "15.29 x 1.65 x 22.71 cm",
-    "shelf": "exatas"
+    "shelf": "exatas",
+    "status": "lendo",
+    "posts": [
+      "data-quality-fundamentals-cap1",
+      "data-quality-fundamentals-cap2",
+      "data-quality-fundamentals-cap3"
+    ]
   },
   {
     "id": "projetando-aplicacoes-com-uso-intensivo-de-dados-2a-edicao-os-pilares-para-construir-sistemas-confiaveis-escalaveis-e-faceis-de-manter",
@@ -555,7 +561,8 @@
     "readingAge": null,
     "dimensions": "2.6 x 17 x 23.7 cm",
     "shelf": "exatas",
-    "spineImageUrl": "images/estante/projetando-aplicacoes.jpeg"
+    "pasta": "projetando-aplicacoes",
+    "status": "fila"
   },
   {
     "id": "fundamentos-de-engenharia-de-dados-projete-e-construa-sistemas-de-dados-robustos",
@@ -575,7 +582,8 @@
     "readingAge": null,
     "dimensions": "2.5 x 17 x 23.5 cm",
     "shelf": "exatas",
-    "spineImageUrl": "images/estante/fundamentos-engenharia-dados.jpeg"
+    "pasta": "fundamentos-engenharia-dados",
+    "status": "fila"
   },
   {
     "id": "storytelling-com-dados-um-guia-sobre-visualizacao-de-dados-para-profissionais-de-negocios",
@@ -595,7 +603,7 @@
     "readingAge": "12 anos e acima",
     "dimensions": "16 x 2 x 23 cm",
     "shelf": "exatas",
-    "spineImageUrl": "images/estante/storytelling-com-dados.jpeg"
+    "pasta": "storytelling-com-dados"
   },
   {
     "id": "storytelling-com-dados-vamos-praticar",
@@ -615,7 +623,7 @@
     "readingAge": "12 anos e acima",
     "dimensions": "16 x 2 x 23 cm",
     "shelf": "exatas",
-    "spineImageUrl": "images/estante/storytelling-vamos-praticar.jpeg"
+    "pasta": "storytelling-vamos-praticar"
   },
   {
     "id": "como-mentir-com-estatistica",
@@ -673,7 +681,7 @@
     "readingAge": null,
     "dimensions": "17.8 x 1.4 x 23.5 cm",
     "shelf": "exatas",
-    "spineImageUrl": "images/estante/malware-data-science.jpeg"
+    "pasta": "malware-data-science"
   },
   {
     "id": "o-poder-do-pensamento-matematico-a-ciencia-de-como-nao-estar-errado",
@@ -693,7 +701,7 @@
     "readingAge": null,
     "dimensions": "23 x 15.8 x 3.2 cm",
     "shelf": "exatas",
-    "spineImageUrl": "images/estante/poder-pensamento-matematico.jpeg"
+    "pasta": "poder-pensamento-matematico"
   },
   {
     "id": "interactive-data-visualization-for-the-web-an-introduction-to-designing-with-d3-english-edition",
@@ -713,7 +721,7 @@
     "readingAge": null,
     "dimensions": null,
     "shelf": "exatas",
-    "spineImageUrl": "images/estante/interactive-data-visualization.jpeg"
+    "pasta": "interactive-data-visualization"
   },
   {
     "id": "o-vilarejo",
@@ -885,7 +893,7 @@
     "readingAge": null,
     "dimensions": "15.5 x 3 x 22 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/shigurui-1.jpeg"
+    "pasta": "shigurui-1"
   },
   {
     "id": "old-boy-1",
@@ -905,7 +913,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "15.5 x 22 x 5 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/old-boy-1.jpeg"
+    "pasta": "old-boy-1"
   },
   {
     "id": "ptsd-radio-frequencias-do-terror-3",
@@ -925,7 +933,7 @@
     "readingAge": null,
     "dimensions": "15.5 x 3 x 22 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/ptsd-radio-3.jpeg"
+    "pasta": "ptsd-radio-3"
   },
   {
     "id": "ptsd-radio-frequencias-do-terror-2",
@@ -945,7 +953,7 @@
     "readingAge": null,
     "dimensions": "15.5 x 3 x 22 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/ptsd-radio-2.jpeg"
+    "pasta": "ptsd-radio-2"
   },
   {
     "id": "rev-hideout-1",
@@ -965,7 +973,7 @@
     "readingAge": null,
     "dimensions": "19.8 x 13.4 x 1.4 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/rev-hideout-1.jpeg"
+    "pasta": "rev-hideout-1"
   },
   {
     "id": "data-science-do-zero-primeiras-regras-com-o-python",
@@ -985,7 +993,7 @@
     "readingAge": null,
     "dimensions": "23.8 x 17 x 1.6 cm",
     "shelf": "exatas",
-    "spineImageUrl": "images/estante/data-science-do-zero.jpeg"
+    "pasta": "data-science-do-zero"
   },
   {
     "id": "separados",
@@ -1005,7 +1013,7 @@
     "readingAge": null,
     "dimensions": "17 x 2 x 26 cm",
     "shelf": "hqs",
-    "spineImageUrl": "images/estante/separados.jpeg"
+    "pasta": "separados"
   },
   {
     "id": "gannibal-vila-de-canibais-5",
@@ -1025,7 +1033,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "13 x 20 x 1 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/gannibal-5.jpeg"
+    "pasta": "gannibal-5"
   },
   {
     "id": "gannibal-vila-de-canibais-2",
@@ -1045,7 +1053,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "14 x 20 x 2 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/gannibal-2.jpeg"
+    "pasta": "gannibal-2"
   },
   {
     "id": "gannibal-vila-de-canibais-3",
@@ -1065,7 +1073,7 @@
     "readingAge": "18 anos e acima",
     "dimensions": "20 x 13.7 x 1 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/gannibal-3.jpeg"
+    "pasta": "gannibal-3"
   },
   {
     "id": "shigurui-frenesi-da-morte-2",
@@ -1085,7 +1093,11 @@
     "readingAge": null,
     "dimensions": "15.5 x 2.7 x 22 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/shigurui-2.jpeg"
+    "pasta": "shigurui-2",
+    "bookmark": {
+      "exclusive": true,
+      "note": "Brinde promocional da Pipoca & Nanquim"
+    }
   },
   {
     "id": "h-p-lovecraft-a-cor-que-caiu-do-espaco",
@@ -1105,6 +1117,6 @@
     "readingAge": "14 anos e acima",
     "dimensions": "15 x 1.6 x 21 cm",
     "shelf": "mangas",
-    "spineImageUrl": "images/estante/a-cor-que-caiu-do-espaco.jpeg"
+    "pasta": "a-cor-que-caiu-do-espaco"
   }
 ]
