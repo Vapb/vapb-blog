@@ -6,7 +6,7 @@
     <p class="estante-eyebrow">Protótipo · v0</p>
     <h2>Minha Estante</h2>
     <p class="estante-sub">Quer saber o que tem na minha estante? Uma mistura de <strong>mangás de terror</strong>, quadrinhos e livros dos mais variados assuntos. Sim, até <strong>livros de computação</strong> moram por aqui 😄. Esse é o meu pequeno catálogo.</p>
-    <p class="estante-sub">As lombadas ficam lado a lado como numa prateleira de verdade. Escolha uma categoria abaixo e passe o mouse (ou toque) numa lombada pra ver os detalhes.</p>
+    <p class="estante-sub">As lombadas ficam lado a lado como numa prateleira de verdade. Escolha uma categoria abaixo e clique (ou toque) numa lombada pra tirar o livro da prateleira.</p>
   </div>
 
   <div class="estante-tabs" id="estante-tabs"></div>
@@ -15,10 +15,6 @@
     <div class="estante-shelf-scroll">
       <div class="estante-rail" id="estante-rail"></div>
     </div>
-  </div>
-
-  <div class="estante-info" id="estante-info">
-    <span class="estante-info-placeholder">Passe o mouse (ou toque) numa lombada pra ver os detalhes.</span>
   </div>
 
   <p class="estante-note">
@@ -126,7 +122,9 @@
   .estante-shelf-scroll{
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 30px var(--spacing-md) 0;
+    /* overflow-x: auto força o corte vertical também; o topo precisa de folga
+       pro livro em foco (sobe 24px + scale 1.07 -- até ~52px no mais alto) */
+    padding: 60px var(--spacing-md) 0;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -355,70 +353,6 @@
     text-shadow: 0 1px 1px rgba(0,0,0,0.3);
     box-sizing: border-box;
   }
-  .estante-info{
-    margin-top: var(--spacing-md);
-    min-height: 74px;
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: 14px 16px;
-  }
-  .estante-info-placeholder{
-    align-self: center;
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-  }
-  .estante-info-cover{
-    flex: none;
-    width: 64px;
-    height: 92px;
-    border-radius: 4px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .estante-info-cover img{
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-  .estante-info .estante-info-text{
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    min-width: 0;
-  }
-  .estante-info .s{
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    color: var(--color-accent-primary);
-  }
-  .estante-info .t{
-    font-family: var(--font-reading);
-    font-weight: 700;
-    font-size: 1.05rem;
-  }
-  .estante-info .a{
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
-  }
-  .estante-info .p{
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-    font-variant-numeric: tabular-nums;
-  }
-  .estante-info .meta{
-    font-size: 0.72rem;
-    color: var(--color-text-muted);
-    line-height: 1.4;
-  }
-
   .estante-note{
     display: flex;
     gap: 10px;
@@ -437,21 +371,16 @@
     flex: none;
   }
 
-  /* painel: a capa gira e o texto entra em cascata a cada troca */
+  /* card do livro puxado: o texto entra em cascata depois que o card chega */
   @keyframes estanteInfoIn{
     from{ opacity: 0; transform: translateY(8px); }
     to{ opacity: 1; transform: none; }
   }
-  @keyframes estanteCoverIn{
-    from{ opacity: 0; transform: perspective(400px) rotateY(-50deg) scale(.85); }
-    to{ opacity: 1; transform: none; }
-  }
-  .estante-info.anim .estante-info-cover{ animation: estanteCoverIn .45s cubic-bezier(.2,.8,.3,1) both; }
-  .estante-info.anim .estante-info-text > *{ animation: estanteInfoIn .35s ease both; }
-  .estante-info.anim .estante-info-text > :nth-child(2){ animation-delay: .04s; }
-  .estante-info.anim .estante-info-text > :nth-child(3){ animation-delay: .08s; }
-  .estante-info.anim .estante-info-text > :nth-child(4){ animation-delay: .12s; }
-  .estante-info.anim .estante-info-text > :nth-child(5){ animation-delay: .16s; }
+  .estante-pull-info .estante-info-text > *{ animation: estanteInfoIn .35s ease .5s both; }
+  .estante-pull-info .estante-info-text > :nth-child(2){ animation-delay: .54s; }
+  .estante-pull-info .estante-info-text > :nth-child(3){ animation-delay: .58s; }
+  .estante-pull-info .estante-info-text > :nth-child(4){ animation-delay: .62s; }
+  .estante-pull-info .estante-info-text > :nth-child(5){ animation-delay: .66s; }
 
   @media (max-width: 480px){
     .estante-shelf-scroll{ padding-left: var(--spacing-sm); padding-right: var(--spacing-sm); }
@@ -469,8 +398,7 @@
   @media (prefers-reduced-motion: reduce){
     .estante-book,
     .estante-book.settled.scare,
-    .estante-info.anim .estante-info-cover,
-    .estante-info.anim .estante-info-text > *{
+    .estante-pull-info .estante-info-text > *{
       animation: none;
     }
     .estante-book,
@@ -534,9 +462,7 @@
 
   var tabsEl = document.getElementById('estante-tabs');
   var rail = document.getElementById('estante-rail');
-  var info = document.getElementById('estante-info');
   var wrap = rail.closest('.estante-shelf-wrap');
-  var placeholderHTML = info.innerHTML;
   var current = SHELVES[0];
   var pullState = null;
   var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -593,7 +519,7 @@
     return /^https?:\/\//i.test(url) ? url : (BASE_URL + url);
   }
 
-  // capa (imageUrl, vem da Amazon) só aparece no painel de detalhes; a lombada
+  // capa (imageUrl, vem da Amazon) só aparece quando o livro é puxado; a lombada
   // (spineImageUrl) só existe pros poucos livros com foto real da lombada que
   // eu tirei à mão -- os outros usam o placeholder colorido com texto vertical.
   function coverImageSrc(b){
@@ -610,8 +536,7 @@
     });
   }
 
-  // bloco de texto dos detalhes -- usado no painel de baixo (hover) e no card
-  // ao lado da capa quando o livro é puxado
+  // detalhes do livro, mostrados no card ao lado da capa quando ele é puxado
   function infoTextHTML(b){
     var meta = [];
     if(b.edition) meta.push("Edição " + b.edition);
@@ -627,27 +552,6 @@
         '<div class="p">' + escapeHtml(pagesLine(b)) + ' · ' + escapeHtml(b.publisher || '?') + (b.publishedDate ? ', ' + escapeHtml(b.publishedDate) : '') + '</div>' +
         (meta.length ? '<div class="meta">' + escapeHtml(meta.join(' · ')) + '</div>' : '') +
       '</div>';
-  }
-
-  function renderInfo(b){
-    var src = coverImageSrc(b);
-    var colors = pickColors(b.title || b.url);
-    var coverHTML = src
-      ? '<img src="' + src + '" alt="" referrerpolicy="no-referrer">'
-      : '';
-
-    info.innerHTML =
-      '<div class="estante-info-cover" style="background:' + colors[0] + '">' + coverHTML + '</div>' +
-      infoTextHTML(b);
-    // reinicia a animação de entrada do painel
-    info.classList.remove('anim');
-    void info.offsetWidth;
-    info.classList.add('anim');
-  }
-
-  function clearInfo(){
-    info.classList.remove('anim');
-    info.innerHTML = placeholderHTML;
   }
 
   function spawnDust(el){
@@ -759,14 +663,9 @@
       el.classList.add('settled');
       el.classList.remove('scare');
     });
-    // painel de baixo é só pro hover; com o livro puxado os detalhes ficam no
-    // card ao lado da capa
-    el.addEventListener('mouseenter', function(){ renderInfo(b); });
-    el.addEventListener('mouseleave', clearInfo);
     el.addEventListener('click', function(){
       var wasOpen = el.classList.contains('open');
       Array.prototype.slice.call(rail.querySelectorAll('.estante-book.open')).forEach(function(o){ o.classList.remove('open'); });
-      clearInfo();
       if(wasOpen){
         closePull();
         return;
@@ -782,7 +681,6 @@
   function fillRail(shelf){
     closePull(true);
     rail.innerHTML = '';
-    clearInfo();
     shelf.books.forEach(function(b, i){
       rail.appendChild(buildBook(b, i));
     });
