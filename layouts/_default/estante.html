@@ -155,7 +155,7 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* ferramentas: atalho "Lendo agora", busca e som */
+  /* ferramentas: busca, coleção e som */
   .estante-tools{
     display: flex;
     flex-wrap: wrap;
@@ -166,32 +166,6 @@
   }
   .estante-tools:empty{
     display: none;
-  }
-  .estante-reading{
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: inherit;
-    cursor: pointer;
-    padding: 5px 12px 5px 9px;
-    border-radius: 999px;
-    font-size: .76rem;
-    font-weight: 600;
-    border: 1px solid color-mix(in srgb, var(--color-accent-primary) 50%, transparent);
-    background: color-mix(in srgb, var(--color-accent-primary) 12%, transparent);
-    color: var(--color-text-primary);
-  }
-  .estante-reading::before{
-    content: "";
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--color-accent-primary);
-    animation: estantePulse 2s infinite;
-  }
-  @keyframes estantePulse{
-    0%{ box-shadow: 0 0 0 0 var(--color-accent-primary); }
-    70%, 100%{ box-shadow: 0 0 0 7px transparent; }
   }
 
   .estante-search{
@@ -545,28 +519,6 @@
   .estante-plate.on{
     opacity: 1;
     transform: translate(-50%, 0);
-  }
-
-  /* fita marcadora: vermelha = lendo, cinza = na fila */
-  .estante-ribbon{
-    position: absolute;
-    top: -18px;
-    left: 50%;
-    width: 7px;
-    height: 30px;
-    margin-left: -3.5px;
-    background: linear-gradient(90deg, #8f1d1d, #c93a3a 50%, #8f1d1d);
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
-    transform-origin: 50% 100%;
-    transition: transform .4s cubic-bezier(.3,.8,.3,1.4);
-  }
-  .estante-ribbon.fila{
-    background: linear-gradient(90deg, #4b5563, #8b95a5 50%, #4b5563);
-    height: 24px;
-    top: -12px;
-  }
-  .estante-book:hover .estante-ribbon{
-    transform: rotate(-8deg) translateY(-3px);
   }
 
   /* susto: de vez em quando um livro aleatório treme e pisca */
@@ -964,11 +916,6 @@
     background: rgba(201,58,58,.16);
     color: #ff9b9b;
     border: 1px solid rgba(201,58,58,.35);
-  }
-  .estante-badge.fila{
-    background: rgba(139,149,165,.14);
-    color: #c3cad6;
-    border-color: rgba(139,149,165,.35);
   }
   .estante-badge.fake{
     background: rgba(255,200,40,.12);
@@ -1683,7 +1630,6 @@
     .estante-book,
     .estante-book.settled.scare,
     .estante-card > *,
-    .estante-reading::before,
     .estante-sound.on .estante-eq i,
     .estante-bmc-mini .estante-bm,
     .estante-pos.estante-tremble,
@@ -1723,8 +1669,8 @@
   // Estrutura achatada vinda direto do scraper: dimensions/pages ficam como
   // string crua da Amazon ("21 x 1.8 x 15 cm") e são parseadas aqui na hora
   // de desenhar a lombada e o livro 3D (ver dims()). Campos curados à mão:
-  // pasta, bookmark, status ("lendo" | "fila") e posts. As fotos vêm de
-  // FOTOS (ver aplicaFotos).
+  // pasta, bookmark, colecionavel e posts. As fotos vêm de FOTOS (ver
+  // aplicaFotos).
   var ALL_BOOKS = {{ .Site.Data.livros | jsonify | safeJS }};
   var POSTS = {{ $posts | jsonify | safeJS }};
   var FOTOS = {{ $fotos | jsonify | safeJS }};
@@ -1763,7 +1709,6 @@
     "random":    { label: "Random",         icon: "🎲" }
   };
   var SHELF_ORDER = ["mangas", "hqs", "exatas", "terror", "random"];
-  var STATUS_LABEL = { lendo: "Lendo agora", fila: "Na fila" };
 
   var BASE_URL = "{{ "" | relURL }}";
   var PX_PER_MM = 1.5;
@@ -2350,11 +2295,6 @@
       spine.appendChild(t);
     }
 
-    if(STATUS_LABEL[b.status]){
-      var ribbon = document.createElement('span');
-      ribbon.className = 'estante-ribbon ' + b.status;
-      el.appendChild(ribbon);
-    }
     el.appendChild(spine);
 
     el.addEventListener('animationend', function(e){
@@ -2495,7 +2435,7 @@
       '<div class="xl-k">Ex Libris</div>' + SKULL_SVG +
       '<div class="xl-n">vapb</div>' +
       '<div class="xl-r">Nº ' + (ALL_BOOKS.indexOf(b) + 1) + ' de ' + ALL_BOOKS.length + '</div>' +
-      '<div class="xl-r">' + escapeHtml((SHELF_META[b.shelf] || {}).label || '') + ' · ' + (STATUS_LABEL[b.status] || 'Na estante') + '</div>' +
+      '<div class="xl-r">' + escapeHtml((SHELF_META[b.shelf] || {}).label || '') + '</div>' +
     '</div></div>';
   }
 
@@ -2612,7 +2552,6 @@
     parts.push('<button type="button" class="estante-x" aria-label="Fechar">×</button>');
     var badges = '';
     if(b.fake) badges += '<span class="estante-badge fake">Não é da coleção</span>';
-    if(STATUS_LABEL[b.status]) badges += '<span class="estante-badge ' + b.status + '">' + STATUS_LABEL[b.status] + '</span>';
     if(badges) add('<div>' + badges + '</div>');
     if(b.series) add('<div class="s">' + escapeHtml(b.series) + '</div>');
     add('<div class="t">' + escapeHtml(b.title) + '</div>');
@@ -3207,7 +3146,7 @@
     if(ov.trigger) ov.trigger.focus({ preventScroll: true });
   }
 
-  // troca pra prateleira do livro e puxa ele ("Lendo agora", "Ver o livro")
+  // troca pra prateleira do livro e puxa ele ("Ver o livro" da coleção)
   function openById(id){
     var b = ALL_BOOKS.filter(function(x){ return x.id === id; })[0];
     if(!b) return;
@@ -3403,17 +3342,8 @@
     }
   }
 
-  // atalho "Lendo agora: ..." pra cada livro com status "lendo"
+  // busca, atalho pra coleção e botão de som
   function renderTools(){
-    ALL_BOOKS.filter(function(b){ return b.status === 'lendo'; }).forEach(function(b){
-      var chip = document.createElement('button');
-      chip.type = 'button';
-      chip.className = 'estante-reading';
-      chip.textContent = 'Lendo agora: ' + b.title.split(':')[0];
-      chip.addEventListener('click', function(){ openById(b.id); });
-      toolsEl.appendChild(chip);
-    });
-
     var box = document.createElement('label');
     box.className = 'estante-search';
     box.innerHTML = '<span aria-hidden="true">⌕</span><input type="search" placeholder="Buscar título, autor, série…" aria-label="Buscar na estante"><small aria-live="polite"></small>';
