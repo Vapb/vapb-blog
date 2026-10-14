@@ -21,65 +21,25 @@ Nesta primeira parte: **o que é um lakehouse e quais peças o formam**.
 
 ## Módulo 1: Introdução à engenharia de dados moderna no Google Cloud
 
-### Os clássicos: data lake e data warehouse
+> **Conceitos gerais:** a comparação completa entre DW, DL e lakehouse (vantagens, desvantagens, data silos e por que o lakehouse surgiu) está em [Data Warehouse, Data Lake e Lakehouse]({{< relref "dw-dl-lakehouse.md" >}}). Aqui ficam só as anotações do curso.
 
-Por anos, as empresas se apoiaram em dois modelos principais para armazenar dados em larga escala: **data lakes** e **data warehouses**. Eles têm propósitos diferentes e são otimizados para tipos de dados e cargas de trabalho diferentes.
+### Lake vs. warehouse (resumo do curso)
 
-#### Data lake
+- **Data lake**: dado bruto em qualquer formato, **schema-on-read**. Bom para exploração e ML (ex.: a Cymbal, e-commerce fictício do curso, treina recomendação com o clickstream original). Risco: *data swamp*.
+- **Data warehouse**: dado limpo e estruturado antes de gravar, **schema-on-write**. Bom para BI com métricas já definidas (ex.: *customer lifetime value*, vendas diárias). Risco: inflexível e caro.
+- Ficar preso a um só modelo não cobre todas as necessidades.
 
-Pense em um data lake como um **grande reservatório**: ele guarda enormes volumes de dados brutos, no formato original. Cabe qualquer coisa:
+### Lakehouse no Google Cloud
 
-1. **Dados estruturados**: tabelas de transações do banco de vendas.
-2. **Dados semiestruturados**: logs JSON dos servidores web.
-3. **Dados não estruturados**: imagens, vídeos e reviews de produtos enviados pelos clientes.
+- Plataforma única para BI, ciência de dados e IA **sem mover nem duplicar dados**: camada de metadados e governança sobre arquivos abertos (**Parquet, ORC, Avro**) em object storage.
+- Resolve o **silo** da Cymbal: vendas no warehouse, reviews no lake. Uma única query cruza sentimento das reviews com tendência de vendas.
+- Implementado com o **Lakehouse**, que aplica governança e motor de queries do **BigQuery** sobre dados no Google Cloud ou em outras clouds.
 
-A premissa é *"guarde tudo agora, descubra como usar depois"*. A estrutura é aplicada **na leitura** (**schema-on-read**), não na escrita. Isso torna o data lake ideal para exploração, machine learning e processamento de big data. Os cientistas de dados da Cymbal (e-commerce fictício usado nos exemplos do curso), por exemplo, precisam do clickstream original, sem alterações, para treinar um novo motor de recomendação.
+### Escolhendo a arquitetura
 
-| Vantagens | Desvantagens |
-|---|---|
-| **Flexibilidade**: armazena qualquer tipo de dado | **Risco de virar um "data swamp"**: sem governança, vira um amontoado inutilizável |
-| **Agilidade**: ingestão rápida | **Complexidade de gestão**: exige bastante esforço para manter |
-| **Escalabilidade**: chega à escala de exabytes | **Análise demorada**: os dados precisam ser limpos antes de serem úteis |
-| **Custo baixo**: usa object storage barato | **Riscos de segurança**: dados brutos aumentam riscos de compliance |
-| **Suporte a analytics avançado**: ideal para treinar modelos de IA/ML | |
-
-#### Data warehouse
-
-Já o data warehouse é como uma **biblioteca muito bem organizada**: os dados são limpos, transformados e estruturados **antes** de serem armazenados (**schema-on-write**), já otimizados para análise e BI.
-
-A premissa é *"estrutura e qualidade primeiro"*: o uso dos dados precisa estar definido antes do warehouse ser desenhado. Na Cymbal, métricas como *customer lifetime value* e vendas diárias já estão definidas, e o warehouse é construído para responder a elas de forma rápida e precisa.
-
-| Vantagens | Desvantagens |
-|---|---|
-| **Velocidade**: otimizado para queries de alta performance | **Inflexibilidade**: não acomoda bem novos tipos de dados ou dados não estruturados |
-| **Dados de alta qualidade**: informação consistente e confiável | **Custo**: caro para construir e manter |
-| **Foco no negócio**: responde diretamente às perguntas do dia a dia | **Tipos de dados limitados**: pensado basicamente para dados estruturados |
-| **Inteligência histórica**: análise profunda de tendências | **Desenvolvimento longo**: leva tempo para desenhar e implementar |
-
-**Ficar preso a um só modelo é complicado, porque nenhum dos dois cobre bem todas as necessidades de dados de uma empresa.**
-
-### A abordagem moderna: data lakehouse
-
-Como os dois modelos são complementares, o ideal é juntar **a flexibilidade e o custo baixo do data lake** com **a velocidade e a precisão do data warehouse**. Daí nasce o **data lakehouse**.
-
-A ideia é ter **uma plataforma única** que atenda BI tradicional, ciência de dados e IA **sem mover nem duplicar dados**. Isso é feito com uma **camada de metadados e governança** sobre arquivos em formato aberto guardados em object storage barato, como o Cloud Storage.
-
-Para a Cymbal, o lakehouse resolve um problema clássico: **silos de dados**. Antes, as vendas ficavam no warehouse e as reviews dos clientes no data lake, e analisar as duas juntas era difícil. Com o lakehouse, uma única query consegue cruzar o sentimento das reviews com as tendências de venda.
-
-No Google Cloud, isso é implementado com o **Lakehouse**, que aplica a governança e o motor de queries do BigQuery sobre dados no Google Cloud ou até em outras clouds, usando formatos abertos como **Parquet, ORC e Avro**.
-
-Benefícios:
-
-- Menos redundância de dados
-- Governança unificada
-- Fim dos silos
-- Mais flexibilidade e escalabilidade
-
-### Escolhendo a arquitetura certa
-
-- **Data warehouse (BigQuery)**: quando o foco é BI interativo e rápido sobre dados estruturados de negócio, como o time de finanças da Cymbal.
-- **Data lake (Cloud Storage)**: armazenamento inicial e barato de grandes volumes de dados brutos, ideal para P&D de IA/ML, quando o uso final ainda não está definido.
-- **Data lakehouse (BigQuery + Lakehouse)**: quando é preciso fazer tudo, BI, IA e ciência de dados, sobre **uma única cópia governada** dos dados.
+- **DW (BigQuery)**: BI interativo sobre dados estruturados (finanças).
+- **DL (Cloud Storage)**: armazenamento bruto e barato, uso final indefinido (P&D de IA/ML).
+- **Lakehouse (BigQuery + Lakehouse)**: BI, IA e ciência de dados sobre **uma única cópia governada**.
 
 ## Módulo 2: Construindo um data lakehouse com Cloud Storage, formatos abertos e BigQuery
 

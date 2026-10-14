@@ -33,102 +33,35 @@ Isso acontece porque sistemas de processamento de dados são construídos com um
 
 Bancos de dados **operacionais** (transacionais) precisam buscar informação como detalhes de um pedido o mais rápido possível na hora de carregar uma página, então são otimizados para baixa latência. Bancos **analíticos** atendem usuários rodando agregações grandes sobre volumes massivos de dados, então são otimizados para alto throughput. **Por isso não se consulta o Snowflake a partir da UI de um cliente, nem se roda agregações de trilhões de linhas no Postgres.**
 
-## Data Warehouses vs. Data Lakes
+## Data Warehouses vs. Data Lakes vs. Lakehouses
 
-**Data warehouse** e **data lake** não são intercambiáveis, mas estão convergindo rapidamente, cada um incorporando o melhor do outro. **Muitas empresas precisam dos dois dentro do mesmo pipeline, só que para propósitos bem diferentes.**
+**Data warehouse** e **data lake** não são intercambiáveis, mas estão convergindo, cada um incorporando o melhor do outro. **Muitas empresas precisam dos dois dentro do mesmo pipeline, só que para propósitos bem diferentes.**
 
-Um data warehouse guarda dados num formato estruturado (linhas e colunas). Esse dado já passou por transformação e só está ali por ter uma razão definida de existir, ao menos em teoria. Um data lake, por outro lado, guarda qualquer coisa: dado estruturado, semiestruturado ou não estruturado, sem exigir um procedimento rígido de entrada. É possível jogar praticamente qualquer formato num lake e acessá-lo diretamente. **O resultado costuma ser um sistema de volume maior e com governança mais complexa do que um warehouse.**
+> **Conceitos gerais:** a explicação completa de cada arquitetura, tecnologias e por que o lakehouse surgiu está em [Data Warehouse, Data Lake e Lakehouse]({{< relref "dw-dl-lakehouse.md" >}}). Abaixo ficam só os pontos do livro sobre **qualidade de dados**.
 
 ### Data warehouses: schema-on-write
 
-Data warehouses exigem *schema-on-write*: a estrutura dos dados é definida no momento em que eles entram no warehouse, e qualquer transformação precisa deixar essa estrutura explícita. **São soluções totalmente gerenciadas e integradas, o que facilita a operação, mas em troca exige mais rigidez.**
-
-O conceito moderno de data warehouse remonta ao Kimball Group, que desenvolveu a Data Warehouse/Business Intelligence Lifecycle Methodology nos anos 1980, **tratando armazenamento de dados como ativo de negócio, não só preferência técnica.**
-
-Características comuns de data warehouses:
-1. **Solução totalmente gerenciada**: simples de montar e operar, sem precisar gerenciar a infraestrutura por baixo.
-2. **Mais estrutura força melhor higiene de dados**: o schema-on-write reduz a complexidade de leitura e consumo, às custas de mais rigidez na entrada.
-3. **Suporte forte a SQL**: favorece queries rápidas e acionáveis para times de analytics.
-4. **Integração pronta com ferramentas de BI**: soluções como Looker e Tableau se conectam nativamente.
-
-Desafios específicos de data warehouses para qualidade de dados:
-1. **Flexibilidade limitada**: dados precisam se encaixar num schema tabular definido; dados semiestruturados como JSON costumam ficar de fora.
-2. **Suporte só a SQL**: não há suporte nativo a linguagens imperativas como Python, então dados de ML frequentemente precisam sair do warehouse, e é justamente nessa movimentação que problemas de volume, atualidade e schema costumam aparecer.
-3. **Fluxos de trabalho engessados**: times pequenos iterando rápido podem achar o *schema-on-write* mais um obstáculo do que uma vantagem.
-
-Tecnologias atuais:
-
-| Tecnologia | Nuvem | Destaque |
-|---|---|---|
-| Amazon Redshift | AWS | O primeiro data warehouse na nuvem amplamente popular; armazenamento colunar e processamento paralelo |
-| Google BigQuery | Google Cloud | *Serverless*, escala conforme o uso |
-| Snowflake | AWS, Google, Azure | Permite pagar separadamente por computação e armazenamento |
+- Estrutura definida **na entrada**: mais rigidez, mas **melhor higiene de dados** e leitura mais simples.
+- Totalmente gerenciado, SQL forte, integração pronta com BI (Looker, Tableau).
+- **Desafios para qualidade:** flexibilidade limitada (JSON costuma ficar de fora); só SQL, então o dado de ML sai do warehouse, e é nessa **movimentação** que surgem problemas de volume, atualidade e schema; fluxos engessados.
+- Exemplos: Redshift, BigQuery, Snowflake.
 
 ### Data lakes: manipulação no nível de arquivo
 
-Data lakes seguem a lógica oposta: *schema-on-read*, ou seja, a estrutura dos dados só é inferida na hora do uso. São a versão "faça você mesmo" do data warehouse, **permitindo que o time escolha suas próprias tecnologias de metadados, armazenamento e computação.**
-
-O conceito foi criado por James Dixon, ex-CTO da Pentaho, que descreveu um data lake como:
-
-> "a large body of water in a more natural state"
-
-Na definição de Dixon, o conteúdo do lake é alimentado continuamente por uma fonte, e diferentes usuários podem "mergulhar" nele ou retirar amostras conforme a necessidade.
-
-Os primeiros data lakes eram construídos sobre Apache Hadoop MapReduce e HDFS, consultados via Apache Hive. No início dos anos 2010, **o Apache Spark tornou os data lakes muito mais viáveis, oferecendo um framework genérico para computação distribuída em grandes volumes de dados.**
-
-Características comuns de data lakes:
-1. **Armazenamento e computação desacoplados**, permitindo economia de custo e streaming em tempo real.
-2. **Suporte a computação distribuída**, melhorando performance e tolerância a falhas.
-3. **Customização e interoperabilidade**, facilitando trocar peças da stack conforme a empresa evolui.
-4. **Base em tecnologias open source**, reduzindo vendor lock-in.
-5. **Suporte a dados não estruturados ou fracamente estruturados**, dando mais controle sobre agregações e cálculos.
-6. **Suporte a modelos de programação não-SQL**, como Apache Spark e PySpark, essenciais para ciência de dados e ML.
-
-Desafios específicos de confiabilidade em data lakes:
-1. **Integridade de dados**: como os dados são manipulados no nível de arquivo, não há garantia de schema. Transformar dados assumindo um schema sem validá-lo é o que o livro chama de *"blind ETL"*, perigoso porque a transformação pode falhar a qualquer momento por mudanças upstream imprevistas.
-2. **Swampification**: a tendência de um data lake acumular dívida técnica e conhecimento tácito ao longo do tempo, até o ponto em que só um engenheiro específico sabe onde cada dado está e como ele muda. Nesse ponto, o "lago" vira um "pântano" (*data swamp*).
-3. **Mais endpoints**: mais formas de coletar, manipular e transformar dados significa mais oportunidades de erro.
-
-Tecnologias atuais:
-
-Exemplos de data lake (o armazenamento em si):
-
-| Tecnologia | Papel |
-|---|---|
-| Apache Hadoop / HDFS | Armazenamento distribuído original dos data lakes, on-premise |
-| Amazon S3, Azure Data Lake Storage, Google Cloud Storage | Armazenamento de objetos na nuvem, hoje a opção mais comum |
-
-Motores que rodam sobre um data lake (não são o lake em si):
-
-| Tecnologia | Papel |
-|---|---|
-| Apache Hive | Consulta dos dados via SQL sobre o Hadoop |
-| Apache Spark | Framework de computação distribuída que tornou os data lakes viáveis em escala |
+- *Schema-on-read*: a estrutura só é inferida no uso. É a versão "faça você mesmo" do warehouse (você escolhe metadados, storage e compute).
+- **Desafios para qualidade:**
+  1. **Integridade de dados**: sem garantia de schema no nível de arquivo. Transformar sem validar é o *"blind ETL"*, que quebra com mudanças upstream.
+  2. **Swampification**: dívida técnica e conhecimento tácito acumulados até só uma pessoa saber onde está cada dado. O lago vira *data swamp*.
+  3. **Mais endpoints**: mais formas de coletar e transformar, mais chances de erro.
+- Exemplos: HDFS, S3, ADLS, Cloud Storage (armazenamento); Hive e Spark (motores).
 
 ### E o data lakehouse?
 
-*Data lakehouse* é o nome dado a essa convergência entre warehouse e lake. Na prática, os dados continuam armazenados como arquivos brutos num data lake (por exemplo, num bucket S3), mas ganham uma camada por cima que entrega schema, suporte a SQL e transações confiáveis, como um data warehouse. **O resultado é poder rodar queries analíticas direto sobre o lake, sem precisar mover tudo antes para um warehouse separado.** Exemplos de produtos que entregam isso: o **Databricks Lakehouse Platform** (construído sobre o Delta Lake) e o **Amazon Redshift Spectrum** (que permite consultar dados no S3 usando SQL do Redshift, sem carregá-los no warehouse).
+- Dados continuam como arquivos no lake, com uma camada por cima que dá **schema, SQL e transações ACID**: queries analíticas direto sobre o lake, **uma única cópia** para BI e ML.
+- **Desafios para qualidade:** categoria ainda em maturação, com tooling de qualidade menos consolidado; e a base **continua sendo um lake**, então os problemas de schema e governança são mitigados, não eliminados.
+- Peças: Parquet (schema), Delta Lake e Hudi (ACID), Presto e Spark (SQL), Databricks, Athena e Glue (gerenciados).
+- Segundo o livro, com dados em tempo real e streaming (Uber, DoorDash, Airbnb), o lakehouse tende a ganhar espaço.
 
-Características comuns de data lakehouse:
-1. **Uma única cópia dos dados**: workloads de BI/SQL e de ML/data science consomem a mesma fonte, sem precisar duplicar dados entre lake e warehouse.
-2. **SQL de alta performance direto sobre o lake**: consultas quase interativas, sem precisar de uma etapa de ETL para um warehouse separado.
-3. **Schema aplicado sobre arquivos**: formato colunar e schema mais rígido em cima de dados que continuam armazenados como arquivos brutos.
-4. **Garantias ACID sobre armazenamento de baixo custo**: transações confiáveis, como num banco tradicional, rodando sobre object storage.
-
-Desafios específicos de data lakehouse:
-1. **Categoria ainda em maturação**: é uma convergência recente, com práticas e tooling de qualidade de dados menos consolidados do que em warehouses tradicionais.
-2. **A base ainda é um data lake**: como os dados continuam armazenados como arquivos por baixo, parte dos desafios de confiabilidade de um data lake (schema, governança) fica mitigada, mas não desaparece.
-
-Tecnologias atuais:
-
-| Peça | Tecnologias | O que resolve |
-|---|---|---|
-| SQL de alta performance | Presto, Spark | Consultas quase interativas direto no lake, sem ETL para um warehouse tradicional |
-| Schema | Parquet | Schema mais rígido e formato colunar para tabelas em data lakes |
-| ACID (atomicidade, consistência, isolamento, durabilidade) | Delta Lake, Apache Hudi | Garantias de transação parecidas com bancos de dados tradicionais |
-| Serviços gerenciados | Databricks (Hive, Delta Lake, Spark), Amazon Athena, AWS Glue | Reduz o esforço operacional de manter essas peças |
-
-**Com a ascensão da agregação de dados em tempo real e streaming, na velocidade de empresas como Uber, DoorDash e Airbnb, o data lakehouse tende a ganhar espaço nos próximos anos.**
 
 ## Sincronizando dados entre warehouses e lakes
 
