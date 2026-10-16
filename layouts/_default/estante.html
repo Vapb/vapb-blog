@@ -3619,8 +3619,9 @@
     document.getElementById('estante-todo-btn').addEventListener('click', function(){ dlg.showModal(); });
     document.getElementById('estante-todo-x').addEventListener('click', function(){ dlg.close(); });
     dlg.addEventListener('click', function(e){ if(e.target === dlg) dlg.close(); });
-    // ordem: por padrão quem falta mais vem primeiro, depois A-Z; clicar no
-    // cabeçalho ordena pela coluna (clicar de novo inverte)
+    // ordem: por padrão A-Z com número natural (Volume 2 antes de Volume 10),
+    // então as séries ficam juntas; clicar no cabeçalho ordena pela coluna
+    // (clicar de novo inverte)
     var RANK = { bad: 2, na: 1, ok: 0 };
     function chave(tr, col){
       var td = tr.children[col];
@@ -3640,16 +3641,17 @@
         if(col < 0){ x = faltas(b); y = faltas(a); c = x - y; }
         else {
           x = chave(a, col); y = chave(b, col);
-          c = typeof x === 'string' ? x.localeCompare(y, 'pt') : y - x;
+          c = typeof x === 'string' ? x.localeCompare(y, 'pt', { numeric: true }) : y - x;
           c *= dir;
         }
-        return c || chave(a, 0).localeCompare(chave(b, 0), 'pt');
+        return c || chave(a, 0).localeCompare(chave(b, 0), 'pt', { numeric: true });
       });
       rows.forEach(function(r){ tbody.appendChild(r); });
     }
     dlg.querySelectorAll('.st-table').forEach(function(t){
-      var tb = t.tBodies[0], dir = 1, atual = -1;
-      ordena(tb, -1, 1);
+      var tb = t.tBodies[0], dir = 1, atual = 0;
+      ordena(tb, 0, 1);
+      t.tHead.rows[0].cells[0].setAttribute('data-dir', 'asc');
       t.tHead.querySelectorAll('th').forEach(function(th, i){
         if(i === t.tHead.rows[0].cells.length - 1) return;
         th.tabIndex = 0;
