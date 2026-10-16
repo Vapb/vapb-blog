@@ -1118,5 +1118,25 @@
     "dimensions": "15 x 1.6 x 21 cm",
     "shelf": "mangas",
     "pasta": "a-cor-que-caiu-do-espaco"
+  },
+  {
+    "id": "h-p-lovecraft-o-cao-de-caca-e-outras-historias",
+    "title": "H.P. Lovecraft - O Cão de Caça e Outras Histórias",
+    "url": "https://www.amazon.com.br/dp/6555947411",
+    "imageUrl": "https://m.media-amazon.com/images/I/81uKdjfx1HL._SL1500_.jpg",
+    "author": "Gou Tanabe",
+    "series": null,
+    "publisher": "Editora JBC",
+    "publishedDate": "27 dezembro 2024",
+    "edition": "1ª",
+    "language": "Português",
+    "pages": "176 páginas",
+    "isbn10": "6555947411",
+    "isbn13": "978-6555947410",
+    "weight": "280 g",
+    "readingAge": "14 anos e acima",
+    "dimensions": "15 x 1.4 x 21 cm",
+    "shelf": "mangas",
+    "pasta": "lovecraft-cao-de-caca"
   }
 ]
