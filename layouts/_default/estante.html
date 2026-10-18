@@ -51,7 +51,7 @@
     <p class="estante-eyebrow">Protótipo · v0</p>
     <h2>Minha Estante</h2>
     <p class="estante-sub">Quer saber o que tem na minha estante? Uma mistura de <strong>mangás de terror</strong>, quadrinhos e livros dos mais variados assuntos. Sim, até <strong>livros de computação</strong> moram por aqui 😄. Esse é o meu pequeno catálogo.</p>
-    <p class="estante-sub">As lombadas ficam lado a lado como numa prateleira de verdade. Escolha uma categoria abaixo e clique (ou toque) numa lombada pra tirar o livro da prateleira. Clique no livro pra virar; abra pela capa pra ver o ex-libris, ou vire e abra pelo verso. Alguns guardam um marca-página de colecionador: a pontinha fica pra fora, é só puxar.</p>
+    <p class="estante-sub">As lombadas ficam lado a lado como numa prateleira de verdade. Escolha uma categoria abaixo e clique (ou toque) numa lombada pra tirar o livro da prateleira. Clique no livro pra virar e ver o verso. Alguns guardam um marca-página de colecionador: a pontinha fica pra fora, é só puxar.</p>
   </div>
 
   {{/* status: calculado no build a partir das fotos que existem; foto nova
@@ -849,8 +849,7 @@
   .estante-barcode{ background: #fff; padding: 4px 5px 2px; border-radius: 2px; line-height: 0; }
   .estante-barcode svg{ display: block; }
 
-  /* abrir o livro: a capa gira na dobradiça (o lado da lombada), três folhas
-     passam e fica à mostra o ex-libris da primeira página */
+  /* capa e contracapa do livro 3D */
   .estante-cover{
     position: absolute;
     inset: 0;
@@ -859,12 +858,7 @@
     transform: translateZ(calc(var(--d) / 2)) rotateY(0deg);
     transition: transform 1s cubic-bezier(.3,.8,.25,1) .3s;
   }
-  .estante-b3.is-open .estante-cover{
-    transform: translateZ(calc(var(--d) / 2)) rotateY(var(--open-a));
-    transition-delay: 0s;
-  }
-  .estante-cover .co,
-  .estante-cover .ci{
+  .estante-cover .co{
     position: absolute;
     inset: 0;
     overflow: hidden;
@@ -880,17 +874,6 @@
     object-fit: cover;
     display: block;
   }
-  /* parte de dentro da capa e da contracapa: guarda pontilhada na cor do livro */
-  .estante-cover .ci,
-  .estante-backcover .ci{
-    background:
-      radial-gradient(circle at 30% 30%, rgba(255,255,255,.10) 0 1.5px, transparent 2.2px) 0 0 / 12px 12px,
-      linear-gradient(135deg, color-mix(in srgb, var(--c) 70%, #000), color-mix(in srgb, var(--c) 35%, #000));
-    box-shadow: inset 0 0 18px rgba(0,0,0,.45);
-  }
-  .estante-cover .ci{
-    transform: rotateY(180deg);
-  }
   .estante-backcover .co img{
     width: 100%;
     height: 100%;
@@ -898,8 +881,6 @@
     display: block;
   }
 
-  /* a contracapa também abre, pelo verso: presa na lombada, gira pro lado
-     oposto ao da capa e mostra a guarda e a última página */
   .estante-backcover{
     position: absolute;
     inset: 0;
@@ -908,12 +889,7 @@
     transform: translateZ(calc(var(--d) / -2)) rotateY(0deg);
     transition: transform 1s cubic-bezier(.3,.8,.25,1) .3s;
   }
-  .estante-b3.is-open-back .estante-backcover{
-    transform: translateZ(calc(var(--d) / -2)) rotateY(calc(var(--open-a) * -1));
-    transition-delay: 0s;
-  }
-  .estante-backcover .co,
-  .estante-backcover .ci{
+  .estante-backcover .co{
     position: absolute;
     inset: 0;
     overflow: hidden;
@@ -924,90 +900,6 @@
     transform: rotateY(180deg);
     background: var(--c);
   }
-  .estante-pageN{
-    position: absolute;
-    inset: 1px;
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-    backface-visibility: hidden;
-    transform: translateZ(calc(var(--d) / -2 + 2.6px)) rotateY(180deg);
-    background: radial-gradient(130% 100% at 0% 50%, #f7efdf, #e8dbbf);
-    box-shadow: inset -10px 0 16px -10px rgba(0,0,0,.4);
-  }
-  .estante-b3.hinge-right .estante-pageN{
-    box-shadow: inset 10px 0 16px -10px rgba(0,0,0,.4);
-  }
-  .estante-colofao{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: calc(var(--h) * .02);
-    color: #5d1f1f;
-    font-family: var(--font-reading);
-    text-align: center;
-  }
-  .estante-colofao i{ font-size: calc(var(--h) * .07); }
-  .estante-colofao span{ font-size: calc(var(--h) * .04); opacity: .7; }
-  .estante-colofao small{ font-size: calc(var(--h) * .026); letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
-  .estante-stage.book-open-back .estante-pos{
-    margin-right: var(--w);
-  }
-  .estante-stage.book-open-back.sr .estante-pos{
-    margin-right: 0;
-    margin-left: var(--w);
-  }
-  .estante-leaf{
-    position: absolute;
-    inset: 1px;
-    transform-origin: var(--hinge) center;
-    transform: translateZ(calc(var(--d) / 2 - var(--k) * .6px)) rotateY(0deg);
-    background: linear-gradient(90deg, #ebe0c8, #f7f0e1 55%, #e7dbc1);
-    box-shadow: inset 0 0 6px rgba(0,0,0,.18);
-    transition: transform .75s cubic-bezier(.3,.7,.3,1) calc((4 - var(--k)) * .05s);
-  }
-  /* as folhas abrem depois da capa, uma de cada vez, e param em leque */
-  .estante-b3.is-open .estante-leaf{
-    transform: translateZ(calc(var(--d) / 2 - var(--k) * .6px)) rotateY(calc(var(--open-a) * (1 - var(--k) * .032)));
-    transition-delay: calc(.12s + var(--k) * .13s);
-  }
-  .estante-page0{
-    position: absolute;
-    inset: 1px;
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-    backface-visibility: hidden;
-    transform: translateZ(calc(var(--d) / 2 - 2.6px));
-    background: radial-gradient(130% 100% at 100% 50%, #f7efdf, #e8dbbf);
-    box-shadow: inset 10px 0 16px -10px rgba(0,0,0,.4);
-  }
-  .estante-b3.hinge-right .estante-page0{
-    box-shadow: inset -10px 0 16px -10px rgba(0,0,0,.4);
-  }
-  .estante-xl{
-    width: 74%;
-    padding: calc(var(--h) * .045) 6px calc(var(--h) * .035);
-    border: 1.5px solid #5d1f1f;
-    outline: 1px solid #5d1f1f;
-    outline-offset: 3px;
-    text-align: center;
-    color: #5d1f1f;
-    font-family: var(--font-reading);
-  }
-  .estante-xl .xl-k{ font-size: calc(var(--h) * .03); letter-spacing: .3em; font-weight: 800; text-transform: uppercase; }
-  .estante-xl .xl-ico{ width: calc(var(--h) * .13); height: calc(var(--h) * .13); margin: calc(var(--h) * .02) auto calc(var(--h) * .012); display: block; }
-  .estante-xl .xl-n{ font-size: calc(var(--h) * .068); font-weight: 700; font-style: italic; line-height: 1.1; margin-bottom: calc(var(--h) * .012); }
-  .estante-xl .xl-r{ font-size: calc(var(--h) * .027); letter-spacing: .08em; text-transform: uppercase; opacity: .85; margin-top: 2px; }
-  /* aberto, o livro abre espaço pro lado em que a capa cai */
-  .estante-stage.book-open .estante-pos{
-    margin-left: var(--w);
-  }
-  .estante-stage.book-open.sr .estante-pos{
-    margin-left: 0;
-    margin-right: var(--w);
-  }
-
   /* card de detalhes ao lado do livro */
   .estante-card{
     position: relative;
@@ -1665,14 +1557,6 @@
   .estante-fk-back b{ display: block; font-size: calc(var(--h) * .042); color: #8e1b1b; margin-bottom: 8%; }
   .estante-fk-back ol{ margin: 0; padding-left: 1.2em; }
   .estante-fk-back .fk-stamp{ position: absolute; right: 9%; bottom: 9%; padding: 2% 4%; border: 2px solid rgba(160,20,20,.75); color: rgba(160,20,20,.8); font-weight: 800; letter-spacing: .12em; transform: rotate(-12deg); font-size: calc(var(--h) * .034); }
-  .estante-page0.estante-fk-page,
-  .estante-pageN.estante-fk-page{
-    background: linear-gradient(160deg, #f4ead2, #e3d2ab);
-  }
-  .estante-fk-page > div{ width: 80%; text-align: center; font-family: 'Courier New', monospace; color: #3a1414; }
-  .estante-fk-page b{ display: block; font-size: calc(var(--h) * .05); color: #8e1b1b; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8%; }
-  .estante-fk-page span{ display: block; font-size: calc(var(--h) * .034); line-height: 1.5; }
-  .estante-fk-page small{ display: block; margin-top: 10%; font-size: calc(var(--h) * .026); opacity: .7; }
   @keyframes estanteTremble{
     0%  { translate: 0 0; }
     25% { translate: 1.5px -1px; }
@@ -1795,7 +1679,6 @@
     }
     .estante-cover,
     .estante-backcover,
-    .estante-leaf,
     .estante-pos,
     .estante-bm-in,
     .estante-bm .bm-tassel,
@@ -1997,8 +1880,6 @@
     return '<div class="estante-barcode"><svg width="' + Math.round(W) + '" height="' + (h + 10) + '" viewBox="0 0 ' + W.toFixed(1) + ' ' + (h + 10) + '" fill="#111" font-size="7" font-family="ui-monospace, monospace" aria-hidden="true">' + rects + text + '</svg></div>';
   }
 
-  // caveira do ex-libris
-  var SKULL_SVG = '<svg class="xl-ico" viewBox="0 0 40 40" aria-hidden="true"><path fill="currentColor" d="M20 5C12.3 5 7 10.3 7 17.5c0 4.2 1.9 7.2 4.6 9v4.8c0 1 .8 1.7 1.7 1.7h13.4c1 0 1.7-.8 1.7-1.7v-4.8c2.7-1.8 4.6-4.8 4.6-9C33 10.3 27.7 5 20 5z"/><circle cx="14.6" cy="18.5" r="3.6" fill="#f3ead8"/><circle cx="25.4" cy="18.5" r="3.6" fill="#f3ead8"/><path d="M20 22.2l-2.1 3.8h4.2z" fill="#f3ead8"/><path d="M16.2 28.6v4.4M20 28.6v4.4M23.8 28.6v4.4" stroke="#f3ead8" stroke-width="1.3"/></svg>';
   // borla do marca-página desenhado
   var TASSEL_SVG = '<svg class="bm-tassel" viewBox="0 0 40 66" aria-hidden="true"><path d="M20 66C8 52 8 32 20 25C32 32 32 52 20 66" fill="none" stroke="#b9862f" stroke-width="2.4"/><g stroke="#d6a548" stroke-width="1.7" stroke-linecap="round"><path d="M18 22L11 3"/><path d="M19 22L16 1"/><path d="M20 22L20 0"/><path d="M21 22L24 1"/><path d="M22 22L29 3"/></g><circle cx="20" cy="22" r="5" fill="#c4913a"/><circle cx="18.5" cy="20.5" r="1.6" fill="#f1cf86"/></svg>';
 
@@ -2579,17 +2460,6 @@
     '</div>';
   }
 
-  // primeira página do livro aberto: ex-libris com o número do livro na coleção
-  function exLibrisHTML(b){
-    if(b.fake) return '<div class="estante-page0 estante-fk-page"><div><b>Regra nº 1</b><span>Nunca abra este manual depois da meia-noite.</span><small>— A gerência</small></div></div>';
-    return '<div class="estante-page0"><div class="estante-xl">' +
-      '<div class="xl-k">Ex Libris</div>' + SKULL_SVG +
-      '<div class="xl-n">vapb</div>' +
-      '<div class="xl-r">Nº ' + (ALL_BOOKS.indexOf(b) + 1) + ' de ' + ALL_BOOKS.length + '</div>' +
-      '<div class="xl-r">' + escapeHtml((SHELF_META[b.shelf] || {}).label || '') + '</div>' +
-    '</div></div>';
-  }
-
   // marca-página guardado no livro: do tamanho real em relação ao livro, com a
   // pontinha (o topo da foto) pra fora
   function bookmarkInHTML(item, g, x){
@@ -2645,15 +2515,6 @@
     '</div>';
   }
 
-  // última página, embaixo da contracapa (aparece abrindo o livro pelo verso)
-  function lastPageHTML(b){
-    if(b.fake) return '<div class="estante-pageN estante-fk-page"><div><b>Turno encerrado</b><span>Volte amanhã à meia-noite.</span><small>— A gerência</small></div></div>';
-    return '<div class="estante-pageN"><div class="estante-colofao">' +
-      '<i>fim</i><span>✦</span>' +
-      '<small>Estante de vapb · Nº ' + (ALL_BOOKS.indexOf(b) + 1) + ' de ' + ALL_BOOKS.length + '</small>' +
-    '</div></div>';
-  }
-
   function bookHTML(item, g){
     var b = item.b;
     var color = spineColor(b, item.img);
@@ -2677,19 +2538,14 @@
     // nos mangás
     var hinge = g.spineRight ? 'right' : 'left';
     return '<div class="estante-pos" style="--w:' + g.W + 'px">' +
-      '<div class="estante-b3' + (g.spineRight ? ' hinge-right' : '') + '" style="--w:' + g.W + 'px;--h:' + g.H + 'px;--d:' + g.D + 'px;--c:' + color + ';--ry-base:' + g.rest + 'deg;--rx-base:-7deg;--hinge:' + hinge + ';--open-a:' + (g.spineRight ? 168 : -168) + 'deg" title="Clique pra virar">' +
-        '<div class="estante-backcover"><div class="co">' + back + '</div><div class="ci"></div></div>' +
-        lastPageHTML(b) +
+      '<div class="estante-b3' + (g.spineRight ? ' hinge-right' : '') + '" style="--w:' + g.W + 'px;--h:' + g.H + 'px;--d:' + g.D + 'px;--c:' + color + ';--ry-base:' + g.rest + 'deg;--rx-base:-7deg;--hinge:' + hinge + '" title="Clique pra virar">' +
+        '<div class="estante-backcover"><div class="co">' + back + '</div></div>' +
         '<div class="f ' + hinge + ' spinef">' + spineFace + '</div>' +
         '<div class="f ' + (g.spineRight ? 'left' : 'right') + ' pages"></div>' +
         '<div class="f top pages"></div>' +
         '<div class="f bottom pages"></div>' +
-        exLibrisHTML(b) +
         (bm ? bookmarkInHTML(item, g, bm) : '') +
-        '<div class="estante-leaf" style="--k:3"></div>' +
-        '<div class="estante-leaf" style="--k:2"></div>' +
-        '<div class="estante-leaf" style="--k:1"></div>' +
-        '<div class="estante-cover"><div class="co">' + front + '</div><div class="ci"></div></div>' +
+        '<div class="estante-cover"><div class="co">' + front + '</div></div>' +
       '</div>' +
       '<div class="estante-floor"></div>' +
     '</div>';
@@ -2738,8 +2594,7 @@
     }
 
     var acts =
-      '<button type="button" class="estante-act primary" data-act="open">📖 Abrir</button>' +
-      '<button type="button" class="estante-act" data-act="flip">↻ Ver verso</button>';
+      '<button type="button" class="estante-act primary" data-act="flip">↻ Ver verso</button>';
     if(b.url) acts += '<a class="estante-act" href="' + b.url + '" target="_blank" rel="noopener">Amazon ↗</a>';
     add('<div class="estante-actions">' + acts + '</div>');
 
@@ -2749,7 +2604,7 @@
       '<span>' + (idx + 1) + ' / ' + items.length + '</span>' +
       '<button type="button" data-act="next" aria-label="Próximo livro"' + (idx >= items.length - 1 ? ' disabled' : '') + '>›</button>' +
     '</div>');
-    add('<div class="estante-hint"><kbd>←</kbd> <kbd>→</kbd> troca · <kbd>F</kbd> vira · <kbd>O</kbd> abre · <kbd>Esc</kbd> fecha</div>');
+    add('<div class="estante-hint"><kbd>←</kbd> <kbd>→</kbd> troca · <kbd>F</kbd> vira · <kbd>Esc</kbd> fecha</div>');
 
     return '<div class="estante-card" role="dialog" aria-label="' + escapeHtml(b.title) + '">' + parts.join('') + '</div>';
   }
@@ -2823,11 +2678,10 @@
     pull.book = book;
     pull.g = g;
 
-    // clique no livro vira (ou fecha, se estiver aberto); o mouse em cima inclina
+    // clique no livro vira; o mouse em cima inclina
     book.addEventListener('click', function(e){
       e.stopPropagation();
-      if(isOpen(book)) toggleOpenBook();
-      else flip();
+      flip();
     });
     if(!REDUCED){
       stage.addEventListener('pointermove', function(e){
@@ -2867,7 +2721,6 @@
         return takeExtra(card.querySelector('.estante-bmc-mini[data-extra="' + i + '"]'), extras[i], extraBtn(i));
       }
       if(act === 'flip') flip();
-      else if(act === 'open') toggleOpenBook();
       else if(act === 'prev') nav(-1);
       else if(act === 'next') nav(1);
     });
@@ -2879,35 +2732,12 @@
     if(item.b.fake) pullScare();
   }
 
-  function isOpen(b3){ return b3.classList.contains('is-open') || b3.classList.contains('is-open-back'); }
-
   function flip(){
     if(!pull) return;
-    if(isOpen(pull.book)) toggleOpenBook();
     var on = pull.book.classList.toggle('flipped');
     var btn = pull.stage.querySelector('[data-act="flip"]');
     if(btn) btn.textContent = on ? '↻ Ver capa' : '↻ Ver verso';
     Snd.play('page');
-  }
-
-  // abre ou fecha o livro: pela capa, ou pela contracapa se ele estiver
-  // virado. Aberto, o livro fica de frente e o stage abre espaço pro lado em
-  // que a capa cai
-  function toggleOpenBook(){
-    if(!pull) return;
-    var b3 = pull.book, open = !isOpen(b3);
-    var back = open ? b3.classList.contains('flipped') : b3.classList.contains('is-open-back');
-    b3.classList.toggle(back ? 'is-open-back' : 'is-open', open);
-    pull.stage.classList.toggle(back ? 'book-open-back' : 'book-open', open);
-    b3.style.setProperty('--ry-base', open ? '0deg' : pull.g.rest + 'deg');
-    var btn = pull.stage.querySelector('[data-act="open"]');
-    if(btn) btn.textContent = open ? '📕 Fechar' : '📖 Abrir';
-    if(open){
-      Snd.play('page', .7);
-      Snd.playIn(.28, 'flutter', 4);
-    } else {
-      Snd.playIn(.55, 'thud', .3);
-    }
   }
 
   function nav(dir){
@@ -2937,7 +2767,7 @@
     p.item.el.focus({ preventScroll: true });
     p.stage.querySelector('.estante-card').animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, fill: 'forwards' });
     p.ov.animate([{ backgroundColor: 'rgba(8,6,5,.62)' }, { backgroundColor: 'rgba(8,6,5,0)' }], { duration: 380, fill: 'forwards' });
-    p.book.classList.remove('flipped', 'tilting', 'is-open', 'is-open-back');
+    p.book.classList.remove('flipped', 'tilting');
     p.book.style.setProperty('--ty', '0deg');
     p.book.style.setProperty('--tx', '0deg');
     // volta pra lombada de onde saiu (a posição pode ter mudado com a navegação)
@@ -3393,7 +3223,6 @@
     else if(e.key === 'ArrowRight') nav(1);
     else if(e.key === 'ArrowLeft') nav(-1);
     else if(e.key === 'f' || e.key === 'F') flip();
-    else if(e.key === 'o' || e.key === 'O') toggleOpenBook();
     else return;
     e.preventDefault();
   });
