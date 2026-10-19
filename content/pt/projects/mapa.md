@@ -3,7 +3,6 @@ title: "Mapa do Blog"
 date: 2026-10-14T10:00:00-03:00
 description: "A estrutura do blog (posts, seções, projetos e tags) desenhada como uma árvore navegável"
 tags: ["hugo", "javascript", "css", "projeto"]
-aliases: ["/projects/grafo/"]
 ---
 
 > 🌳 **Veja ao vivo:** [Abrir o mapa]({{< relref "/mapa" >}})
