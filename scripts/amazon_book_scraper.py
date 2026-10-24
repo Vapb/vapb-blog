@@ -65,6 +65,7 @@ GROUPS = {
         "https://www.amazon.com.br/Gannibal-Vila-Canibais-Masaaki-Ninomiya/dp/6598287634",
         "https://www.amazon.com.br/Shigurui-Frenesi-Morte-Mang%C3%A1-Vol/dp/6554482512",
         "https://www.amazon.com.br/H-P-Lovecraft-cor-caiu-espa%C3%A7o/dp/655594787X",
+        "https://www.amazon.com.br/dp/6555947411",
     ],
     "hqs": [
         "https://www.amazon.com.br/Joe-Hill-Dark-Collection-v/dp/6555984848",
@@ -410,7 +411,8 @@ def save_all(results, path, overwrite_existing=False):
             existing.append(book)
             by_url[book["url"]] = len(existing) - 1
 
-    backup = path.with_suffix(path.suffix + ".bak")
+    # fora de data/: o Hugo carrega todo arquivo de data/ e quebra com .bak
+    backup = REPO_ROOT / "scripts" / (path.name + ".bak")
     if path.exists():
         backup.write_text(path.read_text(encoding="utf-8"), encoding="utf-8")
         print(f"[backup] {backup}")
