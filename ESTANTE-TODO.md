@@ -37,7 +37,6 @@ Fotos vão em `static/images/estante/<pasta>/` (`lombada`, `capa-verso`, ...).
 - [ ] **Old Boy Volume 2** (`old-boy-2`): falta verso da capa
 - [ ] **Old Boy Volume 3** (`old-boy-3`): falta verso da capa
 - [ ] **Gannibal: Vila de Canibais - Volume 1** (`gannibal-1`): falta verso da capa
-- [ ] **Mangá of the Dead** (`manga-of-the-dead`): falta verso da capa
 - [ ] **Black Paradox** (`black-paradox`): falta verso da capa
 - [ ] **Death Note - Black Edition - Volume 2** (`death-note-2`): falta verso da capa
 - [ ] **Happyland – Parque de Diversões do Inferno** (`happyland`): falta verso da capa
@@ -45,10 +44,6 @@ Fotos vão em `static/images/estante/<pasta>/` (`lombada`, `capa-verso`, ...).
 - [ ] **As Esculturas sem Cabeça** (`esculturas-sem-cabeca`): falta verso da capa
 - [ ] **Monster Kanzenban Volume 4** (`monster-4`): falta verso da capa
 - [ ] **Battle Royale Omnibus Volume 5** (`battle-royale-5`): falta verso da capa
-- [ ] **PTSD Radio: Frequências do Terror (Volume 1)** (`ptsd-radio-1`): falta verso da capa
-- [ ] **PTSD Radio: Frequências do Terror (Volume 3)** (`ptsd-radio-3`): falta verso da capa
-- [ ] **PTSD Radio: Frequências do Terror (Volume 2)** (`ptsd-radio-2`): falta verso da capa
-- [ ] **Hideout** (`rev-hideout-1`): falta verso da capa
 - [ ] **Gannibal: Vila de Canibais - Volume 5** (`gannibal-5`): falta verso da capa
 - [ ] **Gannibal: Vila de Canibais - Volume 2** (`gannibal-2`): falta verso da capa
 - [ ] **Gannibal: Vila de Canibais - Volume 3** (`gannibal-3`): falta verso da capa
