@@ -1,5 +1,5 @@
 ---
-title: "Data Lakehouse no Google Cloud (Parte 1): lake, warehouse e lakehouse"
+title: "Data Lakehouse no GCP (Parte 1): lake, warehouse e lakehouse"
 author: "vapb"
 description: "Parte 1 do resumo do curso Build Data Lakes and Data Warehouses on Google Cloud: data lake vs. data warehouse, data lakehouse, Cloud Storage, Apache Iceberg, AlloyDB e federated queries."
 date: 2026-09-27

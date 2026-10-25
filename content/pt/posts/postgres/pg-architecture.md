@@ -1,5 +1,5 @@
 ---
-title: "Arquitetura do PostgreSQL: Entendendo o Motor por Trás do Seu Banco de Dados"
+title: "Arquitetura do PostgreSQL: o motor por trás do seu banco"
 author: "vapb"
 description: "Mergulho profundo no modelo cliente-servidor do PostgreSQL, processos em background, arquitetura de memória e connection pooling."
 date: 2025-11-23

@@ -1,5 +1,5 @@
 ---
-title: "Junk Dimension: o que fazer com flags e indicadores soltos no modelo dimensional"
+title: "Junk Dimension: o que fazer com flags e indicadores soltos"
 author: "vapb"
 description: "O que é uma junk dimension na modelagem dimensional de Kimball, que problema ela resolve, como construir (com SQL) e como fica a tabela fato antes e depois."
 date: 2026-10-24

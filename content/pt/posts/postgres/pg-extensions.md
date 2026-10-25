@@ -1,5 +1,5 @@
 ---
-title: "PostgreSQL Extensions: Guia Completo de Funcionalidades e Melhores Práticas"
+title: "PostgreSQL Extensions: funcionalidades e boas práticas"
 author: "vapb"
 description: "Guia completo sobre PostgreSQL extensions: gerenciamento, principais extensions, TLE e melhores práticas para produção."
 date: 2026-02-17

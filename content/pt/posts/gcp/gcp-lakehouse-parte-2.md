@@ -1,5 +1,5 @@
 ---
-title: "Data Lakehouse no Google Cloud (Parte 2): BigQuery por dentro"
+title: "Data Lakehouse no GCP (Parte 2): BigQuery por dentro"
 author: "vapb"
 description: "Parte 2 do resumo do curso Build Data Lakes and Data Warehouses on Google Cloud: arquitetura do BigQuery (Dremel, Colossus, slots), storage nativo vs. data lake, particionamento, clustering e tabelas externas com Lakehouse."
 date: 2026-09-27

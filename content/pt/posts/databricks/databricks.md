@@ -1,5 +1,5 @@
 ---
-title: "Databricks Fundamentals: lakehouse, formatos abertos, governança e a plataforma de dados com IA"
+title: "Databricks Fundamentals: lakehouse, governança e IA"
 author: "vapb"
 description: "Anotações de fundamentos do Databricks: Spark vs. Databricks, formatos abertos (Delta e Iceberg), Lakeflow, Lakebase, Unity Catalog, AI Gateway e Genie."
 date: 2026-10-13

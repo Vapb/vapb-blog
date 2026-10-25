@@ -1,5 +1,5 @@
 ---
-title: "Data Warehouse, Data Lake e Lakehouse: a evolução da arquitetura de dados"
+title: "Data Warehouse, Data Lake e Lakehouse: a evolução"
 author: "vapb"
 description: "Diferenças entre data warehouse, data lake e lakehouse, o problema dos data silos, por que a arquitetura de duas camadas chegou ao limite operacional e como o lakehouse resolve isso. Bônus: onde o Databricks entra."
 date: 2026-10-13

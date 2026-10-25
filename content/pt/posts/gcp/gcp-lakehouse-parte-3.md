@@ -1,5 +1,5 @@
 ---
-title: "Data Lakehouse no Google Cloud (Parte 3): governança, ML e migração"
+title: "Data Lakehouse no GCP (Parte 3): governança, ML e migração"
 author: "vapb"
 description: "Parte 3 do resumo do curso Build Data Lakes and Data Warehouses on Google Cloud: Knowledge Catalog, Sensitive Data Protection, IAM, BigQuery ML, Agent Platform, arquitetura medalhão, migração e custos."
 date: 2026-09-27

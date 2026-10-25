@@ -1,5 +1,5 @@
 ---
-title: "Database Migration Service com PostgreSQL: pglogical, preparação da origem e pós-migração"
+title: "DMS com PostgreSQL: pglogical, origem e pós-migração"
 author: "vapb"
 description: "Como o Database Migration Service (DMS) do Google Cloud migra PostgreSQL para o Cloud SQL: por que o pglogical é obrigatório, como preparar a origem, o problema das tabelas sem primary key, limitações da replicação lógica e o que configurar no Cloud SQL depois do promote (IAM auth e PITR)."
 date: 2026-09-29

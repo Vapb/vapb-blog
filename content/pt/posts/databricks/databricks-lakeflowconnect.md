@@ -1,5 +1,5 @@
 ---
-title: "Lakeflow Connect: ingestão de dados no Databricks com conectores gerenciados"
+title: "Lakeflow Connect: ingestão, Delta Lake e medalhão"
 author: "vapb"
 description: "Anotações sobre o Lakeflow Connect: o que é, os tipos de conectores (SaaS, CDC, query-based e community), como cada um funciona por baixo com Unity Catalog e Spark Declarative Pipelines, e as categorias de fontes suportadas."
 date: 2026-10-14

@@ -1,5 +1,5 @@
 ---
-title: "Database Migration Service: como o GCP migra bancos para o Cloud SQL"
+title: "Database Migration Service: como migrar para o Cloud SQL"
 author: "vapb"
 description: "Os conceitos do Database Migration Service (DMS) do Google Cloud: connection profiles, migration jobs, migração one-time vs. contínua, dump e CDC, métodos de conectividade, validação e promoção do destino."
 date: 2026-09-28

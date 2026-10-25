@@ -1,5 +1,5 @@
 ---
-title: "Cheatsheet de notebooks Databricks: magic commands, Unity Catalog e Volumes"
+title: "Cheatsheet de notebooks Databricks: magic commands e Volumes"
 author: "vapb"
 description: "Guia de consulta rápida para quem está começando com notebooks no Databricks: magic commands, navegação no Unity Catalog, leitura de arquivos em Volumes com SQL e read_files, atalhos e como alternar entre SQL e Python."
 date: 2026-10-17

@@ -1,5 +1,5 @@
 ---
-title: "PostgreSQL Bloat: Entendendo, Identificando e Resolvendo o Problema Invisível"
+title: "PostgreSQL Bloat: entender, identificar e resolver"
 author: "vapb"
 description: "Bloat degrada performance silenciosamente no PostgreSQL. Aprenda como MVCC causa acúmulo de dados mortos, identifique tabelas problemáticas, configure autovacuum corretamente e proteja seu banco contra transaction ID wraparound."
 date: 2026-01-10

@@ -20,6 +20,12 @@ Start the local server:
 hugo server --noHTTPCache
 ```
 
+Post titles are limited to 60 characters (put the rest in `description`). Check before pushing; CI runs the same script:
+
+```bash
+python scripts/check_titles.py
+```
+
 Update theme (submodule):
 
 ```bash
