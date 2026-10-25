@@ -1084,7 +1084,7 @@
     width: var(--bmw);
     height: var(--bmh);
     cursor: pointer;
-    backface-visibility: hidden;
+    transform-style: preserve-3d;
     transform: translateZ(calc(var(--d) / 2 - 2.1px)) translateY(var(--hov, 0px)) rotate(var(--bm-rot, 2.5deg));
     transition: transform .35s cubic-bezier(.3,1.4,.5,1), opacity .2s;
   }
@@ -1098,6 +1098,7 @@
   .estante-bm-in .bm-in-face{
     position: absolute;
     inset: 0;
+    backface-visibility: hidden;
     overflow: hidden;
     border-radius: 2px;
     background: var(--c);
@@ -1110,6 +1111,8 @@
     object-position: top;
     display: block;
   }
+  /* com o livro virado, a pontinha que sobra no topo mostra o verso */
+  .estante-bm-in .bm-in-face.back{ transform: rotateY(180deg); }
   /* foto recortada: o contorno é o da própria foto */
   .estante-bm-in .bm-in-face.photo{
     overflow: visible;
@@ -2470,6 +2473,9 @@
       '<div class="bm-in-face' + (bm.front ? ' photo' : '') + '">' +
         (art ? '<img src="' + art + '" alt="" referrerpolicy="no-referrer" draggable="false"' + (bm.front ? ' data-side="front"' : '') + '>' : '') +
         (bm.front ? '' : '<i class="bm-in-hole"></i>') +
+      '</div>' +
+      '<div class="bm-in-face back' + (bm.back ? ' photo' : '') + '">' +
+        (bm.back ? '<img src="' + extraSrc(x, 'back') + '" alt="" draggable="false" data-side="back">' : '') +
       '</div>' +
     '</div>';
   }
