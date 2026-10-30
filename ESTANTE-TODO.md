@@ -47,8 +47,6 @@ Fotos vão em `static/images/estante/<pasta>/` (`lombada`, `capa-verso`, ...).
 - [ ] **Gannibal: Vila de Canibais - Volume 5** (`gannibal-5`): falta verso da capa
 - [ ] **Gannibal: Vila de Canibais - Volume 2** (`gannibal-2`): falta verso da capa
 - [ ] **Gannibal: Vila de Canibais - Volume 3** (`gannibal-3`): falta verso da capa
-- [ ] **H.P. Lovecraft - A Cor que Caiu do Espaço** (`a-cor-que-caiu-do-espaco`): falta verso da capa
-- [ ] **H.P. Lovecraft - O Cão de Caça e Outras Histórias** (`lovecraft-cao-de-caca`): falta lombada, verso da capa
 
 ## random
 
