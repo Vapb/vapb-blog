@@ -34,7 +34,6 @@ Fotos vão em `static/images/estante/<pasta>/` (`lombada`, `capa-verso`, ...).
 
 - [ ] **Parasyte Full Color Volume 4** (`parasyte-4`): falta verso da capa
 - [ ] **Parasyte Full Color Volume 5** (`parasyte-5`): falta verso da capa
-- [ ] **Gannibal: Vila de Canibais - Volume 1** (`gannibal-1`): falta verso da capa
 - [ ] **Black Paradox** (`black-paradox`): falta verso da capa
 - [ ] **Death Note - Black Edition - Volume 2** (`death-note-2`): falta verso da capa
 - [ ] **Happyland – Parque de Diversões do Inferno** (`happyland`): falta verso da capa
@@ -42,9 +41,6 @@ Fotos vão em `static/images/estante/<pasta>/` (`lombada`, `capa-verso`, ...).
 - [ ] **As Esculturas sem Cabeça** (`esculturas-sem-cabeca`): falta verso da capa
 - [ ] **Monster Kanzenban Volume 4** (`monster-4`): falta verso da capa
 - [ ] **Battle Royale Omnibus Volume 5** (`battle-royale-5`): falta verso da capa
-- [ ] **Gannibal: Vila de Canibais - Volume 5** (`gannibal-5`): falta verso da capa
-- [ ] **Gannibal: Vila de Canibais - Volume 2** (`gannibal-2`): falta verso da capa
-- [ ] **Gannibal: Vila de Canibais - Volume 3** (`gannibal-3`): falta verso da capa
 
 ## random
 
