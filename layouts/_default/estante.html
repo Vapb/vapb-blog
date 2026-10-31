@@ -672,21 +672,6 @@
     transform: translate(-50%, 0);
   }
 
-  /* susto: de vez em quando um livro aleatório treme e pisca */
-  @keyframes estanteScare{
-    0%  { transform: translateY(0) rotate(0); filter: none; }
-    10% { transform: translateY(-3px) rotate(-3deg); filter: brightness(1.5) saturate(1.4); }
-    20% { transform: translateY(-1px) rotate(3deg); }
-    30% { transform: translateY(-4px) rotate(-2.5deg); filter: brightness(1.2); }
-    40% { transform: translateY(0) rotate(2deg); }
-    50% { transform: translateY(-2px) rotate(-1.5deg); filter: none; }
-    65% { transform: translateY(0) rotate(1deg); }
-    100%{ transform: translateY(0) rotate(0); }
-  }
-  .estante-book.settled.scare{
-    animation: estanteScare .7s ease both;
-  }
-
   /* poeira que sobe do livro no clique */
   .estante-dust{
     position: absolute;
@@ -1666,7 +1651,6 @@
 
   @media (prefers-reduced-motion: reduce){
     .estante-book,
-    .estante-book.settled.scare,
     .estante-card > *,
     .estante-sound.on .estante-eq i,
     .estante-bmc-mini .estante-bm,
@@ -2346,7 +2330,6 @@
     el.addEventListener('animationend', function(e){
       if(e.target !== el) return;
       el.classList.add('settled');
-      el.classList.remove('scare');
     });
     el.addEventListener('mouseenter', function(){
       highlightSeries(item);
@@ -3410,33 +3393,6 @@
     toolsEl.appendChild(snd);
   }
 
-  // ---------------- susto ----------------
-  // a cada 12-25s um livro aleatório (fora de foco) treme, só com a
-  // prateleira visível na tela e a aba do navegador ativa
-  var shelfVisible = true;
-  if('IntersectionObserver' in window){
-    new IntersectionObserver(function(entries){
-      shelfVisible = entries[0].isIntersecting;
-    }, { threshold: 0.35 }).observe(wrap);
-  }
-  function scheduleScare(){
-    window.setTimeout(function(){
-      if(shelfVisible && !document.hidden && !pull && !deck){
-        var kids = Array.prototype.filter.call(rail.querySelectorAll('.estante-book.settled'), function(c){
-          return !c.matches(':hover') && !c.classList.contains('open');
-        });
-        if(kids.length){
-          var k = kids[Math.floor(Math.random() * kids.length)];
-          k.classList.remove('scare');
-          void k.offsetWidth;
-          k.classList.add('scare');
-          Snd.play('scare');
-        }
-      }
-      scheduleScare();
-    }, rand(12000, 25000));
-  }
-
   ['pointerdown', 'keydown'].forEach(function(ev){
     document.addEventListener(ev, Snd.unlock, { capture: true, once: true });
   });
@@ -3445,7 +3401,6 @@
     renderTabs();
     renderTools();
     fillRail(current);
-    if(!REDUCED) scheduleScare();
   } else {
     tabsEl.style.display = 'none';
   }
