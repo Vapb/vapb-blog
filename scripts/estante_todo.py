@@ -1,5 +1,8 @@
 """Gera ESTANTE-TODO.md: fotos que ainda faltam em cada livro de data/livros.json.
 
+Cobra só lombada e verso da capa (nomes `lombada` e `capa-verso`, qualquer extensão).
+O painel "Status" da página (layouts/_default/estante.html) cobra também capa e extras.
+
 Uso: python scripts/estante_todo.py
 """
 import json

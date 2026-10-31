@@ -10,7 +10,11 @@
      O nome pode vir com a pasta na frente, como sai do scripts/cover_scanner.py
      ("shigurui-2-capa-verso.jpeg" vale como "capa-verso"). A pasta
      shigurui-2 é o exemplo completo. Com o hugo server rodando, foto nova
-     só entra depois de um rebuild (salvar este arquivo ou reiniciar). */}}
+     só entra depois de um rebuild (salvar este arquivo ou reiniciar).
+     Pasta sem acento e igual ao "pasta" do livro. Fotos tiradas na mão passam
+     pelo scripts/cover_scanner.py (endireita e recorta); arte digital da
+     editora (png, por exemplo) pode entrar direto. O painel "Status" abaixo
+     e o scripts/estante_todo.py (gera o ESTANTE-TODO.md) mostram o que falta. */}}
 {{ $fotos := dict }}
 {{ $raiz := "static/images/estante" }}
 {{ range .Site.Data.livros }}
@@ -1884,10 +1888,11 @@
     return (b && !b.fake && b.colecionavel && b.colecionavel.front) ? b.colecionavel : null;
   }
 
-  // os extras de um livro, na ordem do card: marca-página e colecionável
+  // os extras de um livro, na ordem do card: marca-página e cartão (as fotos
+  // do cartão continuam com o nome colecionavel*)
   var EXTRA = {
     bm:  { label: 'Marca-página', ratio: .28, size: { insp: 80, deck: 58, mini: 28 } },
-    col: { label: 'Colecionável', ratio: 1.5, size: { insp: 250, deck: 150, mini: 40 } }
+    col: { label: 'Cartão', ratio: 1.5, size: { insp: 250, deck: 150, mini: 40 } }
   };
   function extrasOf(b){
     var out = [], bm = bookmarkOf(b), col = colecionavelOf(b);
@@ -1897,11 +1902,12 @@
   }
   // na ordem da estante: prateleira, depois série e volume (a mesma ordem das
   // lombadas). x.group marca a série, pro leque separar um grupo do outro
-  function allExtras(){
+  function allExtras(kind){
     var list = [];
     SHELVES.forEach(function(s){
       s.books.forEach(function(b){
         extrasOf(b).forEach(function(x){
+          if(kind && x.kind !== kind) return;
           x.group = s.id + '|' + (b.series || b.id);
           list.push(x);
         });
@@ -1910,7 +1916,7 @@
     return list;
   }
   function extraTitle(x){
-    var d = x.data, name = x.kind === 'bm' ? 'Marca-página' : (d.nome || 'Colecionável');
+    var d = x.data, name = x.kind === 'bm' ? 'Marca-página' : (d.nome || 'Cartão');
     return d.exclusive ? '✦ ' + name + ' exclusivo' : name;
   }
 
@@ -2282,7 +2288,7 @@
   var query = '';      // busca normalizada (norm); vazia = sem busca
   var searchInfo = null;
   var insp = null;     // objeto em destaque (marca-página ou colecionável)
-  var deck = null;     // overlay da coleção de colecionáveis
+  var deck = null;     // overlay da coleção (marca-páginas ou cartões)
 
   // ---------------- lombadas ----------------
   function buildBook(b, index){
@@ -3040,20 +3046,21 @@
     });
   }
 
-  // a coleção: marca-páginas e colecionáveis de todos os livros em leque,
+  // a coleção de um tipo (marca-páginas ou cartões) de todos os livros em leque,
   // como cartas na mão
-  function openDeck(trigger){
+  function openDeck(trigger, kind){
     closePull(true);
     closeDeck(true);
-    var list = allExtras();
+    var list = allExtras(kind);
+    var plural = kind === 'bm' ? 'Marca-páginas' : 'Cartões';
     list.forEach(ensureArt);
     var ov = document.createElement('div');
     ov.className = 'estante-deck';
     ov.setAttribute('role', 'dialog');
-    ov.setAttribute('aria-label', 'Colecionáveis da estante');
+    ov.setAttribute('aria-label', plural + ' da estante');
     ov.innerHTML =
       '<button type="button" class="estante-x" aria-label="Fechar">×</button>' +
-      '<div class="estante-deck-head">✦ Colecionáveis da estante <b>' + list.length + '</b></div>' +
+      '<div class="estante-deck-head">✦ ' + plural + ' da estante <b>' + list.length + '</b></div>' +
       '<div class="estante-deck-fan"></div>';
     wrap.appendChild(ov);
     var minH = NARROW.matches ? 360 : 440;
@@ -3361,19 +3368,20 @@
       }
     });
 
-    // atalho pra coleção (marca-páginas e colecionáveis)
-    var extraCount = allExtras().length;
-    if(extraCount){
-      var deckBtn = document.createElement('button');
-      deckBtn.type = 'button';
-      deckBtn.className = 'estante-tool';
-      deckBtn.textContent = '✦ Colecionáveis (' + extraCount + ')';
-      deckBtn.addEventListener('click', function(){
+    // atalhos pras coleções: marca-páginas e cartões, cada um no seu botão
+    [['bm', 'Marca-páginas'], ['col', 'Cartões']].forEach(function(t){
+      var n = allExtras(t[0]).length;
+      if(!n) return;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'estante-tool';
+      btn.textContent = '✦ ' + t[1] + ' (' + n + ')';
+      btn.addEventListener('click', function(){
         Snd.play('click');
-        openDeck(deckBtn);
+        openDeck(btn, t[0]);
       });
-      toolsEl.appendChild(deckBtn);
-    }
+      toolsEl.appendChild(btn);
+    });
 
     var snd = document.createElement('button');
     snd.type = 'button';
