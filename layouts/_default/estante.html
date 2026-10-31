@@ -1911,8 +1911,19 @@
     if(col) out.push({ kind: 'col', b: b, data: col });
     return out;
   }
+  // na ordem da estante: prateleira, depois série e volume (a mesma ordem das
+  // lombadas). x.group marca a série, pro leque separar um grupo do outro
   function allExtras(){
-    return ALL_BOOKS.reduce(function(list, b){ return list.concat(extrasOf(b)); }, []);
+    var list = [];
+    SHELVES.forEach(function(s){
+      s.books.forEach(function(b){
+        extrasOf(b).forEach(function(x){
+          x.group = s.id + '|' + (b.series || b.id);
+          list.push(x);
+        });
+      });
+    });
+    return list;
   }
   function extraTitle(x){
     var d = x.data, name = x.kind === 'bm' ? 'Marca-página' : (d.nome || 'Colecionável');
@@ -3070,9 +3081,17 @@
     var fan = ov.querySelector('.estante-deck-fan');
     var widths = list.map(function(x){ return Math.round(EXTRA[x.kind].size.deck * (NARROW.matches ? .78 : 1)); });
     var sum = widths.reduce(function(a, w){ return a + w; }, 0), avail = fan.clientWidth - 48;
-    var gap = list.length > 1 ? Math.min(28, (avail - sum) / (list.length - 1)) : 0;
-    var left = -(sum + gap * (list.length - 1)) / 2;
+    // um respiro a mais entre uma série e outra, se o leque ainda tiver folga
+    var breaks = list.filter(function(x, i){ return i && x.group !== list[i - 1].group; }).length;
+    var sep = 18;
+    var gap = list.length > 1 ? Math.min(28, (avail - sum - breaks * sep) / (list.length - 1)) : 0;
+    if(gap < 4){
+      sep = 0;
+      gap = list.length > 1 ? Math.min(28, (avail - sum) / (list.length - 1)) : 0;
+    }
+    var left = -(sum + gap * (list.length - 1) + sep * breaks) / 2;
     list.forEach(function(x, i){
+      if(i && x.group !== list[i - 1].group) left += sep;
       var b = x.b, off = left + widths[i] / 2, ang = clamp(off * .06, -12, 12);
       left += widths[i] + gap;
       var d = document.createElement('button');
