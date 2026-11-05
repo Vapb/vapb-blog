@@ -33,6 +33,12 @@ metastore
 
 Um objeto é endereçado como `catalogo.schema.objeto`, e é nesse nível que se aplicam permissões, linhagem e auditoria.
 
+- **Catalog:** o contêiner mais amplo. Em geral há catálogos separados por ambiente (dev, staging, prod) ou por unidade de negócio.
+- **Schema** (também chamado de *database*): agrupa objetos relacionados, como as tabelas de um projeto, de um time ou de um domínio. Guarda mais que tabelas: também volumes, modelos e funções.
+- **Tabelas e volumes:** tabelas guardam dado estruturado, consultável por SQL por quem tiver permissão; volumes recebem os arquivos brutos antes de virarem tabela.
+
+Como o Unity Catalog gerencia essa hierarquia e as permissões, ao criar uma tabela ele registra sozinho **quem a criou, quando e quem tem acesso**.
+
 ## Visão geral
 
 | Objeto | Guarda dados? | Quando calcula | Para que serve |
