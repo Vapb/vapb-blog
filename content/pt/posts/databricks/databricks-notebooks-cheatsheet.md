@@ -23,8 +23,33 @@ Uma célula começa com um *magic* para trocar a linguagem ou o comportamento da
 | `%md` | Markdown, para documentar o notebook |
 | `%sh` | Shell no nó driver |
 | `%pip install pacote` | Instala biblioteca na sessão do notebook |
-| `%run ./outro_notebook` | Executa outro notebook e traz suas variáveis |
+| `%run ./outro_notebook` | Executa outro notebook e traz suas variáveis (veja abaixo) |
 | `%fs ls /caminho` | Atalho para `dbutils.fs` |
+
+## Reaproveitar código com `%run`
+
+`%run` executa **todas as células** de outro notebook **na mesma sessão** do notebook atual. Não é uma cópia do arquivo: é uma execução real, então funções, variáveis, imports e DataFrames definidos lá ficam disponíveis nas células seguintes.
+
+```python
+%run ./Includes/Setup-Common
+```
+
+```python
+# depois do %run, o que foi definido no outro notebook já existe aqui
+print(f"Username: {spark.sql('SELECT current_user()').first()[0]}")
+print(f"Catalog:  {my_catalog}")
+print(f"Schema:   {my_schema}")
+```
+
+- **Caminho relativo:** `./` é relativo à pasta do notebook atual.
+- **SQL também compartilha a sessão:** variáveis criadas com `SET VAR my_catalog = ...` no notebook incluído ficam visíveis nas células SQL.
+- **Encadeamento:** um notebook de setup pode dar `%run` em outro. Um padrão comum é o `Setup-Common` definir as funções utilitárias, o `Setup-1` rodá-lo e criar catálogo, schema e volume do usuário, e o notebook da aula rodar o `Setup-1` e herdar tudo.
+
+Pontos de atenção:
+
+- **O estado vive no kernel, não no arquivo.** Se reiniciar o kernel ou desanexar o compute, tudo some e é preciso rodar o `%run` de novo. Um `NameError` em `my_catalog` ou numa função do setup quase sempre significa que o `%run` não foi executado nessa sessão.
+- **A ordem importa:** a célula com `%run` precisa rodar antes das que usam o que ela define.
+- **Para código reutilizável de verdade**, um módulo Python com `import` é a alternativa; para setup de curso ou de ambiente, `%run` é o padrão.
 
 ## Navegar no Unity Catalog
 
@@ -38,13 +63,78 @@ SHOW VOLUMES IN samples.databricks;
 
 DESCRIBE TABLE samples.nyctaxi.trips;
 DESCRIBE EXTENDED samples.nyctaxi.trips;   -- local, formato, owner
-
-USE CATALOG samples;
-USE SCHEMA nyctaxi;
-SELECT current_catalog(), current_schema();
 ```
 
 Quando aparece "table not found", quase sempre falta o prefixo `catalog.schema.` ou o `USE` correto.
+
+## Comandos úteis: onde estou e como mudar
+
+Sempre que o notebook usa um nome sem o caminho completo (`vendas` em vez de `catalogo.schema.vendas`), o Databricks procura no **catálogo e schema de trabalho** da sessão. Por isso vale saber ver e trocar esse contexto.
+
+### Ver onde você está
+
+```sql
+SELECT current_catalog(), current_schema();   -- catálogo e schema de trabalho
+SELECT current_user();                         -- quem é você
+```
+
+```python
+print(f"Username: {spark.sql('SELECT current_user()').first()[0]}")
+print(f"Catalog:  {spark.sql('SELECT current_catalog()').first()[0]}")
+print(f"Schema:   {spark.sql('SELECT current_schema()').first()[0]}")
+```
+
+### Mudar o catálogo e o schema de trabalho
+
+```sql
+USE CATALOG meu_catalog;
+USE SCHEMA meu_schema;
+
+-- ou os dois de uma vez
+USE meu_catalog.meu_schema;
+```
+
+Depois disso, os nomes curtos funcionam:
+
+```sql
+SHOW TABLES;                 -- lista as tabelas do schema atual
+SHOW VOLUMES;                -- lista os volumes do schema atual
+SELECT * FROM voos;          -- em vez de meu_catalog.meu_schema.voos
+```
+
+Em Python, o mesmo efeito vem do `spark.sql` ou do `spark.catalog`:
+
+```python
+spark.sql("USE meu_catalog.meu_schema")
+
+spark.catalog.currentCatalog()        # catálogo atual
+spark.catalog.currentDatabase()       # schema atual
+spark.catalog.setCurrentCatalog("meu_catalog")
+spark.catalog.setCurrentDatabase("meu_schema")
+```
+
+### Guardar o nome em variável
+
+Para não repetir o nome em todo lugar, dá para parametrizar:
+
+```python
+my_catalog = "meu_catalog"
+my_schema = "meu_schema"
+spark.sql(f"USE {my_catalog}.{my_schema}")
+```
+
+```sql
+DECLARE OR REPLACE VARIABLE my_catalog STRING DEFAULT 'meu_catalog';
+USE CATALOG IDENTIFIER(my_catalog);
+```
+
+O `IDENTIFIER(...)` é o que permite usar uma variável (ou widget) onde o SQL espera um nome de objeto.
+
+Pontos de atenção:
+
+- **O `USE` vale só para a sessão.** Ao reiniciar o kernel ou desanexar o compute, o contexto volta ao padrão. Em notebooks que rodam como job, o `USE` precisa estar numa célula.
+- **O caminho completo sempre vence.** `catalogo.schema.tabela` ignora o `USE`, então dá para misturar nomes curtos e completos.
+- **Volumes não usam o `USE`.** Os caminhos de arquivo continuam sendo `/Volumes/catalogo/schema/volume/...` por inteiro.
 
 ## Arquivos em Volumes
 
