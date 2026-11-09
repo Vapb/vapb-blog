@@ -1,5 +1,5 @@
 ---
 title: "Mapa"
-description: "Mapa do blog em árvore: posts, seções, projetos e tags"
+description: "Mapa do blog em grafo: posts, seções, projetos e tags"
 layout: "mapa"
 ---

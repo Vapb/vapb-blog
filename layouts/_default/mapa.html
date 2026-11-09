@@ -1,22 +1,49 @@
 {{ partial "header.html" . }}
 
-{{/* Mapa do site em árvore: VAPB BLOG > (posts > seção > post | projetos > projeto | sobre mim).
-     Tudo é gerado do conteúdo do Hugo, então seção ou post novo entra sozinho. */}}
+{{/* Mapa do site em grafo: VAPB BLOG → (posts → seção → post | projetos → projeto | sobre mim).
+     Aqui o Hugo só monta a lista de nós (com o pai de cada um); o JS desenha o grafo.
+     Tudo vem do conteúdo, então seção ou post novo entra sozinho. */}}
 {{ $home := site.Home }}
 {{ $posts := site.GetPage "/posts" }}
 {{ $projects := site.GetPage "/projects" }}
 {{ $about := site.GetPage "/about" }}
-{{ $postCount := 0 }}
-{{ with $posts }}{{ $postCount = len (where .RegularPagesRecursive "Title" "!=" "") }}{{ end }}
-{{ $projectCount := 0 }}
-{{ with $projects }}{{ $projectCount = len .RegularPages }}{{ end }}
-{{ $total := add (add $postCount $projectCount) 1 }}
+
+{{/* id = posição na lista; "p" = id do pai (-1 na raiz); filhos sempre depois do pai */}}
+{{ $nodes := slice (dict "id" 0 "p" -1 "k" "root" "i" "home" "t" site.Title "u" $home.RelPermalink) }}
+
+{{ with $posts }}
+  {{ $pid := len $nodes }}
+  {{ $nodes = $nodes | append (dict "id" $pid "p" 0 "k" "area" "i" "folder" "t" .Title "u" .RelPermalink) }}
+  {{ range .Sections.ByTitle }}
+    {{ $sid := len $nodes }}
+    {{ $nodes = $nodes | append (dict "id" $sid "p" $pid "k" "section" "i" "folder" "t" .Title "u" .RelPermalink) }}
+    {{ range (where .RegularPages "Title" "!=" "").ByDate.Reverse }}
+      {{ $tags := slice }}
+      {{ with .Params.tags }}{{ $tags = apply . "urlize" "." }}{{ end }}
+      {{ $nodes = $nodes | append (dict "id" (len $nodes) "p" $sid "k" "page" "i" "file" "t" .Title "u" .RelPermalink "tags" $tags) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ with $projects }}
+  {{ $pid := len $nodes }}
+  {{ $nodes = $nodes | append (dict "id" $pid "p" 0 "k" "area" "i" "box" "t" .Title "u" .RelPermalink) }}
+  {{ range .RegularPages.ByDate.Reverse }}
+    {{ $tags := slice }}
+    {{ with .Params.tags }}{{ $tags = apply . "urlize" "." }}{{ end }}
+    {{ $nodes = $nodes | append (dict "id" (len $nodes) "p" $pid "k" "page" "i" "box" "pr" true "t" .Title "u" .RelPermalink "tags" $tags) }}
+  {{ end }}
+{{ end }}
+
+{{ with $about }}
+  {{ $nodes = $nodes | append (dict "id" (len $nodes) "p" 0 "k" "area" "i" "user" "t" .Title "u" .RelPermalink) }}
+{{ end }}
 
 <style>
 /* ===================================================================
    Mapa do blog
-   Um acento só (laranja do tema) sobre neutros; a profundidade se lê pelo
-   recuo, pelo ícone e pelo peso do texto, não por cores diferentes.
+   Um acento só (laranja do tema) sobre neutros; a hierarquia se lê pela
+   posição (colunas), pelo ícone e pelo peso do texto.
    Espaçamento em múltiplos de 4 px.
    =================================================================== */
 .mapa {
@@ -38,7 +65,7 @@
 
 .mapa .page-header { margin-bottom: var(--sp-5); }
 
-/* ---------- ícones ---------- */
+/* ---------- ícones da barra de ferramentas ---------- */
 .mapa-svg {
   flex: none;
   fill: none;
@@ -251,152 +278,6 @@ details[open] > summary.mapa-btn .mapa-svg { transform: rotate(180deg); }
   font-size: 0.875rem;
 }
 
-/* ---------- a caixa e a árvore ---------- */
-.mapa-box {
-  padding: var(--sp-5);
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-}
-
-.mapa-tree {
-  --indent: 36px;
-  --trunk: 20px; /* distância do tronco até a borda do pai: fica sob o chevron */
-  --mid: 20px;
-}
-
-.mapa-tree ul {
-  margin: 0;
-  padding: 0 0 0 var(--indent);
-  list-style: none;
-}
-
-.mapa-tree li {
-  position: relative;
-  padding-top: 6px;
-}
-
-/* tronco vertical + ramo até o card; linhas finas e neutras */
-.mapa-tree ul > li::before {
-  content: "";
-  position: absolute;
-  top: calc(6px + var(--mid));
-  left: calc((var(--indent) - var(--trunk)) * -1);
-  width: calc(var(--indent) - var(--trunk));
-  border-top: 1px solid var(--line);
-}
-
-.mapa-tree ul > li::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc((var(--indent) - var(--trunk)) * -1);
-  border-left: 1px solid var(--line);
-}
-
-.mapa-tree ul > li.is-last::after {
-  bottom: auto;
-  height: calc(6px + var(--mid));
-}
-
-.mapa-leaves { --mid: 19px; }
-
-/* o atributo hidden precisa vencer os display: flex dos blocos */
-.mapa-tree [hidden] { display: none !important; }
-
-/* ---------- os nós ---------- */
-.mapa-node {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 40px;
-  padding: var(--sp-2) var(--sp-3);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  color: var(--text);
-  text-decoration: none;
-  font-size: 0.9375rem;
-  line-height: 1.35;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.mapa-node:hover { border-color: var(--accent); }
-
-.mapa-node .mapa-label { flex: 1; min-width: 0; }
-
-.mapa-node small {
-  margin-left: auto;
-  color: var(--muted);
-  font-size: 0.8125rem;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.mapa-ico { width: 18px; height: 18px; color: var(--muted); }
-.mapa-chev { width: 16px; height: 16px; color: var(--muted); transition: transform 0.2s ease; }
-.mapa-sp { flex: none; width: 16px; }
-
-/* nós que abrem e fecham: o clique expande; ↗ abre a página */
-.mapa-node[data-href] { padding-right: 52px; cursor: pointer; user-select: none; }
-
-[aria-expanded="true"] > .mapa-chev { transform: rotate(90deg); }
-
-.mapa-node .ico-open { display: none; }
-.mapa-node[aria-expanded="true"] .ico-open { display: block; }
-.mapa-node[aria-expanded="true"] .ico-closed { display: none; }
-
-.mapa-sechead { position: relative; }
-
-.mapa-open {
-  position: absolute;
-  top: 50%;
-  right: 6px;
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  color: var(--muted);
-  transform: translateY(-50%);
-}
-
-.mapa-open .mapa-svg { width: 14px; height: 14px; }
-.mapa-open:hover { background: rgba(255, 255, 255, 0.08); color: var(--accent); }
-
-/* hierarquia pelo peso: raiz > áreas e seções em cards > posts em linhas leves */
-.mapa-node.root { font-size: 1rem; font-weight: 600; }
-.mapa-node.root .mapa-ico { color: var(--accent); }
-.mapa-node.area,
-.mapa-node.section { font-weight: 600; }
-
-.mapa-node.page {
-  min-height: 0;
-  background: transparent;
-  font-weight: 400;
-}
-
-.mapa-node.page:hover { background: rgba(255, 255, 255, 0.04); }
-
-/* uma cor por tipo de página: posts em azul suave, projetos no laranja do tema */
-.mapa-node.page {
-  --tone: #82aaff;
-  border-left: 3px solid var(--tone);
-}
-
-.mapa-node.page.is-project { --tone: var(--accent); }
-.mapa-node.page .mapa-ico { color: var(--tone); }
-.mapa-node.page .mapa-ico { width: 16px; height: 16px; }
-
-.mapa-node.page.is-match {
-  background: rgba(255, 115, 0, 0.14);
-  border-color: rgba(255, 115, 0, 0.45);
-}
-
 .mapa-empty {
   margin: 0;
   padding: var(--sp-5) var(--sp-4);
@@ -406,6 +287,140 @@ details[open] > summary.mapa-btn .mapa-svg { transform: rotate(180deg); }
 
 .mapa-empty[hidden] { display: none; }
 .mapa-empty .mapa-btn { margin-left: var(--sp-2); }
+
+/* ---------- o grafo ---------- */
+.mapa-graphbox {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  container-type: inline-size;
+}
+
+.mapa-graph {
+  display: block;
+  width: 100%;
+  height: clamp(420px, 72vh, 760px);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.mapa-graph.is-panning { cursor: grabbing; }
+
+.mapa-gctl {
+  position: absolute;
+  right: var(--sp-3);
+  bottom: var(--sp-3);
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.mapa-ghint {
+  position: absolute;
+  left: var(--sp-4);
+  bottom: var(--sp-3);
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  pointer-events: none;
+}
+
+/* numa caixa estreita a dica colidiria com os botões de zoom */
+@container (max-width: 700px) {
+  .mapa-ghint { display: none; }
+}
+
+.mapa-gempty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* arestas: setas do pai para o filho; o caminho até a raiz acende no hover */
+.g-edge {
+  fill: none;
+  stroke: var(--muted);
+  stroke-opacity: 0.5;
+  stroke-width: 1.25;
+  marker-end: url(#g-arrow);
+}
+
+.g-edge.hi {
+  stroke: var(--accent);
+  stroke-opacity: 1;
+  stroke-width: 1.75;
+  marker-end: url(#g-arrow-hi);
+}
+
+#g-arrow path { fill: var(--muted); fill-opacity: 0.7; }
+#g-arrow-hi path { fill: var(--accent); }
+
+/* nós */
+.g-node { cursor: pointer; }
+.mapa .g-node:focus-visible { outline: none; }
+
+.g-box {
+  fill: var(--surface);
+  stroke: var(--line);
+  stroke-width: 1;
+  transition: stroke 0.15s ease, fill 0.15s ease;
+}
+
+.g-node:hover .g-box,
+.g-node.hi .g-box { stroke: var(--accent); }
+.g-node.sel .g-box { stroke: var(--accent); stroke-width: 2; }
+
+.g-node:focus-visible .g-box { stroke: var(--accent); stroke-width: 2.5; }
+.g-node.root .g-box { stroke: var(--accent); }
+
+.g-node.is-match .g-box {
+  fill: rgba(255, 115, 0, 0.14);
+  stroke: rgba(255, 115, 0, 0.45);
+}
+
+.g-label {
+  fill: var(--text);
+  font-size: 13px;
+  dominant-baseline: central;
+}
+
+.g-node.root .g-label { font-size: 14px; }
+.g-node.root .g-label,
+.g-node.area .g-label,
+.g-node.section .g-label { font-weight: 600; }
+
+.g-ico {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.g-node.root .g-ico,
+.g-node.is-project .g-ico { stroke: var(--accent); }
+.g-node.page .g-ico { stroke: #82aaff; }
+.g-node.page.is-project .g-ico { stroke: var(--accent); }
+
+/* selo que abre/fecha: "+12" fechado, "−" aberto */
+.g-pill { fill: transparent; stroke: var(--line); transition: stroke 0.15s ease; }
+.g-node:hover .g-pill { stroke: var(--accent); }
+
+.g-count {
+  fill: var(--muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.g-open rect { fill: transparent; transition: fill 0.15s ease; }
+.g-open:hover rect { fill: rgba(255, 255, 255, 0.1); }
+.g-open use { fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.g-open:hover use { stroke: var(--accent); }
 
 /* ---------- animações (desligadas com prefers-reduced-motion) ---------- */
 @keyframes mapa-pop-in {
@@ -445,20 +460,9 @@ details[open] > summary.mapa-btn .mapa-svg { transform: rotate(180deg); }
     padding-right: var(--sp-3);
   }
 
-  .mapa-box { padding: var(--sp-3); }
-  .mapa-tree { --indent: 24px; --trunk: 14px; }
   .mapa-searchwrap { max-width: none; flex-basis: 100%; }
   .mapa-grow { display: none; }
-
-  /* detalhes que não cabem somem; títulos longos quebram em vez de vazar */
-  .mapa-sub,
-  .mapa-node.root small { display: none; }
-  .mapa-node .mapa-label { overflow-wrap: anywhere; }
-  .mapa-node[data-href] { padding-right: 44px; }
-
-  /* nos posts e projetos a data desce para baixo do título */
-  .mapa-node.page { flex-wrap: wrap; row-gap: 2px; }
-  .mapa-node.page small { flex-basis: 100%; margin-left: 26px; }
+  .mapa-graph { height: clamp(360px, 70vh, 560px); }
 }
 </style>
 
@@ -469,7 +473,6 @@ details[open] > summary.mapa-btn .mapa-svg { transform: rotate(180deg); }
   <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></symbol>
   <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
-  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
   <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
   <symbol id="i-out" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
@@ -509,15 +512,17 @@ details[open] > summary.mapa-btn .mapa-svg { transform: rotate(180deg); }
     </div>
 
     <details class="mapa-menu is-right" id="mapa-helpmenu">
-      <summary class="mapa-btn mapa-iconbtn" aria-label="Ajuda de teclado" title="Ajuda de teclado">?</summary>
+      <summary class="mapa-btn mapa-iconbtn" aria-label="Ajuda" title="Ajuda">?</summary>
       <div class="mapa-pop mapa-help" id="mapa-help" role="note">
         <dl>
+          <dt>clique</dt><dd>seleciona; numa pasta, abre ou fecha</dd>
+          <dt>duplo clique</dt><dd>abre a página (também o ↗ ou <kbd>Enter</kbd>)</dd>
           <dt><kbd>↑</kbd> <kbd>↓</kbd></dt><dd>navegar entre os itens</dd>
           <dt><kbd>→</kbd> <kbd>←</kbd></dt><dd>abrir, fechar ou subir um nível</dd>
-          <dt><kbd>Espaço</kbd></dt><dd>abrir ou fechar a seção</dd>
-          <dt><kbd>Enter</kbd></dt><dd>abrir a página</dd>
+          <dt><kbd>Espaço</kbd></dt><dd>abrir ou fechar a pasta</dd>
           <dt><kbd>Home</kbd> <kbd>End</kbd></dt><dd>primeiro e último item</dd>
-          <dt>letra</dt><dd>pular para o item que começa com ela</dd>
+          <dt>arrastar</dt><dd>mover o grafo</dd>
+          <dt><kbd>Ctrl</kbd> + rolar</dt><dd>zoom</dd>
         </dl>
       </div>
     </details>
@@ -525,103 +530,30 @@ details[open] > summary.mapa-btn .mapa-svg { transform: rotate(180deg); }
 
   <p class="mapa-info" id="mapa-info" role="status" aria-live="polite"></p>
 
-  <div class="mapa-box">
-    <div class="mapa-tree" id="mapa-tree" role="tree" aria-label="Mapa do site" aria-describedby="mapa-help">
-
-      <div class="mapa-rootrow" role="none">
-        <a class="mapa-node root" role="treeitem" aria-level="1" aria-expanded="true" aria-owns="mapa-g-root" tabindex="0" href="{{ $home.RelPermalink }}">
-          <span class="mapa-sp"></span>
-          <svg class="mapa-svg mapa-ico" aria-hidden="true" focusable="false"><use href="#i-home"/></svg>
-          <span class="mapa-label">{{ site.Title }}</span>
-          <small>{{ $total }} páginas</small>
-        </a>
-      </div>
-
-      <ul class="mapa-areas" id="mapa-g-root" role="group">
-
-        {{ if $posts }}
-        <li class="mapa-area" role="none">
-          <div class="mapa-sechead" role="none">
-            <div class="mapa-node area" role="treeitem" aria-level="2" aria-expanded="true" aria-owns="mapa-g-posts" tabindex="-1" data-href="{{ $posts.RelPermalink }}">
-              <svg class="mapa-svg mapa-chev" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>
-              <svg class="mapa-svg mapa-ico ico-closed" aria-hidden="true" focusable="false"><use href="#i-folder"/></svg>
-              <svg class="mapa-svg mapa-ico ico-open" aria-hidden="true" focusable="false"><use href="#i-folder-open"/></svg>
-              <span class="mapa-label">{{ $posts.Title }}</span>
-              <small data-unit="posts">{{ $postCount }} posts<span class="mapa-sub"> · {{ len $posts.Sections }} seções</span></small>
-            </div>
-            <a class="mapa-open" href="{{ $posts.RelPermalink }}" tabindex="-1" aria-label="Abrir a página {{ $posts.Title }}" title="Abrir página"><svg class="mapa-svg" aria-hidden="true" focusable="false"><use href="#i-out"/></svg></a>
-          </div>
-          <ul class="mapa-branch" id="mapa-g-posts" role="group">
-            {{ range $posts.Sections.ByTitle }}
-            {{ $pages := where .RegularPages "Title" "!=" "" }}
-            {{ $gid := printf "mapa-g-sec-%s" (.Title | urlize) }}
-            <li class="mapa-col" role="none">
-              <div class="mapa-sechead" role="none">
-                <div class="mapa-node section" role="treeitem" aria-level="3" aria-expanded="false" aria-owns="{{ $gid }}" tabindex="-1" data-href="{{ .RelPermalink }}">
-                  <svg class="mapa-svg mapa-chev" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>
-                  <svg class="mapa-svg mapa-ico ico-closed" aria-hidden="true" focusable="false"><use href="#i-folder"/></svg>
-                  <svg class="mapa-svg mapa-ico ico-open" aria-hidden="true" focusable="false"><use href="#i-folder-open"/></svg>
-                  <span class="mapa-label">{{ .Title }}</span>
-                  <small data-unit="posts">{{ len $pages }} {{ if eq (len $pages) 1 }}post{{ else }}posts{{ end }}</small>
-                </div>
-                <a class="mapa-open" href="{{ .RelPermalink }}" tabindex="-1" aria-label="Abrir a página {{ .Title }}" title="Abrir página"><svg class="mapa-svg" aria-hidden="true" focusable="false"><use href="#i-out"/></svg></a>
-              </div>
-              <ul class="mapa-leaves" id="{{ $gid }}" role="group" hidden>
-                {{ range $pages.ByDate.Reverse }}
-                <li role="none">
-                  <a class="mapa-node page" role="treeitem" aria-level="4" tabindex="-1" href="{{ .RelPermalink }}" data-tags="{{ with .Params.tags }}{{ delimit (apply . "urlize" ".") " " }}{{ end }}" data-title="{{ .Title | lower }}">
-                    <svg class="mapa-svg mapa-ico" aria-hidden="true" focusable="false"><use href="#i-file"/></svg>
-                    <span class="mapa-label">{{ .Title }}</span>
-                    <small>{{ .Date.Format "02/01/2006" }}</small>
-                  </a>
-                </li>
-                {{ end }}
-              </ul>
-            </li>
-            {{ end }}
-          </ul>
-        </li>
-        {{ end }}
-
-        {{ if $projects }}
-        <li class="mapa-area" role="none">
-          <div class="mapa-sechead" role="none">
-            <div class="mapa-node area" role="treeitem" aria-level="2" aria-expanded="true" aria-owns="mapa-g-projects" tabindex="-1" data-href="{{ $projects.RelPermalink }}">
-              <svg class="mapa-svg mapa-chev" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg>
-              <svg class="mapa-svg mapa-ico" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
-              <span class="mapa-label">{{ $projects.Title }}</span>
-              <small data-unit="projetos">{{ $projectCount }} {{ if eq $projectCount 1 }}projeto{{ else }}projetos{{ end }}</small>
-            </div>
-            <a class="mapa-open" href="{{ $projects.RelPermalink }}" tabindex="-1" aria-label="Abrir a página {{ $projects.Title }}" title="Abrir página"><svg class="mapa-svg" aria-hidden="true" focusable="false"><use href="#i-out"/></svg></a>
-          </div>
-          <ul class="mapa-branch mapa-leaves" id="mapa-g-projects" role="group">
-            {{ range $projects.RegularPages.ByDate.Reverse }}
-            <li role="none">
-              <a class="mapa-node page is-project" role="treeitem" aria-level="3" tabindex="-1" href="{{ .RelPermalink }}" data-tags="{{ with .Params.tags }}{{ delimit (apply . "urlize" ".") " " }}{{ end }}" data-title="{{ .Title | lower }}">
-                <svg class="mapa-svg mapa-ico" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
-                <span class="mapa-label">{{ .Title }}</span>
-                <small>{{ .Date.Format "02/01/2006" }}</small>
-              </a>
-            </li>
-            {{ end }}
-          </ul>
-        </li>
-        {{ end }}
-
-        {{ with $about }}
-        <li class="mapa-area" role="none">
-          <a class="mapa-node area" role="treeitem" aria-level="2" tabindex="-1" href="{{ .RelPermalink }}">
-            <span class="mapa-sp"></span>
-            <svg class="mapa-svg mapa-ico" aria-hidden="true" focusable="false"><use href="#i-user"/></svg>
-            <span class="mapa-label">{{ .Title }}</span>
-          </a>
-        </li>
-        {{ end }}
-
-      </ul>
+  <div class="mapa-graphbox" id="mapa-graphbox">
+    <svg class="mapa-graph" id="mapa-graph" role="group" aria-label="Grafo do site: cada seta vai da página pai para a página filha.">
+      <defs>
+        <marker id="g-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0.5 7 4 0 7.5z"/></marker>
+        <marker id="g-arrow-hi" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0.5 7 4 0 7.5z"/></marker>
+      </defs>
+      <g id="g-viewport"><g id="g-edges"></g><g id="g-nodes"></g></g>
+    </svg>
+    <p class="mapa-ghint">Arraste para mover · Ctrl + rolagem para zoom · clique numa pasta para abrir · duplo clique ou ↗ abre a página</p>
+    <div class="mapa-gctl">
+      <button type="button" class="mapa-btn mapa-iconbtn" id="mapa-zoom-out" aria-label="Diminuir zoom">−</button>
+      <button type="button" class="mapa-btn mapa-iconbtn" id="mapa-zoom-in" aria-label="Aumentar zoom">+</button>
+      <button type="button" class="mapa-btn" id="mapa-fit">Ajustar</button>
     </div>
-    <p class="mapa-empty" id="mapa-empty" hidden>Nenhuma página combina com esses filtros. <button type="button" class="mapa-btn" id="mapa-empty-clear">Limpar filtros</button></p>
+    <p class="mapa-empty mapa-gempty" id="mapa-gempty" hidden>Nenhuma página combina com esses filtros. <button type="button" class="mapa-btn" id="mapa-gempty-clear">Limpar filtros</button></p>
   </div>
+
+  <noscript>
+    <p class="mapa-empty">O mapa precisa de JavaScript.
+      {{ with $posts }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
+      {{ with $projects }} · <a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
+      {{ with $about }} · <a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
+    </p>
+  </noscript>
 
 </section>
 
@@ -629,11 +561,13 @@ details[open] > summary.mapa-btn .mapa-svg { transform: rotate(180deg); }
 (function () {
   'use strict';
 
-  var tree = document.getElementById('mapa-tree');
-  var items = Array.prototype.slice.call(tree.querySelectorAll('[role="treeitem"]'));
-  var pages = items.filter(function (el) { return el.classList.contains('page'); });
-  var sections = items.filter(function (el) { return el.classList.contains('section'); });
-  var areas = items.filter(function (el) { return el.classList.contains('area') && el.hasAttribute('aria-expanded'); });
+  var data = {{ $nodes | jsonify | safeJS }};
+
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var svg = document.getElementById('mapa-graph');
+  var vpEl = document.getElementById('g-viewport');
+  var edgeLayer = document.getElementById('g-edges');
+  var nodeLayer = document.getElementById('g-nodes');
   var chips = Array.prototype.slice.call(document.querySelectorAll('.mapa-chip'));
   var search = document.getElementById('mapa-search');
   var info = document.getElementById('mapa-info');
@@ -642,152 +576,556 @@ details[open] > summary.mapa-btn .mapa-svg { transform: rotate(180deg); }
   var tagMenu = document.getElementById('mapa-tagmenu');
   var helpMenu = document.getElementById('mapa-helpmenu');
   var activeBox = document.getElementById('mapa-active');
-  var emptyMsg = document.getElementById('mapa-empty');
-  var active = {};
-  var snapshot = null;
-
-  /* ---------- helpers da árvore ---------- */
-
-  function levelOf(el) { return parseInt(el.getAttribute('aria-level'), 10); }
-  function expandable(el) { return el.hasAttribute('aria-expanded'); }
-  function isOpen(el) { return el.getAttribute('aria-expanded') === 'true'; }
-  function groupOf(el) {
-    var id = el.getAttribute('aria-owns');
-    return id ? document.getElementById(id) : null;
-  }
-  function smallOf(el) { return el.querySelector('small'); }
-  function labelOf(el) {
-    var label = el.querySelector('.mapa-label');
-    return (label || el).textContent.trim();
-  }
-
-  /* o item pai é o item anterior, na ordem do documento, um nível acima */
-  function parentOf(el) {
-    var i = items.indexOf(el), level = levelOf(el);
-    while (--i >= 0) if (levelOf(items[i]) === level - 1) return items[i];
-    return null;
-  }
-
-  function visibleItems() {
-    return items.filter(function (el) { return !el.closest('[hidden], [data-closing]'); });
-  }
-
-  /* roving tabindex: só um item da árvore entra na ordem do Tab */
-  function setTabStop(el) {
-    items.forEach(function (i) { i.tabIndex = -1; });
-    el.tabIndex = 0;
-  }
-
-  function ensureTabStop() {
-    var current = items.filter(function (i) { return i.tabIndex === 0; })[0];
-    if (!current || current.closest('[hidden], [data-closing]')) setTabStop(items[0]);
-  }
-
-  function focusItem(el) {
-    setTabStop(el);
-    el.focus();
-  }
-
-  /* as linhas de conexão cortam no último filho visível de cada lista */
-  function markLast() {
-    Array.prototype.forEach.call(tree.querySelectorAll('ul[role="group"]'), function (list) {
-      var kids = Array.prototype.filter.call(list.children, function (c) { return !c.hidden; });
-      Array.prototype.forEach.call(list.children, function (c) { c.classList.remove('is-last'); });
-      if (kids.length) kids[kids.length - 1].classList.add('is-last');
-    });
-  }
+  var gEmpty = document.getElementById('mapa-gempty');
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* abre e fecha a lista de filhos com uma animação curta de altura */
-  function animateGroup(group, open) {
-    if (group._anim) { group._anim.cancel(); group._anim = null; }
-    group.removeAttribute('data-closing');
-    group.style.overflow = '';
-    group.style.boxSizing = '';
+  var H = 34;         /* altura do nó */
+  var ROW = 44;       /* distância vertical entre linhas */
+  var GAP_X = 72;     /* espaço entre colunas, onde a seta passa */
+  var PAD = 10;
+  var ICON = 14;
+  var MAX_LABEL = 230;
+  var DUR = 260;
+  var MIN_K = 0.2;
+  var MAX_K = 2.5;
 
-    if (reduceMotion || !group.animate) {
-      group.hidden = !open;
-      return;
-    }
+  var ctx = document.createElement('canvas').getContext('2d');
+  var recs = [];
+  var order = [];     /* nós visíveis, na ordem do desenho (de cima para baixo) */
+  var view = { k: 1, tx: 0, ty: 0 };
+  var viewTo = null;
+  var viewFrom = null;
+  var bounds = { w: 0, h: 0 };
+  var anim = null;
+  var needFit = true;
+  var focused = null;
+  var selected = null;
+  var hot = null;
+  var pend = null;
+  var active = {};      /* tags ligadas */
+  var snapshot = null;  /* pastas abertas antes de filtrar, para restaurar depois */
 
-    if (open) group.hidden = false;
-    var cs = getComputedStyle(group);
-    var full = {
-      height: group.offsetHeight + 'px',
-      paddingTop: cs.paddingTop,
-      paddingBottom: cs.paddingBottom,
-      opacity: 1
-    };
-    var none = { height: '0px', paddingTop: '0px', paddingBottom: '0px', opacity: 0 };
-
-    group.style.overflow = 'hidden';
-    group.style.boxSizing = 'border-box';
-    if (!open) group.setAttribute('data-closing', '');
-
-    var anim = group.animate(open ? [none, full] : [full, none], {
-      duration: 220,
-      easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
-      fill: 'forwards'
-    });
-    group._anim = anim;
-
-    /* o estado final não pode depender do evento de fim: com a aba em segundo
-       plano o relógio das animações para, então um temporizador também finaliza */
-    function finish() {
-      if (group._anim !== anim) return;
-      group._anim = null;
-      if (!open) group.hidden = true;
-      group.removeAttribute('data-closing');
-      group.style.overflow = '';
-      group.style.boxSizing = '';
-      anim.cancel();
-      if (!open) ensureTabStop();
-    }
-    anim.onfinish = finish;
-    setTimeout(finish, 320);
+  function svgEl(name, attrs) {
+    var n = document.createElementNS(SVGNS, name);
+    Object.keys(attrs || {}).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+    return n;
   }
 
-  /* instant = true pula a animação (usado quando o filtro mexe em várias seções de uma vez) */
-  function setOpen(el, open, instant) {
-    if (!expandable(el)) return;
-    el.setAttribute('aria-expanded', open ? 'true' : 'false');
-    var group = groupOf(el);
-    if (group) {
-      if (instant) {
-        if (group._anim) { group._anim.cancel(); group._anim = null; }
-        group.removeAttribute('data-closing');
-        group.style.overflow = '';
-        group.style.boxSizing = '';
-        group.hidden = !open;
+  /* ---------- texto ---------- */
+
+  function fontOf(rec, size, weight) {
+    return (weight || (rec.bold ? 600 : 400)) + ' ' + size + 'px ' + getComputedStyle(svg).fontFamily;
+  }
+  function textWidth(str, font) { ctx.font = font; return ctx.measureText(str).width; }
+
+  function truncate(str, font, max) {
+    if (textWidth(str, font) <= max) return str;
+    var lo = 0, hi = str.length;
+    while (lo < hi) {
+      var mid = (lo + hi + 1) >> 1;
+      if (textWidth(str.slice(0, mid).replace(/\s+$/, '') + '…', font) <= max) lo = mid; else hi = mid - 1;
+    }
+    return str.slice(0, lo).replace(/\s+$/, '') + '…';
+  }
+
+  function measure(rec) {
+    var font = fontOf(rec, rec.kind === 'root' ? 14 : 13);
+    rec.text = truncate(rec.label, font, MAX_LABEL);
+    rec.textW = textWidth(rec.text, font);
+    rec.txt.textContent = rec.text;
+  }
+
+  /* ---------- modelo: um registro por nó vindo do Hugo ---------- */
+
+  data.forEach(function (d) {
+    var rec = {
+      id: d.id, parent: d.p >= 0 ? recs[d.p] : null, kids: [], kind: d.k, project: !!d.pr, icon: d.i,
+      label: d.t, title: (d.t || '').toLowerCase(), href: d.u, tags: d.tags || [],
+      bold: d.k !== 'page', depth: 0,
+      open: d.k === 'root' || d.k === 'area',   /* pastas de seção começam fechadas */
+      hidden: false, hl: false,
+      vis: false, shown: false, exiting: false, n: 0,
+      x: 0, y: 0, tx: 0, ty: 0, w: 0, op: 0, top: 0, x0: 0, y0: 0, op0: 0
+    };
+    if (rec.parent) { rec.parent.kids.push(rec); rec.depth = rec.parent.depth + 1; }
+    recs.push(rec);
+  });
+
+  var root = recs[0];
+  focused = root;
+
+  recs.forEach(function (rec) {
+    rec.toggles = rec.kind !== 'root' && rec.kids.length > 0;   /* pasta: clicar abre/fecha */
+
+    var g = svgEl('g', {
+      'class': 'g-node ' + rec.kind + (rec.project ? ' is-project' : ''),
+      role: rec.toggles ? 'button' : 'link',
+      tabindex: rec === root ? 0 : -1
+    });
+    g.style.display = 'none';
+    g._rec = rec;
+    rec.g = g;
+
+    var title = svgEl('title');
+    title.textContent = rec.label;
+    g.appendChild(title);
+    rec.box = svgEl('rect', { 'class': 'g-box', height: H, rx: 8 });
+    g.appendChild(rec.box);
+    rec.ico = svgEl('use', { 'class': 'g-ico', x: PAD, y: (H - ICON) / 2, width: ICON, height: ICON });
+    g.appendChild(rec.ico);
+    rec.txt = svgEl('text', { 'class': 'g-label', x: PAD + ICON + 8, y: H / 2 });
+    g.appendChild(rec.txt);
+
+    if (rec.toggles) {
+      rec.pill = svgEl('rect', { 'class': 'g-pill', height: 20, y: (H - 20) / 2, rx: 10 });
+      rec.count = svgEl('text', { 'class': 'g-count', y: H / 2 });
+      g.appendChild(rec.pill);
+      g.appendChild(rec.count);
+    }
+
+    /* todo nó tem o ↗: abrir uma página é um gesto deliberado (↗, duplo clique ou Enter),
+       nunca um clique solto, para não sair da página sem querer */
+    rec.openBtn = svgEl('g', { 'class': 'g-open' });
+    var hit = svgEl('rect', { width: 20, height: 20, y: (H - 20) / 2, rx: 5 });
+    var arrow = svgEl('use', { x: 4, y: (H - 12) / 2, width: 12, height: 12, href: '#i-out' });
+    var openTitle = svgEl('title');
+    openTitle.textContent = 'Abrir página';
+    rec.openBtn.appendChild(openTitle);
+    rec.openBtn.appendChild(hit);
+    rec.openBtn.appendChild(arrow);
+    g.appendChild(rec.openBtn);
+
+    if (rec.parent) {
+      rec.edge = svgEl('path', { 'class': 'g-edge' });
+      rec.edge.style.display = 'none';
+      edgeLayer.appendChild(rec.edge);
+    }
+    nodeLayer.appendChild(g);
+    measure(rec);
+  });
+
+  function remeasure() { recs.forEach(measure); }
+
+  /* ---------- o que aparece ---------- */
+
+  /* o selo do nó fechado mostra quantos filhos ele esconde */
+  function place(rec) {
+    var labelEnd = PAD + ICON + 8 + rec.textW;
+    var icon = rec.icon === 'folder' && rec.open ? 'folder-open' : rec.icon;
+    rec.ico.setAttribute('href', '#i-' + icon);
+    rec.g.classList.toggle('is-match', rec.hl);
+    var ox = labelEnd + 8;
+    if (rec.toggles) {
+      var pillText = rec.open ? '−' : (rec.n ? '+' + rec.n : '0');
+      var pillW = Math.max(24, textWidth(pillText, fontOf(rec, 11, 400)) + 14);
+      var px = labelEnd + 10;
+      ox = px + pillW + 4;
+      rec.pill.setAttribute('x', px);
+      rec.pill.setAttribute('width', pillW);
+      rec.count.setAttribute('x', px + pillW / 2);
+      rec.count.textContent = pillText;
+      rec.g.setAttribute('aria-expanded', rec.open ? 'true' : 'false');
+    }
+    rec.openBtn.setAttribute('transform', 'translate(' + ox + ' 0)');
+    var w = ox + 20 + 6;
+    rec.g.setAttribute('aria-label', rec.label + (rec.toggles ? ', ' + rec.n + (rec.n === 1 ? ' item' : ' itens') : ''));
+    rec.w = w;
+    rec.box.setAttribute('width', w);
+  }
+
+  function computeLayout() {
+    var slot = 0;
+    var colW = [];
+    var maxDepth = 0;
+    order = [];
+    recs.forEach(function (r) { r.vis = false; });
+
+    (function walk(r) {
+      r.vis = true;
+      order.push(r);
+      var live = r.kids.filter(function (k) { return !k.hidden; });
+      r.n = live.length;
+      var kids = r.open ? live : [];
+      if (!kids.length) {
+        r.row = slot++;
       } else {
-        animateGroup(group, open);
+        kids.forEach(walk);
+        r.row = (kids[0].row + kids[kids.length - 1].row) / 2;
+      }
+      place(r);
+      colW[r.depth] = Math.max(colW[r.depth] || 0, r.w);
+      if (r.depth > maxDepth) maxDepth = r.depth;
+    })(root);
+
+    var colX = [];
+    var acc = 0;
+    for (var d = 0; d <= maxDepth; d++) { colX[d] = acc; acc += (colW[d] || 0) + GAP_X; }
+
+    order.forEach(function (r) { r.tx = colX[r.depth]; r.ty = r.row * ROW; });
+    bounds.w = colX[maxDepth] + (colW[maxDepth] || 0);
+    bounds.h = (slot - 1) * ROW + H;
+
+    /* quem entra nasce na posição do pai; quem sai recolhe até o ancestral visível */
+    recs.forEach(function (r) {
+      if (r.vis) {
+        if (!r.shown) {
+          r.shown = true;
+          r.x = r.parent ? r.parent.x : r.tx;
+          r.y = r.parent ? r.parent.y : r.ty;
+          r.op = 0;
+          r.g.style.display = '';
+          if (r.edge) r.edge.style.display = '';
+        }
+        r.exiting = false;
+        r.top = 1;
+      } else if (r.shown) {
+        var a = r.parent;
+        while (a && !a.vis) a = a.parent;
+        r.tx = a.tx;
+        r.ty = a.ty;
+        r.top = 0;
+        r.exiting = true;
+      }
+    });
+
+    if (!focused.vis) setTabStop(root);
+  }
+
+  /* ---------- desenho e animação ---------- */
+
+  function paint(r) {
+    r.g.setAttribute('transform', 'translate(' + r.x.toFixed(1) + ' ' + r.y.toFixed(1) + ')');
+    r.g.style.opacity = r.op;
+    if (r.edge) {
+      var p = r.parent;
+      var x1 = p.x + p.w, y1 = p.y + H / 2;
+      var x2 = r.x - 1, y2 = r.y + H / 2;
+      var dx = Math.max(24, (x2 - x1) * 0.5);
+      r.edge.setAttribute('d', 'M' + x1.toFixed(1) + ' ' + y1.toFixed(1) +
+        'C' + (x1 + dx).toFixed(1) + ' ' + y1.toFixed(1) + ' ' + (x2 - dx).toFixed(1) + ' ' + y2.toFixed(1) +
+        ' ' + x2.toFixed(1) + ' ' + y2.toFixed(1));
+      r.edge.style.opacity = r.op;
+    }
+  }
+
+  function paintView() {
+    vpEl.setAttribute('transform', 'translate(' + view.tx.toFixed(1) + ' ' + view.ty.toFixed(1) + ') scale(' + view.k.toFixed(4) + ')');
+  }
+
+  function frame(t) {
+    var e = 1 - Math.pow(1 - t, 3);
+    recs.forEach(function (r) {
+      if (!r.shown) return;
+      r.x = r.x0 + (r.tx - r.x0) * e;
+      r.y = r.y0 + (r.ty - r.y0) * e;
+      r.op = r.op0 + (r.top - r.op0) * e;
+      paint(r);
+    });
+    if (viewTo && viewFrom) {
+      view.k = viewFrom.k + (viewTo.k - viewFrom.k) * e;
+      view.tx = viewFrom.tx + (viewTo.tx - viewFrom.tx) * e;
+      view.ty = viewFrom.ty + (viewTo.ty - viewFrom.ty) * e;
+      paintView();
+    }
+  }
+
+  function finish(a) {
+    if (anim !== a) return;
+    anim = null;
+    viewTo = null;
+    viewFrom = null;
+    recs.forEach(function (r) {
+      if (!r.exiting) return;
+      r.exiting = false;
+      r.shown = false;
+      r.g.style.display = 'none';
+      if (r.edge) r.edge.style.display = 'none';
+    });
+  }
+
+  function startAnim(instant) {
+    recs.forEach(function (r) { r.x0 = r.x; r.y0 = r.y; r.op0 = r.op; });
+    viewFrom = { k: view.k, tx: view.tx, ty: view.ty };
+    var a = { t0: performance.now() };
+    anim = a;
+    if (instant || reduceMotion) { frame(1); finish(a); return; }
+    requestAnimationFrame(function step(now) {
+      if (anim !== a) return;
+      var t = Math.min(1, Math.max(0, (now - a.t0) / DUR));
+      frame(t);
+      if (t < 1) requestAnimationFrame(step); else finish(a);
+    });
+    /* com a aba em segundo plano o relógio de animação para: o temporizador fecha o estado final */
+    setTimeout(function () { if (anim === a) { frame(1); finish(a); } }, DUR + 100);
+  }
+
+  /* ---------- câmera ---------- */
+
+  function fitView() {
+    var W = svg.clientWidth, Hh = svg.clientHeight, pad = 32;
+    var k = Math.min(1, (W - pad * 2) / bounds.w, (Hh - pad * 2) / bounds.h);
+    k = Math.max(MIN_K, k);
+    return { k: k, tx: (W - bounds.w * k) / 2, ty: (Hh - bounds.h * k) / 2 };
+  }
+
+  /* o que o usuário mexe à mão vale mais que a câmera automática */
+  function userMoved() { viewTo = null; viewFrom = null; }
+
+  function zoomAt(px, py, f) {
+    var k = Math.min(MAX_K, Math.max(MIN_K, view.k * f));
+    var r = k / view.k;
+    userMoved();
+    view.tx = px - (px - view.tx) * r;
+    view.ty = py - (py - view.ty) * r;
+    view.k = k;
+    paintView();
+  }
+
+  function ensureVisible(rec) {
+    var W = svg.clientWidth, Hh = svg.clientHeight, m = 24;
+    var sx = view.tx + view.k * rec.tx, sy = view.ty + view.k * rec.ty;
+    var sw = rec.w * view.k, sh = H * view.k;
+    var dx = 0, dy = 0;
+    if (sx < m) dx = m - sx; else if (sx + sw > W - m) dx = W - m - (sx + sw);
+    if (sy < m) dy = m - sy; else if (sy + sh > Hh - m) dy = Hh - m - (sy + sh);
+    if (dx || dy) { userMoved(); view.tx += dx; view.ty += dy; paintView(); }
+  }
+
+  /* ao abrir uma pasta, empurra a câmera só o bastante para os filhos caberem na tela
+     (o nó clicado tem prioridade: nunca sai pela esquerda ou por cima) */
+  function reveal(a, v) {
+    if (!a.open) return v;
+    var W = svg.clientWidth, Hh = svg.clientHeight, m = 24;
+    var x1 = a.tx + a.w, y0 = a.ty, y1 = a.ty + H;
+    a.kids.forEach(function (k) {
+      if (!k.vis) return;
+      x1 = Math.max(x1, k.tx + k.w);
+      y0 = Math.min(y0, k.ty);
+      y1 = Math.max(y1, k.ty + H);
+    });
+    var left = v.tx + v.k * a.tx, right = v.tx + v.k * x1;
+    var top = v.ty + v.k * y0, bottom = v.ty + v.k * y1;
+    var dx = 0, dy = 0;
+    if (right > W - m) dx = W - m - right;
+    if (left + dx < m) dx = m - left;
+    if (bottom > Hh - m) dy = Hh - m - bottom;
+    if (top + dy < m) dy = m - top;
+    return { k: v.k, tx: v.tx + dx, ty: v.ty + dy };
+  }
+
+  /* ---------- redesenho ---------- */
+
+  /* várias mudanças no mesmo instante (um filtro abre dezenas de pastas) viram um desenho só */
+  function sync(opts) {
+    if (!pend) {
+      pend = { fit: false, anchor: null };
+      Promise.resolve().then(run);
+    }
+    if (opts && opts.fit) pend.fit = true;
+    if (opts && opts.anchor) pend.anchor = opts.anchor;
+  }
+
+  function run() {
+    var p = pend;
+    pend = null;
+    var visible = svg.clientWidth > 0;
+    var a = p.anchor && p.anchor.shown ? p.anchor : null;
+    var sx = a ? view.tx + view.k * a.x : 0;
+    var sy = a ? view.ty + view.k * a.y : 0;
+
+    computeLayout();
+
+    if (!visible) {
+      needFit = true;
+      viewTo = null;
+    } else if (p.fit || needFit) {
+      needFit = false;
+      viewTo = fitView();
+    } else if (a) {
+      /* o nó clicado fica parado na tela; o resto se acomoda em volta */
+      viewTo = reveal(a, { k: view.k, tx: sx - view.k * a.tx, ty: sy - view.k * a.ty });
+    }
+    /* sem ajuste nem âncora (ex.: a fonte terminou de carregar), a câmera em andamento segue o seu destino */
+    startAnim(!visible);
+  }
+
+  /* ---------- foco, seleção e teclado ---------- */
+
+  function setTabStop(rec) {
+    recs.forEach(function (r) { r.g.setAttribute('tabindex', -1); });
+    rec.g.setAttribute('tabindex', 0);
+    focused = rec;
+  }
+
+  function focusRec(rec) {
+    setTabStop(rec);
+    rec.g.focus({ preventScroll: true });
+    ensureVisible(rec);
+  }
+
+  function select(rec) {
+    if (selected) selected.g.classList.remove('sel');
+    selected = rec;
+    if (rec) rec.g.classList.add('sel');
+  }
+
+  function navigate(rec, e) {
+    if (!rec.href) return;
+    if (e && (e.ctrlKey || e.metaKey || e.shiftKey)) window.open(rec.href, '_blank', 'noopener');
+    else window.location.href = rec.href;
+  }
+
+  function toggle(rec) {
+    rec.open = !rec.open;
+    sync({ anchor: rec });
+  }
+
+  /* o caminho da raiz até o nó sob o cursor fica em destaque, para ler a direção das setas */
+  function highlight(rec) {
+    if (hot) {
+      for (var h = hot; h; h = h.parent) {
+        h.g.classList.remove('hi');
+        if (h.edge) h.edge.classList.remove('hi');
       }
     }
-    markLast();
+    hot = rec;
+    for (var r = rec; r; r = r.parent) {
+      r.g.classList.add('hi');
+      if (r.edge) r.edge.classList.add('hi');
+    }
   }
+
+  function recOf(target) {
+    var g = target.closest && target.closest('.g-node');
+    return g ? g._rec : null;
+  }
+
+  svg.addEventListener('keydown', function (e) {
+    var rec = recOf(e.target);
+    if (!rec || e.ctrlKey || e.metaKey || e.altKey) return;
+    var i = order.indexOf(rec);
+    var handled = true;
+    switch (e.key) {
+      case 'ArrowDown': if (i < order.length - 1) focusRec(order[i + 1]); break;
+      case 'ArrowUp': if (i > 0) focusRec(order[i - 1]); break;
+      case 'Home': focusRec(order[0]); break;
+      case 'End': focusRec(order[order.length - 1]); break;
+      case 'ArrowRight':
+        if (rec.toggles && !rec.open) toggle(rec);
+        else if (rec.open && order[i + 1] && order[i + 1].parent === rec) focusRec(order[i + 1]);
+        break;
+      case 'ArrowLeft':
+        if (rec.toggles && rec.open) toggle(rec);
+        else if (rec.parent) focusRec(rec.parent);
+        break;
+      case ' ':
+        if (rec.toggles) toggle(rec); else handled = false;
+        break;
+      case 'Enter':
+        navigate(rec, e);
+        break;
+      default:
+        handled = false;
+    }
+    if (handled) e.preventDefault();
+  });
+
+  svg.addEventListener('focusin', function (e) {
+    var rec = recOf(e.target);
+    if (rec) { if (rec !== focused) setTabStop(rec); highlight(rec); }
+  });
+  svg.addEventListener('focusout', function () { highlight(null); });
+  nodeLayer.addEventListener('pointerover', function (e) {
+    var rec = recOf(e.target);
+    if (rec) highlight(rec);
+  });
+  svg.addEventListener('pointerleave', function () { highlight(null); });
+
+  /* ---------- mouse e toque: arrastar move, clicar seleciona ---------- */
+
+  var drag = null;
+  var dragged = false;
+
+  svg.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    if (drag) return;
+    dragged = false;
+    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, tx: view.tx, ty: view.ty, captured: false };
+  });
+
+  svg.addEventListener('pointermove', function (e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!drag.captured) {
+      if (Math.abs(dx) + Math.abs(dy) < 5) return;
+      drag.captured = true;
+      dragged = true;
+      svg.classList.add('is-panning');
+      svg.setPointerCapture(e.pointerId);
+      userMoved();
+    }
+    view.tx = drag.tx + dx;
+    view.ty = drag.ty + dy;
+    paintView();
+  });
+
+  function endDrag(e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    drag = null;
+    svg.classList.remove('is-panning');
+  }
+  svg.addEventListener('pointerup', endDrag);
+  svg.addEventListener('pointercancel', endDrag);
+
+  /* clique simples nunca sai da página: só seleciona o nó (e abre/fecha uma pasta, que se desfaz).
+     Abrir a página: botão ↗, duplo clique, Enter, ou Ctrl/⌘ + clique. */
+  svg.addEventListener('click', function (e) {
+    if (dragged) { dragged = false; return; }
+    var rec = recOf(e.target);
+    if (!rec) { select(null); return; }
+    setTabStop(rec);
+    select(rec);
+    if (e.target.closest('.g-open') || e.ctrlKey || e.metaKey) navigate(rec, e);
+    else if (rec.toggles) toggle(rec);
+  });
+
+  svg.addEventListener('dblclick', function (e) {
+    var rec = recOf(e.target);
+    if (rec && !e.target.closest('.g-open')) navigate(rec, e);
+  });
+
+  /* Ctrl/⌘ + rolagem dá zoom (é também o gesto de pinça do trackpad); rolagem sozinha continua rolando a página */
+  svg.addEventListener('wheel', function (e) {
+    if (!e.ctrlKey && !e.metaKey) return;
+    e.preventDefault();
+    var r = svg.getBoundingClientRect();
+    zoomAt(e.clientX - r.left, e.clientY - r.top, Math.exp(-e.deltaY * 0.0015));
+  }, { passive: false });
+
+  document.getElementById('mapa-zoom-in').addEventListener('click', function () {
+    zoomAt(svg.clientWidth / 2, svg.clientHeight / 2, 1.25);
+  });
+  document.getElementById('mapa-zoom-out').addEventListener('click', function () {
+    zoomAt(svg.clientWidth / 2, svg.clientHeight / 2, 1 / 1.25);
+  });
+  document.getElementById('mapa-fit').addEventListener('click', function () { sync({ fit: true }); });
+
+  document.getElementById('mapa-collapse').addEventListener('click', function () {
+    recs.forEach(function (r) { if (r.kind === 'section') r.open = false; });
+    sync({ fit: true });
+  });
+  document.getElementById('mapa-expand').addEventListener('click', function () {
+    recs.forEach(function (r) { if (r.toggles) r.open = true; });
+    sync({ fit: true });
+  });
 
   /* ---------- filtro por tag e busca ---------- */
 
-  function matches(el, tags, q) {
-    var own = (el.getAttribute('data-tags') || '').split(' ');
-    var okTag = !tags.length || tags.some(function (t) { return own.indexOf(t) !== -1; });
-    var okText = !q || (el.getAttribute('data-title') || '').indexOf(q) !== -1;
+  function matches(rec, tags, q) {
+    var okTag = !tags.length || tags.some(function (t) { return rec.tags.indexOf(t) !== -1; });
+    var okText = !q || rec.title.indexOf(q) !== -1;
     return okTag && okText;
-  }
-
-  function leavesOf(el) {
-    var group = groupOf(el);
-    return group ? Array.prototype.slice.call(group.querySelectorAll('[role="treeitem"].page')) : [];
-  }
-
-  function setCount(el, shown, total) {
-    var small = smallOf(el);
-    if (!small) return;
-    if (!small.hasAttribute('data-orig')) small.setAttribute('data-orig', small.textContent);
-    var unit = small.getAttribute('data-unit');
-    if (total === 1 && unit === 'posts') unit = 'post';
-    small.textContent = shown === null ? small.getAttribute('data-orig') : shown + ' de ' + total + ' ' + unit;
   }
 
   /* cada filtro ativo vira uma pílula; clicar nela remove o filtro */
@@ -820,8 +1158,8 @@ details[open] > summary.mapa-btn .mapa-svg { transform: rotate(180deg); }
     shownPills = current;
   }
 
-  /* com filtro, a árvore mostra só os ramos com resultado: seções sem página
-     que case somem, as com resultado se abrem e o contador vira "3 de 7" */
+  /* com filtro, o grafo mostra só os ramos com resultado: seções sem página que case
+     somem, as com resultado se abrem, e o selo de cada pasta conta só o que sobrou */
   function apply() {
     var tags = Object.keys(active);
     var q = search.value.trim().toLowerCase();
@@ -829,46 +1167,40 @@ details[open] > summary.mapa-btn .mapa-svg { transform: rotate(180deg); }
     var hits = 0;
 
     if (filtering && !snapshot) {
-      snapshot = items.filter(function (el) { return expandable(el) && levelOf(el) > 1; })
-        .map(function (el) { return [el, isOpen(el)]; });
+      snapshot = recs.filter(function (r) { return r.toggles; })
+        .map(function (r) { return [r, r.open]; });
     }
 
-    pages.forEach(function (el) {
-      var ok = matches(el, tags, q);
-      el.classList.toggle('is-match', filtering && ok);
-      el.closest('li').hidden = filtering && !ok;
+    recs.forEach(function (r) {
+      if (r.kind !== 'page') return;
+      var ok = matches(r, tags, q);
+      r.hl = filtering && ok;
+      r.hidden = filtering && !ok;
       if (filtering && ok) hits++;
     });
 
-    sections.forEach(function (el) {
-      var all = leavesOf(el);
-      var n = all.filter(function (p) { return !p.closest('li').hidden; }).length;
-      el.closest('.mapa-col').hidden = filtering && n === 0;
-      setCount(el, filtering ? n : null, all.length);
-      if (filtering) setOpen(el, n > 0, true);
-    });
-
-    areas.forEach(function (el) {
-      var all = leavesOf(el);
-      var n = all.filter(function (p) { return !p.closest('li').hidden; }).length;
-      setCount(el, filtering ? n : null, all.length);
-      if (filtering) setOpen(el, n > 0, true);
+    ['section', 'area'].forEach(function (kind) {
+      recs.forEach(function (r) {
+        if (r.kind !== kind || !r.toggles) return;
+        var n = r.kids.filter(function (k) { return !k.hidden; }).length;
+        if (kind === 'section') r.hidden = filtering && n === 0;
+        if (filtering) r.open = n > 0;
+      });
     });
 
     if (!filtering && snapshot) {
-      snapshot.forEach(function (pair) { setOpen(pair[0], pair[1], true); });
+      snapshot.forEach(function (pair) { pair[0].open = pair[1]; });
       snapshot = null;
     }
 
     clearBtn.hidden = !filtering;
     tagText.textContent = tags.length ? 'Tags (' + tags.length + ')' : 'Tags';
     renderPills(tags, q);
-    emptyMsg.hidden = !(filtering && hits === 0);
+    gEmpty.hidden = !(filtering && hits === 0);
     if (!filtering) info.textContent = '';
     else info.textContent = hits === 0 ? 'Nenhuma página encontrada' : hits + (hits === 1 ? ' página destacada' : ' páginas destacadas');
 
-    markLast();
-    ensureTabStop();
+    sync({ fit: true });
   }
 
   chips.forEach(function (chip) {
@@ -890,7 +1222,7 @@ details[open] > summary.mapa-btn .mapa-svg { transform: rotate(180deg); }
     apply();
   }
   clearBtn.addEventListener('click', clearAll);
-  document.getElementById('mapa-empty-clear').addEventListener('click', clearAll);
+  document.getElementById('mapa-gempty-clear').addEventListener('click', clearAll);
 
   /* fecha os menus (tags e ajuda) ao clicar fora ou apertar Esc */
   var menus = [tagMenu, helpMenu];
@@ -904,105 +1236,12 @@ details[open] > summary.mapa-btn .mapa-svg { transform: rotate(180deg); }
     });
   });
 
-  /* ---------- expandir/recolher ---------- */
-
-  /* clicar numa seção ou área abre/fecha; o ↗ (ou Enter, ou duplo clique) abre a página */
-  tree.addEventListener('click', function (e) {
-    var el = e.target.closest('[role="treeitem"]');
-    if (!el || !el.hasAttribute('data-href')) return;
-    setOpen(el, !isOpen(el));
-    setTabStop(el);
-    ensureTabStop();
-  });
-
-  tree.addEventListener('dblclick', function (e) {
-    var el = e.target.closest('[role="treeitem"]');
-    if (el && el.hasAttribute('data-href')) window.location.href = el.getAttribute('data-href');
-  });
-
-  document.getElementById('mapa-collapse').addEventListener('click', function () {
-    sections.forEach(function (el) { setOpen(el, false); });
-    ensureTabStop();
-  });
-  document.getElementById('mapa-expand').addEventListener('click', function () {
-    items.forEach(function (el) { if (expandable(el)) setOpen(el, true); });
-    ensureTabStop();
-  });
-
-  /* ---------- teclado (padrão ARIA "tree") ---------- */
-
-  tree.addEventListener('focusin', function (e) {
-    var el = e.target.closest('[role="treeitem"]');
-    if (el) setTabStop(el);
-  });
-
-  var typed = '';
-  var typedTimer = null;
-  function typeahead(e, list, index) {
-    if (e.key.length !== 1 || e.key === ' ') return false;
-    typed += e.key.toLowerCase();
-    clearTimeout(typedTimer);
-    typedTimer = setTimeout(function () { typed = ''; }, 600);
-    var order = list.slice(index + 1).concat(list.slice(0, index + 1));
-    var hit = order.filter(function (el) { return labelOf(el).toLowerCase().indexOf(typed) === 0; })[0];
-    if (hit) focusItem(hit);
-    return true;
+  /* as medidas de texto dependem da fonte do tema: refaz quando ela terminar de carregar */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { remeasure(); sync(); });
   }
 
-  tree.addEventListener('keydown', function (e) {
-    var el = e.target.closest('[role="treeitem"]');
-    if (!el || e.ctrlKey || e.metaKey || e.altKey) return;
-
-    var list = visibleItems();
-    var i = list.indexOf(el);
-    var handled = true;
-
-    switch (e.key) {
-      case 'ArrowDown':
-        if (i < list.length - 1) focusItem(list[i + 1]);
-        break;
-      case 'ArrowUp':
-        if (i > 0) focusItem(list[i - 1]);
-        break;
-      case 'Home':
-        focusItem(list[0]);
-        break;
-      case 'End':
-        focusItem(list[list.length - 1]);
-        break;
-      case 'ArrowRight':
-        if (expandable(el)) {
-          if (!isOpen(el)) setOpen(el, true);
-          else if (list[i + 1] && levelOf(list[i + 1]) === levelOf(el) + 1) focusItem(list[i + 1]);
-        }
-        break;
-      case 'ArrowLeft':
-        if (expandable(el) && isOpen(el) && levelOf(el) > 1) {
-          setOpen(el, false);
-        } else {
-          var parent = parentOf(el);
-          if (parent) focusItem(parent);
-        }
-        break;
-      case ' ':
-        if (expandable(el) && levelOf(el) > 1) setOpen(el, !isOpen(el));
-        else handled = false;
-        break;
-      case 'Enter':
-        /* links abrem sozinhos; seções e áreas (div) abrem a página por aqui */
-        if (el.hasAttribute('data-href')) window.location.href = el.getAttribute('data-href');
-        else handled = false;
-        break;
-      default:
-        handled = typeahead(e, list, i);
-    }
-
-    if (handled) e.preventDefault();
-    ensureTabStop();
-  });
-
-  /* ---------- estado inicial: aberto até as seções ---------- */
-  markLast();
+  sync({ fit: true });
 })();
 </script>
 
